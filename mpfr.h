@@ -67,19 +67,6 @@ namespace alby::bigmath
 			mpfr log2 ()            ; // return log2( this )
 			mpfr log10()            ; // return log10( this )
 
-
-// x = a + "3.14" 
-// pow( "1.0")
-// operators and constructors from longs and strings
-// ceil
-// floor
-// trunc
-// mpfr_urandomb ( seed ??? )
-// handle ie10
-
-			//ALBY fix me
-			//operator mpq_class() ;
-			//mpq_class toMpq() ;
 	} ;
 } 
 

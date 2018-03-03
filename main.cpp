@@ -108,6 +108,12 @@ void doMpfrMath()
 	j = pi / ee ;
 	std::cout << j << std::endl ;
 
+	auto k = c.neg() ;
+	std::cout << k << std::endl ;
+
+	k = k.neg() * b ;
+	std::cout << k << std::endl ;
+
 	//auto b1 = b.toMpq() ;
 
 	//mpq_class b1 = (mpq_class) b ;

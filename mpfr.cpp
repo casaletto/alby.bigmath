@@ -192,12 +192,18 @@ namespace alby::bigmath
 	mpfr mpfr::e()  
 	{
 		mpfr result( rounding, precision ) ;
-		mpfr one = "1.0" ;
+		mpfr one = "1.0" ;                                   //ALBY test precision
 
 		mpfr_exp( deref(result ), deref(one), rounding ) ;
 
 		return result ;   
 	}
+
+	mpfr mpfr::neg()  
+	{ 
+		return *this * mpfr( "-1.0" ) ;   //ALBY test precision
+	}
+
 
 	mpfr_t& mpfr::deref( const mpfr& mpfr ) // dereference the important part
 	{
@@ -264,7 +270,7 @@ namespace alby::bigmath
 	{
 		std::stringstream bob ;
 
-		bob
+		bob	
 			<< "MPFR library  "
 			<< ::mpfr_get_version()
 			<< std::endl
