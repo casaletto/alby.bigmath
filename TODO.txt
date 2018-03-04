@@ -1,6 +1,9 @@
+---------------------------------------------------------------------
+to do
+
+// < > == >= <=
+
 // change precision  to # of significant decimal digits
-// global precision
-// global rounding
 // x = a + "3.14" 
 // pow( "1.0")
 // operators and constructors from longs and strings
@@ -8,15 +11,27 @@
 // floor
 // trunc
 // mpfr_urandomb ( seed ??? )
-// handle ie10
-// test a base 16 number printf
+// handle 1E10
 // test that precision coims from the lhs
 // 
+
+// rounding to x dp 0.5 goes up
 
 //ALBY fix me
 //operator mpq_class() ;
 //mpq_class toMpq() ;
 
 
-* how to ignore *.o in vscode
 *how to run make in vscode
+
+
+----------------------------------
+
+done
+
+// global precision
+// global rounding
+// test a base 16 number
+// test a base 2 number
+// * how to ignore *.o in vscode
+

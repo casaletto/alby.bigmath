@@ -238,6 +238,50 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
+	bool operator>( const mpfr& op1, const mpfr& op2 )  
+	{  
+		//ALBY fix me
+
+		return true ;
+	}
+
+	bool operator<( const mpfr& op1, const mpfr& op2 )  
+	{  
+		//ALBY fix me
+
+		return true ;
+	}
+
+	bool operator>=( const mpfr& op1, const mpfr& op2 )  
+	{  
+		//ALBY fix me
+
+		return true ;
+	}
+
+	bool operator<=( const mpfr& op1, const mpfr& op2 )  
+	{  
+		//ALBY fix me
+
+		return true ;
+	}
+
+	bool operator==( const mpfr& op1, const mpfr& op2 )  
+	{  
+		//ALBY fix me
+
+		return true ;
+	}
+
+	bool operator!=( const mpfr& op1, const mpfr& op2 )  
+	{  
+		//ALBY fix me
+
+		return true ;
+	}
+	
+	//----------------------------------------------------------------------------------------------------------------------
+
 	mpfr mpfr::sin()  
 	{
 		mpfr result( precision, rounding ) ;
@@ -296,6 +340,15 @@ namespace alby::bigmath
 	mpfr mpfr::inv()  
 	{ 
 		return mpfr( "1.0" ) / *this ;   
+	}
+
+	mpfr mpfr::abs()  
+	{ 
+		mpfr result( precision, rounding ) ;
+
+		mpfr_abs( deref(result), deref(*this), rounding ) ;
+
+		return result ;   
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------

@@ -62,6 +62,13 @@ namespace alby::bigmath
 			friend mpfr operator/( const mpfr& op1, const mpfr& op2 ) ;
 			friend mpfr operator^( const mpfr& op1, const mpfr& op2 ) ;
 
+			friend bool operator> ( const mpfr& op1, const mpfr& op2 ) ; 
+			friend bool operator< ( const mpfr& op1, const mpfr& op2 ) ;
+			friend bool operator>=( const mpfr& op1, const mpfr& op2 ) ; 
+			friend bool operator<=( const mpfr& op1, const mpfr& op2 ) ;
+			friend bool operator==( const mpfr& op1, const mpfr& op2 ) ;
+			friend bool operator!=( const mpfr& op1, const mpfr& op2 ) ;
+
 			mpfr e()   ; // return e  ;
 			mpfr pi()  ; // return pi ;
 
@@ -71,6 +78,7 @@ namespace alby::bigmath
 
 			mpfr neg() ; // return this * -1.0 ;
 			mpfr inv() ; // return 1.0 / recip ;
+			mpfr abs() ; // return abs( this ) ;
 
 			mpfr exp  ()					; // return e pow this 
 			mpfr log  ()					; // return ln( this )
@@ -79,6 +87,12 @@ namespace alby::bigmath
 			mpfr pow2 ()   					; // return 2 pow this
 			mpfr pow10()					; // return 10 pow this
 			mpfr root ( const mpfr& op2 ) 	; // return the op2'th root of this
+
+			mpfr ceil()  ;
+			mpfr floor() ;
+			mpfr trunc() ;
+			
+
 	} ;
 } 
 

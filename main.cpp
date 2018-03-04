@@ -18,7 +18,7 @@
 
 using namespace alby::bigmath ; 
 
-void doMpfrMath() ;
+void doMpfrMath1() ;
 
 int main( void )
 {
@@ -27,7 +27,7 @@ int main( void )
 		std::cout << mpfr::version()   << std::endl ;
 		std::cout << mpfr::random(256) << std::endl ;
 
-		doMpfrMath() ;
+		doMpfrMath1() ;
 	}
 	catch( std::exception ex )
 	{
@@ -41,7 +41,7 @@ int main( void )
 	return 0 ;
 }
 
-void doMpfrMath()
+void doMpfrMath1()
 {
 	mpfr::setGlobalPrecision( 300 ) ;
 	mpfr::setGlobalRounding ( MPFR_RNDU ) ;
@@ -167,6 +167,36 @@ void doMpfrMath()
 
 	std::cout << mpfr( "1000.00001" ).root( mpfr( "3.000001" ) ) << std::endl ;
 	
+	auto u = mpfr( "-FFee.100", 16 ) ;
+	std::cout << u << std::endl ;
+
+	u = mpfr( "FFFF.FFFF", 16 ) ;
+	std::cout << u << std::endl ;
+
+	auto v = mpfr( "-11111111.01", 2 ) ;
+	std::cout << v << std::endl ;
+
+	v = v.abs() ;
+	std::cout << v << std::endl ;
+	
+	v = v.abs() ;
+	std::cout << v << std::endl ;
+
+
+	mpfr a3 = "1.23" ;
+	mpfr b3 = "10.23" ;
+	mpfr c3 = "10.23" ;
+	mpfr d3 = "-3.001" ;
+	
+	std::cout << std::boolalpha << ( a3 < b3 )<< std::endl ;
+	std::cout << std::boolalpha << ( a3 > b3 )<< std::endl ;
+	std::cout << std::boolalpha << ( a3 <= b3 )<< std::endl ;
+	std::cout << std::boolalpha << ( a3 >= b3 )<< std::endl ;
+	std::cout << std::boolalpha << ( a3 == b3 )<< std::endl ;
+	std::cout << std::boolalpha << ( a3 != b3 )<< std::endl ;
+	
+
+
 //	mpfr a1( )
 
 
