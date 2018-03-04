@@ -16,14 +16,16 @@
 #include "./mpfr_t_wrapper.h"
 #include "./mpfr.h"
 
+using namespace alby::bigmath ; 
+
 void doMpfrMath() ;
 
 int main( void )
 {
 	try
 	{
-		std::cout << alby::bigmath::mpfr::version()   << std::endl ;
-		std::cout << alby::bigmath::mpfr::random(256) << std::endl ;
+		std::cout << mpfr::version()   << std::endl ;
+		std::cout << mpfr::random(256) << std::endl ;
 
 		doMpfrMath() ;
 	}
@@ -41,19 +43,35 @@ int main( void )
 
 void doMpfrMath()
 {
+	mpfr::setGlobalPrecision( 300 ) ;
+	mpfr::setGlobalRounding ( MPFR_RNDU ) ;
+		
 	std::string str = "3.14" ;
 
-	alby::bigmath::mpfr a ;
-	alby::bigmath::mpfr b( "2.0234" ) ;
-	alby::bigmath::mpfr c( "8.02345333" ) ;
-	alby::bigmath::mpfr d( str ) ;
+	mpfr a ;
+	mpfr b( "2.0234" ) ;
+	mpfr c( "8.02345333" ) ;
+	mpfr d( str ) ;
 
 	auto s = b.toString() ;
 	auto aa = a ;
 	auto bb = b ;
 	auto cc = c ;
 	auto dd = d ;
-
+	
+	std::cout << "..." << std::endl ;
+	dd = d ;
+	dd = d ;
+	dd = d ;
+	dd = d ;
+	dd = d ;
+	dd = d ;
+	dd = d ;
+	dd = d ;
+	dd = d ;
+	dd = d ;
+	std::cout << "..." << std::endl ;
+	
 	std::cout << a << std::endl ;
 	std::cout << bb << std::endl ;
 	std::cout << b << std::endl ;
@@ -80,7 +98,7 @@ void doMpfrMath()
 	std::cout << f << std::endl ;
 	std::cout << g << std::endl ;
 
-	alby::bigmath::mpfr h( "1.0"  ) ;
+	mpfr h( "1.0"  ) ;
 	auto i = h.sin() ;
 	std::cout << "sin " << i << std::endl ;
 
@@ -114,14 +132,49 @@ void doMpfrMath()
 	k = k.neg() * b ;
 	std::cout << k << std::endl ;
 
+	k = b.inv() ;
+	std::cout << k << std::endl ;
+
+	auto l = pi.exp() ;
+	std::cout << l << std::endl ;
+
+	auto m = l.log() ;
+	std::cout << m << std::endl ;
+
+	auto n = e.log2() ;
+	std::cout << n << std::endl ;
+	
+	auto o = dd.log10() ;
+	std::cout << o << std::endl ;
+
+	auto p = d.pow2() ;
+	std::cout << p << std::endl ;
+
+	auto q = d.pow10() ;
+	std::cout << q << std::endl ;
+
+	auto r = a.e() ^ a.pi() ;
+	std::cout << r << std::endl ;
+
+	auto t = r.root( a.pi() ) ;
+	std::cout << t << std::endl ;
+
+	r = a.pi() ^ a.e() ; 
+	std::cout << r << std::endl ;
+
+	t = r.root( a.e() ) ;
+	std::cout << t << std::endl ;
+
+	std::cout << mpfr( "1000.00001" ).root( mpfr( "3.000001" ) ) << std::endl ;
+	
+//	mpfr a1( )
+
+
 	//auto b1 = b.toMpq() ;
-
 	//mpq_class b1 = (mpq_class) b ;
-
 	//auto z1 = z.to_mpq_class() ;
 	//auto a1 = a.to_mpq_class() ;
 	//auto b1 = b.to_mpq_class() ;
-	
 	//std::cout << z1 << std::endl ;
 	//std::cout << a1 << std::endl ;
 	//std::cout << b1 << std::endl ;

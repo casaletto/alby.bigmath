@@ -5,8 +5,9 @@ namespace alby::bigmath
 	class mpfr_t_wrapper
 	{
 		protected:
-			mpfr_t x ;
-			mpfr_prec_t precision ;
+			mpfr_t        			x ;
+			mpfr_prec_t   			precision ;
+			static unsigned long 	objCount  ;
 
 		public:
 			virtual ~mpfr_t_wrapper() ;

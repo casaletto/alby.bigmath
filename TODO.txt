@@ -1,4 +1,6 @@
-
+// change precision  to # of significant decimal digits
+// global precision
+// global rounding
 // x = a + "3.14" 
 // pow( "1.0")
 // operators and constructors from longs and strings
@@ -11,10 +13,10 @@
 // test that precision coims from the lhs
 // 
 
-			//ALBY fix me
-			//operator mpq_class() ;
-			//mpq_class toMpq() ;
+//ALBY fix me
+//operator mpq_class() ;
+//mpq_class toMpq() ;
 
 
 * how to ignore *.o in vscode
-how to run make in vscode
+*how to run make in vscode

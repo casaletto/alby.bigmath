@@ -18,15 +18,44 @@
 
 namespace alby::bigmath 
 {
-	mpfr_rnd_t mpfr::getRounding()
-	{
-		return rounding ;
-	}
+	mpfr_prec_t mpfr::globalPrecision = mpfr::defaultPrecision ;
+	mpfr_rnd_t  mpfr::globalRounding  = mpfr::defaultRounding  ;
+
+	//----------------------------------------------------------------------------------------------------------------------
 
 	mpfr_prec_t mpfr::getPrecision()
 	{
 		return precision ;	
 	}
+
+	mpfr_prec_t mpfr::getGlobalPrecision()
+	{
+		return globalPrecision ;	
+	}
+
+	void mpfr::setGlobalPrecision( mpfr_prec_t prec )
+	{
+		globalPrecision = prec ;	
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
+
+	mpfr_rnd_t mpfr::getRounding()
+	{
+		return rounding ;
+	}
+
+	mpfr_rnd_t mpfr::getGlobalRounding()
+	{
+		return globalRounding ;	
+	}
+
+	void mpfr::setGlobalRounding( mpfr_rnd_t rnd )
+	{
+		globalRounding = rnd ;	
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
 
 	void mpfr::init()
 	{
@@ -39,16 +68,11 @@ namespace alby::bigmath
 			 delete p ;		
 	}
 
+	//----------------------------------------------------------------------------------------------------------------------
+
 	mpfr::~mpfr() // destr
 	{
 		cleanup() ;
-	}
-
-	mpfr::mpfr( const mpfr& rhs ) // copy constr
-	{
-		init() ;
-
-		*this = rhs ;
 	}
 
 	mpfr& mpfr::operator=( const mpfr& rhs ) // =
@@ -68,40 +92,99 @@ namespace alby::bigmath
 		return *this ;
 	}
 
-	mpfr::mpfr( mpfr_rnd_t aRounding, mpfr_prec_t aPrecision ) // constr
+	mpfr::mpfr( const mpfr& rhs ) // copy constr
 	{
 		init() ;
 
-		rounding  = aRounding  ;
-		precision = aPrecision ;
+		*this = rhs ;
+	}
+
+	mpfr::mpfr() // constr
+	{
+		init() ;
+
+		precision = globalPrecision ;
+		rounding  = globalRounding  ;
 
 		p = new mpfr_t_wrapper( precision ) ; // default 0
 	}
 
-	mpfr::mpfr( const char* str, mpfr_rnd_t aRounding, mpfr_prec_t aPrecision, int base ) // constr
+	//----------------------------------------------------------------------------------------------------------------------
+
+	mpfr::mpfr( mpfr_prec_t aPrecision, mpfr_rnd_t aRounding  ) // constr
 	{
 		init() ;
 
-		rounding  = aRounding  ;
 		precision = aPrecision ;
+		rounding  = aRounding  ;
+
+		p = new mpfr_t_wrapper( precision ) ; // default 0
+	}
+
+	mpfr::mpfr( const mpfr& rhs, mpfr_prec_t aPrecision, mpfr_rnd_t aRounding  ) // constr
+	{
+		init() ;
+
+		precision = aPrecision ;
+		rounding  = aRounding  ;
+
+		p = new mpfr_t_wrapper( precision ) ; // default 0
+
+		mpfr_set( deref(*this), deref(rhs), rounding ) ; 
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
+
+	mpfr::mpfr( const char* str, int base ) // constr
+	{
+		init() ;
+
+		precision = globalPrecision ;
+		rounding  = globalRounding  ;
 
 		p = new mpfr_t_wrapper( precision ) ;
 
 		mpfr_set_str( deref(*this), str, base, rounding ) ; 
 	}
 
-	mpfr::mpfr( const std::string& str, mpfr_rnd_t aRounding, mpfr_prec_t aPrecision, int base ) // constr
+	mpfr::mpfr( const char* str, mpfr_prec_t aPrecision, mpfr_rnd_t aRounding, int base  ) // constr
 	{
 		init() ;
 
-		rounding  = aRounding  ;
 		precision = aPrecision ;
+		rounding  = aRounding  ;
+
+		p = new mpfr_t_wrapper( precision ) ;
+
+		mpfr_set_str( deref(*this), str, base, rounding ) ; 
+	}
+
+	mpfr::mpfr( const std::string& str, int base ) // constr
+	{
+		init() ;
+
+		precision = globalPrecision ;
+		rounding  = globalRounding  ;
+
+		p = new mpfr_t_wrapper( precision ) ;
+
+		mpfr_set_str( deref(*this), str.c_str(), base, rounding ) ; 	
+	}
+
+	mpfr::mpfr( const std::string& str, mpfr_prec_t aPrecision, mpfr_rnd_t aRounding, int base ) // constr
+	{
+		init() ;
+
+		precision = aPrecision ;
+		rounding  = aRounding  ;
 
 		p = new mpfr_t_wrapper( precision ) ;
 
 		mpfr_set_str( deref(*this), str.c_str(), base, rounding ) ; 	
 	}
 	
+	//----------------------------------------------------------------------------------------------------------------------
+
 	std::ostream& operator<<( std::ostream& os, const mpfr& mpfr )  
 	{  
 		os << mpfr.toString() ;  
@@ -110,7 +193,7 @@ namespace alby::bigmath
 
 	mpfr operator+( const mpfr& op1, const mpfr& op2 )  
 	{  
-		mpfr result( op1.rounding, op1.precision ) ;
+		mpfr result( op1.precision, op1.rounding ) ;
 		
 		mpfr_add( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), op1.rounding ) ;
 
@@ -119,7 +202,7 @@ namespace alby::bigmath
 
 	mpfr operator-( const mpfr& op1, const mpfr& op2 )  
 	{  
-		mpfr result( op1.rounding, op1.precision ) ;
+		mpfr result( op1.precision, op1.rounding ) ;
 		
 		mpfr_sub( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), op1.rounding ) ;
 
@@ -128,7 +211,7 @@ namespace alby::bigmath
 
 	mpfr operator*( const mpfr& op1, const mpfr& op2 )  
 	{  
-		mpfr result( op1.rounding, op1.precision ) ;
+		mpfr result( op1.precision, op1.rounding ) ;
 		
 		mpfr_mul( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), op1.rounding ) ;
 
@@ -137,7 +220,7 @@ namespace alby::bigmath
 
 	mpfr operator/( const mpfr& op1, const mpfr& op2 )  
 	{  
-		mpfr result( op1.rounding, op1.precision ) ;
+		mpfr result( op1.precision, op1.rounding ) ;
 		
 		mpfr_div( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), op1.rounding ) ;
 
@@ -146,16 +229,18 @@ namespace alby::bigmath
 
 	mpfr operator^( const mpfr& op1, const mpfr& op2 )  
 	{  
-		mpfr result( op1.rounding, op1.precision ) ;
+		mpfr result( op1.precision, op1.rounding ) ;
 		
 		mpfr_pow( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), op1.rounding ) ;
 
 		return result ;   
 	}  
 
+	//----------------------------------------------------------------------------------------------------------------------
+
 	mpfr mpfr::sin()  
 	{
-		mpfr result( rounding, precision ) ;
+		mpfr result( precision, rounding ) ;
 
 		mpfr_sin( deref(result), deref(*this), rounding ) ;
 
@@ -164,7 +249,7 @@ namespace alby::bigmath
 
 	mpfr mpfr::cos()  
 	{
-		mpfr result( rounding, precision ) ;
+		mpfr result( precision, rounding ) ;
 
 		mpfr_cos( deref(result), deref(*this), rounding ) ;
 
@@ -173,16 +258,18 @@ namespace alby::bigmath
 
 	mpfr mpfr::tan()  
 	{
-		mpfr result( rounding, precision ) ;
+		mpfr result( precision, rounding ) ;
 
 		mpfr_tan( deref(result), deref(*this), rounding ) ;
 
 		return result ;   
 	}
 
+	//----------------------------------------------------------------------------------------------------------------------
+
 	mpfr mpfr::pi()  
 	{
-		mpfr result( rounding, precision ) ;
+		mpfr result( precision, rounding ) ;
 
 		mpfr_const_pi( deref(result), rounding ) ;
 
@@ -191,19 +278,100 @@ namespace alby::bigmath
 
 	mpfr mpfr::e()  
 	{
-		mpfr result( rounding, precision ) ;
+		mpfr result( precision, rounding ) ;
 		mpfr one = "1.0" ;                                   //ALBY test precision
 
-		mpfr_exp( deref(result ), deref(one), rounding ) ;
+		mpfr_exp( deref(result), deref(one), rounding ) ;
 
 		return result ;   
 	}
 
+	//----------------------------------------------------------------------------------------------------------------------
+
 	mpfr mpfr::neg()  
 	{ 
-		return *this * mpfr( "-1.0" ) ;   //ALBY test precision
+		return *this * mpfr( "-1.0" ) ;  
 	}
 
+	mpfr mpfr::inv()  
+	{ 
+		return mpfr( "1.0" ) / *this ;   
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
+
+	mpfr mpfr::exp() 
+	{
+		mpfr result( precision, rounding ) ;
+
+		mpfr_exp( deref(result), deref(*this), rounding ) ;
+
+		return result ;   
+	}
+
+	mpfr mpfr::log() 
+	{
+		mpfr result( precision, rounding ) ;
+
+		mpfr_log( deref(result), deref(*this), rounding ) ;
+
+		return result ;   
+	}
+
+	mpfr mpfr::log2() 
+	{
+		mpfr result( precision, rounding ) ;
+
+		mpfr_log2( deref(result), deref(*this), rounding ) ;
+
+		return result ;   
+	}
+
+	mpfr mpfr::log10() 
+	{
+		mpfr result( precision, rounding ) ;
+
+		mpfr_log10( deref(result), deref(*this), rounding ) ;
+
+		return result ;   
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
+
+	mpfr mpfr::pow2() // 2 ^ this
+	{
+		mpfr result( precision, rounding ) ;
+
+		mpfr two = "2.0" ;                                   //ALBY test precision
+
+		mpfr_pow( deref(result), deref(two), deref(*this), rounding ) ;
+
+		return result ;   
+	}
+
+	mpfr mpfr::pow10() // 10 ^ this
+	{
+		mpfr result( precision, rounding ) ;
+
+		mpfr ten = "10.0" ;                                   //ALBY test precision
+
+		mpfr_pow( deref(result), deref(ten), deref(*this), rounding ) ;
+
+		return result ;   
+	}
+
+	mpfr mpfr::root( const mpfr& op1 ) // the op1-th root of this
+	{
+		mpfr result( precision, rounding ) ;
+
+		mpfr index = mpfr( "1.0" ) / op1 ;
+
+		mpfr_pow( deref(result), deref(*this), deref(index), rounding ) ;
+
+		return result ;   
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
 
 	mpfr_t& mpfr::deref( const mpfr& mpfr ) // dereference the important part
 	{
