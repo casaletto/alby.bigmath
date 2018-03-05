@@ -7,8 +7,8 @@ move seamlessly between exact rational number arithmetic (gmp) and almost unlimi
 
 # base projects
 
-http://www.mpfr.org
-https://gmplib.org
+* http://www.mpfr.org
+* https://gmplib.org
 
 
 # packages required
