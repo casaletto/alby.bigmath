@@ -41,7 +41,7 @@ Linux xxxxxxx 4.10.0-28-generic #32-Ubuntu SMP Fri Jun 30 05:32:18 UTC 2017 x86_
 1.1e1000 + 1.2e-1000 + 1.2 
 
 ```
-mrfr::setPrecision( 2100 ) ; // number of required decimal digits
+mpfr::setPrecision( 2100 ) ; // number of required decimal digits
 
 auto sum = mpfr( "1.1e1000" ) + mpfr( "1.2e-1000" ) + "1.2" ;
 std::cout << sum << std::endl ;
