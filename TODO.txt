@@ -1,27 +1,26 @@
 ---------------------------------------------------------------------
-to do
-
-// overload += *= /= -+ ^=
-
-// operators and constructors from strings
-// x = a + "3.14" 
-
-// handle mpfr( "1E10" ) if base 10
+backlog
+---------------------------------------------------------------------
 
 // change precision  to # of significant decimal digits
 . Add 10 or more bin digits to sig decimal digits for extra x decimal places
 
+binary precision = log2( power( 10, decimal sigdigs)) + 20
+
+
 
 // tostring()
-. Tostring to optiknaly remove trailing zeros
+. Tostring to default to  removing trailing zeros
+.normalise())
 
+// demo 1e1000 + 1e-1000 + 1
 
 // < > == >= <=
 . Comparison functions need string comparision
 
 
-// pow( "1.0") ??? whats's this?
 // mpfr_urandomb ( seed ??? )
+
 // test that precision coims from the lhs
  
 
@@ -32,25 +31,21 @@ to do
 ... Convert to rational, fix numerator, convert back to mpfr
 // rounding to x dp 0.5 goes up
 
-. Get rid of gmp cxx, make my own c++ class
 .
-. Repeat pattern for gmp
-. Conversion between more and gmp
-
-* do asserts for unit tests
-/* assert example */
-#include <assert.h>    
-
+* do proper tests - do asserts for unit tests - for each section
 void print_number(int* myInt) {
   assert (myInt!=NULL);
   printf ("%d\n",*myInt);
 }
 
 
-----------------------------------
-----------------------------------
+ Get rid of gmp cxx, make my own c++ class
+. Repeat pattern for gmp
+. Conversion between mrfp and gmp
 
+---------------------------------------------------------------------
 done
+---------------------------------------------------------------------
 
 // global precision
 // global rounding
@@ -67,4 +62,14 @@ done
 // ceil
 // floor
 // trunc
+
+// overload += *= /= -+ ^=
+
+// operators and constructors from strings
+// x = a + "3.14" 
+// x = "3.14" + a
+
+// handle mpfr( "1E10" ) if base 10
+
+// change name precison to sifnificantFigures ??? no, changed name to local and global
 

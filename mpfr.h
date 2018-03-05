@@ -5,16 +5,18 @@ namespace alby::bigmath
 	class mpfr
 	{
 		public:
-			static const mpfr_prec_t defaultPrecision = (mpfr_prec_t) 100 ; //ALBY FIX this shuould be decimal sinificant digits defaultSignificantDigits10
-			static       mpfr_prec_t globalPrecision                      ;
+			static const mpfr_prec_t precisionDefault = (mpfr_prec_t) 100 ; // the default number of decimal digits required 
+			static const mpfr_rnd_t  roundingDefault  = MPFR_RNDN         ; // the default rounding
 
-			static const mpfr_rnd_t  defaultRounding = MPFR_RNDN ;
-			static       mpfr_rnd_t  globalRounding              ;
+			static       mpfr_prec_t precisionGlobal ;
+			static       mpfr_rnd_t  roundingGlobal  ;
 
+			static const unsigned long extraPrecisionBinary = 20 ; // 2^20 = 1,048,576 = 7 extra decimal digits for greater accuracy of temporay calculations
+							
 		protected:
-			mpfr_t_wrapper* p         = nullptr          ;
-			mpfr_prec_t 	precision = defaultPrecision ;
-			mpfr_rnd_t  	rounding  = defaultRounding  ;
+			mpfr_t_wrapper* p              = nullptr          ;
+			mpfr_prec_t 	precisionLocal = precisionDefault ;
+			mpfr_rnd_t  	roundingLocal  = roundingDefault  ;
 
 			// ALBY TO DO
 			// digits10 ;
@@ -41,13 +43,13 @@ namespace alby::bigmath
 			mpfr( const mpfr& rhs ) ;
 			mpfr& operator=( const mpfr& rhs ) ;
 
-			mpfr_prec_t        getPrecision() ;
-			static mpfr_prec_t getGlobalPrecision() ;
-			static void        setGlobalPrecision( mpfr_prec_t prec ) ;
+			mpfr_prec_t        getPrecisionLocal() ;
+			static mpfr_prec_t getPrecision() ;
+			static void        setPrecision( mpfr_prec_t prec ) ;
 
-			mpfr_rnd_t         getRounding() ;
-			static mpfr_rnd_t  getGlobalRounding() ;
-			static void        setGlobalRounding( mpfr_rnd_t rnd ) ;
+			mpfr_rnd_t         getRoundingLocal() ;
+			static mpfr_rnd_t  getRounding() ;
+			static void        setRounding( mpfr_rnd_t rnd ) ;
 
 			std::string toString() const ;
 
@@ -56,13 +58,17 @@ namespace alby::bigmath
 			static std::string version() ;
 			static std::string random( int bytes ) ; // random number of n bytes as hex string
 
+			mpfr& operator-=( const mpfr& op2 ) ;
+			mpfr& operator+=( const mpfr& op2 ) ;
+			mpfr& operator*=( const mpfr& op2 ) ;
+			mpfr& operator/=( const mpfr& op2 ) ;
+			mpfr& operator^=( const mpfr& op2 ) ;
+
 			friend mpfr operator-( const mpfr& op1, const mpfr& op2 ) ;
 			friend mpfr operator+( const mpfr& op1, const mpfr& op2 ) ;
 			friend mpfr operator*( const mpfr& op1, const mpfr& op2 ) ;
 			friend mpfr operator/( const mpfr& op1, const mpfr& op2 ) ;
 			friend mpfr operator^( const mpfr& op1, const mpfr& op2 ) ;
-
-			mpfr& operator+=( const mpfr& op2 ) ;
 
 			friend bool operator> ( const mpfr& op1, const mpfr& op2 ) ; 
 			friend bool operator< ( const mpfr& op1, const mpfr& op2 ) ;
@@ -94,6 +100,7 @@ namespace alby::bigmath
 			mpfr floor() ;
 			mpfr trunc() ;
 			
+			unsigned long getBinaryPrecision( unsigned long precisionDecimal ) ;
 
 	} ;
 } 

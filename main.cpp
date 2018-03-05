@@ -43,8 +43,8 @@ int main( void )
 
 void doMpfrMath1()
 {
-	mpfr::setGlobalPrecision( 300 ) ;
-	mpfr::setGlobalRounding ( MPFR_RNDU ) ;
+	mpfr::setPrecision( 300 ) ;
+	mpfr::setRounding ( MPFR_RNDU ) ;
 		
 	std::string str = "3.14" ;
 
@@ -221,8 +221,59 @@ void doMpfrMath1()
 	auto y = "100.01" ;
 	x += y ;
 	std::cout << x << std::endl ;
-	x += "100.1" ;
+	x += "1.1" ;
 	std::cout << x << std::endl ;
+
+	x = "200.01" ;
+	y = "100.01" ;
+	x -= y ;
+	std::cout << x << std::endl ;
+	x -= "1.0" ;
+	std::cout << x << std::endl ;
+
+	x = "200.01" ;
+	y = "100.01" ;
+	x *= y ;
+	std::cout << x << std::endl ;
+	x *= "10.0" ;
+	x *= std::string( "20.0" ) ;
+	std::cout << x << std::endl ;
+
+	x = "200.01" ;
+	y = "100.01" ;
+	x /= y ;
+	std::cout << x << std::endl ;
+	x /= "10.0" ;
+	std::cout << x << std::endl ;
+
+	x = "10" ;
+	y = "2" ;
+	x ^= y ;
+	std::cout << x << std::endl ;
+	x ^= "0.5" ;
+	std::cout << x << std::endl ;
+
+
+	auto z  = "200.01" + a.pi() ;
+	std::cout << z << std::endl ;
+	z = "200.01" - a.pi() ;
+	std::cout << z << std::endl ;
+	z = "200.01" * a.pi() ;
+	std::cout << z << std::endl ;
+	z = "200.01" / a.pi() ;
+	std::cout << z << std::endl ;
+	z = "200.01" ^ a.pi() ;
+	std::cout << z << std::endl ;
+
+
+	// 1e10
+	mpfr a1( "-1.23E-2" ) ;
+	std::cout << a1 << std::endl ;
+
+	auto sum = mpfr( "1.1e1000" ) + mpfr( "1.2e-1000" ) + "1.2" ;
+	std::cout << sum << std::endl ;
+
+
 
 
 /*
