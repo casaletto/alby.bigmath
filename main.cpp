@@ -9,8 +9,8 @@
 #include <vector>
 #include <fstream>
 #include <iomanip>
+#include <assert.h>    
 #include <gmp.h>
-#include <gmpxx.h>
 #include <mpfr.h>
 
 #include "./mpfr_t_wrapper.h"
@@ -182,7 +182,50 @@ void doMpfrMath1()
 	v = v.abs() ;
 	std::cout << v << std::endl ;
 
+	// test ceil floor trunc
 
+	auto w = q.pi() ;
+	std::cout << w << std::endl ;
+	std::cout << w.ceil() << std::endl ;
+	std::cout << w.floor() << std::endl ;
+	std::cout << w.trunc() << std::endl ;
+	
+	w = q.pi().neg() ;
+	std::cout << w << std::endl ;
+	std::cout << w.ceil() << std::endl ;
+	std::cout << w.floor() << std::endl ;
+	std::cout << w.trunc() << std::endl ;
+
+	w = "23.0" ;
+	std::cout << w << std::endl ;
+	std::cout << w.ceil() << std::endl ;
+	std::cout << w.floor() << std::endl ;
+	std::cout << w.trunc() << std::endl ;
+
+	w = "-1000.0" ;
+	std::cout << w << std::endl ;
+	std::cout << w.ceil() << std::endl ;
+	std::cout << w.floor() << std::endl ; 
+	std::cout << w.trunc() << std::endl ;
+
+	auto x = w + "100.2" ;
+	std::cout << x << std::endl ;
+	x = x * "100.2" ;
+	std::cout << x << std::endl ;
+	x = x / "100.2" ;
+	std::cout << x << std::endl ;
+	x = x - "100.2" ;
+	std::cout << x << std::endl ;
+
+	x = "200.01" ;
+	auto y = "100.01" ;
+	x += y ;
+	std::cout << x << std::endl ;
+	x += "100.1" ;
+	std::cout << x << std::endl ;
+
+
+/*
 	mpfr a3 = "1.23" ;
 	mpfr b3 = "10.23" ;
 	mpfr c3 = "10.23" ;
@@ -194,20 +237,9 @@ void doMpfrMath1()
 	std::cout << std::boolalpha << ( a3 >= b3 )<< std::endl ;
 	std::cout << std::boolalpha << ( a3 == b3 )<< std::endl ;
 	std::cout << std::boolalpha << ( a3 != b3 )<< std::endl ;
+*/	
+
 	
-
-
-//	mpfr a1( )
-
-
-	//auto b1 = b.toMpq() ;
-	//mpq_class b1 = (mpq_class) b ;
-	//auto z1 = z.to_mpq_class() ;
-	//auto a1 = a.to_mpq_class() ;
-	//auto b1 = b.to_mpq_class() ;
-	//std::cout << z1 << std::endl ;
-	//std::cout << a1 << std::endl ;
-	//std::cout << b1 << std::endl ;
 }
 
 

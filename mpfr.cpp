@@ -9,8 +9,8 @@
 #include <vector>
 #include <fstream>
 #include <iomanip>
+#include <assert.h>    
 #include <gmp.h>
-#include <gmpxx.h>
 #include <mpfr.h>
 
 #include "./mpfr_t_wrapper.h"
@@ -199,6 +199,13 @@ namespace alby::bigmath
 
 		return result ;   
 	}  
+
+	mpfr& mpfr::operator+=( const mpfr& op2 )  
+	{  
+		mpfr_add( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), rounding ) ;
+
+		return *this ;   
+	}
 
 	mpfr operator-( const mpfr& op1, const mpfr& op2 )  
 	{  
@@ -420,6 +427,35 @@ namespace alby::bigmath
 		mpfr index = mpfr( "1.0" ) / op1 ;
 
 		mpfr_pow( deref(result), deref(*this), deref(index), rounding ) ;
+
+		return result ;   
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
+
+	mpfr mpfr::ceil() 
+	{
+		mpfr result( precision, rounding ) ;
+
+		mpfr_ceil( deref(result), deref(*this) ) ;
+
+		return result ;   
+	}
+
+	mpfr mpfr::floor() 
+	{
+		mpfr result( precision, rounding ) ;
+
+		mpfr_floor( deref(result), deref(*this) ) ;
+
+		return result ;   
+	}
+
+	mpfr mpfr::trunc() 
+	{
+		mpfr result( precision, rounding ) ;
+
+		mpfr_trunc( deref(result), deref(*this) ) ;
 
 		return result ;   
 	}

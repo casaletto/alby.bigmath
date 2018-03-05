@@ -2,6 +2,7 @@
 {
 	"files.exclude": 
     {
-        "**/*.o": true
+        "**/*.o": true,
+        "mpfrtest": true
     }
 }

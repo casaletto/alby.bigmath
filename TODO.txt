@@ -1,30 +1,53 @@
 ---------------------------------------------------------------------
 to do
 
-// < > == >= <=
+// overload += *= /= -+ ^=
+
+// operators and constructors from strings
+// x = a + "3.14" 
+
+// handle mpfr( "1E10" ) if base 10
 
 // change precision  to # of significant decimal digits
-// x = a + "3.14" 
-// pow( "1.0")
-// operators and constructors from longs and strings
-// ceil
-// floor
-// trunc
-// mpfr_urandomb ( seed ??? )
-// handle 1E10
-// test that precision coims from the lhs
-// 
+. Add 10 or more bin digits to sig decimal digits for extra x decimal places
 
+
+// tostring()
+. Tostring to optiknaly remove trailing zeros
+
+
+// < > == >= <=
+. Comparison functions need string comparision
+
+
+// pow( "1.0") ??? whats's this?
+// mpfr_urandomb ( seed ??? )
+// test that precision coims from the lhs
+ 
+
+
+
+
+. Round function to x dp
+... Convert to rational, fix numerator, convert back to mpfr
 // rounding to x dp 0.5 goes up
 
-//ALBY fix me
-//operator mpq_class() ;
-//mpq_class toMpq() ;
+. Get rid of gmp cxx, make my own c++ class
+.
+. Repeat pattern for gmp
+. Conversion between more and gmp
+
+* do asserts for unit tests
+/* assert example */
+#include <assert.h>    
+
+void print_number(int* myInt) {
+  assert (myInt!=NULL);
+  printf ("%d\n",*myInt);
+}
 
 
-*how to run make in vscode
-
-
+----------------------------------
 ----------------------------------
 
 done
@@ -34,4 +57,14 @@ done
 // test a base 16 number
 // test a base 2 number
 // * how to ignore *.o in vscode
+
+*how to run make in vscode
+
+//ALBY delete me
+//operator mpq_class() ;
+//mpq_class toMpq() ;
+
+// ceil
+// floor
+// trunc
 

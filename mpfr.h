@@ -62,6 +62,8 @@ namespace alby::bigmath
 			friend mpfr operator/( const mpfr& op1, const mpfr& op2 ) ;
 			friend mpfr operator^( const mpfr& op1, const mpfr& op2 ) ;
 
+			mpfr& operator+=( const mpfr& op2 ) ;
+
 			friend bool operator> ( const mpfr& op1, const mpfr& op2 ) ; 
 			friend bool operator< ( const mpfr& op1, const mpfr& op2 ) ;
 			friend bool operator>=( const mpfr& op1, const mpfr& op2 ) ; 

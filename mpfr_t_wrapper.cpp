@@ -9,8 +9,8 @@
 #include <vector>
 #include <fstream>
 #include <iomanip>
+#include <assert.h>    
 #include <gmp.h>
-#include <gmpxx.h>
 #include <mpfr.h>
 
 #include "./mpfr_t_wrapper.h"
