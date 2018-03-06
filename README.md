@@ -20,6 +20,14 @@ move seamlessly between exact rational number arithmetic (gmp) and almost unlimi
 * libmpfr4
 
 
+# how to build
+
+TODO
+
+I hate dlls. I do static linking as much as possible.
+
+
+
 # developed and tested on
 
 ```
@@ -38,12 +46,17 @@ Linux xxxxxxx 4.10.0-28-generic #32-Ubuntu SMP Fri Jun 30 05:32:18 UTC 2017 x86_
 # here's an example TODO
 
 
-1.1e1000 + 1.2e-1000 + 1.2 
+1.2e1000 + 3.4e-1000 + 5.6 
 
 ```
+#include "./mpfr_t_wrapper.h"
+#include "./mpfr.h"
+
+using namespace alby::bigmath ; 
+
 mpfr::setPrecision( 2100 ) ; // number of required decimal digits
 
-auto sum = mpfr( "1.1e1000" ) + mpfr( "1.2e-1000" ) + "1.2" ;
+auto sum = mpfr( "1.2e1000" ) + mpfr( "3.4e-1000" ) + "5.6" ;
 std::cout << sum << std::endl ;
 
 ```

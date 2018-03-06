@@ -518,7 +518,6 @@ namespace alby::bigmath
 		char format[100] ;
 		std::sprintf( format, "%%.%uRF", digits10 ) ;
 
-
 		char buffer[ digits10+2 ] ;
 		mpfr_snprintf( buffer, digits10+1, format, p->get() ) ;
 

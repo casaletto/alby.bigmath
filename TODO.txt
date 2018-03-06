@@ -43,6 +43,9 @@ void print_number(int* myInt) {
 . Repeat pattern for gmp
 . Conversion between mrfp and gmp
 
+
+* put in lib
+
 ---------------------------------------------------------------------
 done
 ---------------------------------------------------------------------

@@ -1,30 +1,31 @@
 
 default: build
 
-main.o: main.cpp 
-	g++ -c -Os main.cpp 
+obj/main.o: src/main.cpp 
+	g++ -c -Os src/main.cpp -o obj/main.o
 
-mpfr.o: mpfr.cpp mpfr.h 
-	g++ -c -Os mpfr.cpp 
+obj/mpfr.o: src/mpfr.cpp src/mpfr.h 
+	g++ -c -Os src/mpfr.cpp -o obj/mpfr.o
 
-mpfr_t_wrapper.o: mpfr_t_wrapper.cpp mpfr_t_wrapper.h
-	g++ -c -Os mpfr_t_wrapper.cpp 
+obj/mpfr_t_wrapper.o: src/mpfr_t_wrapper.cpp src/mpfr_t_wrapper.h
+	g++ -c -Os src/mpfr_t_wrapper.cpp -o obj/mpfr_t_wrapper.o
 
-mpfrtest: main.o mpfr.o mpfr_t_wrapper.o
+bin/mpfrtest: obj/main.o obj/mpfr.o obj/mpfr_t_wrapper.o
 	g++ -s -o \
-		mpfrtest \
-		main.o mpfr.o mpfr_t_wrapper.o \
+		bin/mpfrtest \
+		obj/main.o obj/mpfr.o obj/mpfr_t_wrapper.o \
 		-static -static-libgcc -static-libstdc++ \
-		-l:libmpfr.a -l:libgmp.a -l:libgmpxx.a
+		-l:libmpfr.a -l:libgmp.a 
 clean:
-	rm -vf *.o mpfrtest
+	rm -vf obj/*.o 
+	rm -vf bin/mpfrtest
 
-build: mpfrtest
+build: bin/mpfrtest
 
 rebuild: clean build
 
 run: build
-	./mpfrtest
+	bin/mpfrtest
 
 
 #g++ -s -o mpfrtest main.o -lmpfr -lgmp -lgmpxx 

@@ -4,5 +4,12 @@
     {
         "**/*.o": true,
         "mpfrtest": true
-    }
+    },
+    "files.associations": {
+        "iostream": "cpp",
+        "cmath": "cpp",
+        "limits": "cpp",
+        "cstdio": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }
