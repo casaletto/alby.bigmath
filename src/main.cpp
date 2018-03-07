@@ -44,7 +44,6 @@ int main( void )
 void doMpfrMath1()
 {
 	mpfr::setPrecision( 300 ) ;
-	mpfr::setRounding ( MPFR_RNDU ) ;
 		
 	std::string str = "3.14" ;
 

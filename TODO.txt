@@ -7,6 +7,11 @@ backlog
 
 binary precision = log2( power( 10, decimal sigdigs)) + 20
 
+* factorial
+* sqrt
+
+
+
 
 
 // tostring()
@@ -42,6 +47,23 @@ void print_number(int* myInt) {
  Get rid of gmp cxx, make my own c++ class
 . Repeat pattern for gmp
 . Conversion between mrfp and gmp
+
+* pi calculation example in readme - 2 examples
+
+https://en.wikipedia.org/wiki/Borwein%27s_algorithm
+
+
+
+Class number three Ramanujan type series for l/ pi
+25 digits per term
+
+where
+A = 212 175 710 912 sqrt(61) + 1 657 145 277 365,
+B = 13 773 980 892 672 sqrt(61) + 107 578 229 802 750,
+C = [ 5280 (236 674 + 30 303 sqrt(61) ) ]  pow 3.
+
+vs compare to
+http://www.piday.org/million/
 
 
 * put in lib
