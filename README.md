@@ -51,16 +51,16 @@ $ uname -a
 Linux xxxxxxx 4.10.0-28-generic #32-Ubuntu SMP Fri Jun 30 05:32:18 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
-* I had a bad dream that I partly developed and tested this on windoze 10 mingw64/msys64, but yeh, probably just a dream.
+I had a bad dream that I partly developed and tested this on windoze 10 mingw64/msys64, but yeh, probably just a dream.
 
 
 # here's an example TODO
 
-* 1.2e1000 + 3.4e-1000 + 5.6 
+1.2e1000 + 3.4e-1000 + 5.6 
 
 ```
-#include "./mpfr_t_wrapper.h"
-#include "./mpfr.h"
+#include "mpfr_t_wrapper.h"
+#include "mpfr.h"
 
 using namespace alby::bigmath ; 
 
