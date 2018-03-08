@@ -5,22 +5,16 @@ namespace alby::bigmath
 	class mpfr
 	{
 		public:
-			static const mpfr_prec_t precisionDefault = (mpfr_prec_t) 100 ; // the default number of decimal digits required 
-			static const mpfr_rnd_t  roundingDefault  = MPFR_RNDN         ; // the default rounding
+			static const unsigned long precision10default =  100       ; // the default number of decimal digits required 
+			static const mpfr_rnd_t    roundingDefault    = MPFR_RNDN  ; // the default rounding
 
-			static       mpfr_prec_t precisionGlobal ;
-			static       mpfr_rnd_t  roundingGlobal  ;
-
-			static const unsigned long extraPrecisionBinary = 20 ; // 2^20 = 1,048,576 = 7 extra decimal digits for greater accuracy of temporay calculations
+			static       unsigned long precision10global ;
+			static       mpfr_rnd_t    roundingGlobal    ;
 							
 		protected:
-			mpfr_t_wrapper* p              = nullptr          ;
-			mpfr_prec_t 	precisionLocal = precisionDefault ;
-			mpfr_rnd_t  	roundingLocal  = roundingDefault  ;
-
-			// ALBY TO DO
-			// digits10 ;
-			// digits2  ;
+			mpfr_t_wrapper* p               = nullptr             ;
+			mpfr_prec_t 	precision10local = precision10default ;
+			mpfr_rnd_t  	roundingLocal    = roundingDefault    ;
 
 			void init()    ;
 			void cleanup() ;
@@ -31,32 +25,32 @@ namespace alby::bigmath
 			virtual ~mpfr() ;
 
 			mpfr() ;               
-			mpfr(                  mpfr_prec_t precision, mpfr_rnd_t rounding ) ;
-			mpfr( const mpfr& rhs, mpfr_prec_t precision, mpfr_rnd_t rounding ) ;
+			mpfr(                  unsigned long precision10, mpfr_rnd_t rounding ) ;
+			mpfr( const mpfr& rhs, unsigned long precision10, mpfr_rnd_t rounding ) ;
 
 			mpfr( const char*,        int base = 10 ) ;
 			mpfr( const std::string&, int base = 10 ) ;
 
-			mpfr( const char*,        mpfr_prec_t precision, mpfr_rnd_t rounding, int base = 10 ) ;
-			mpfr( const std::string&, mpfr_prec_t precision, mpfr_rnd_t rounding, int base = 10 ) ;
+			mpfr( const char*,        unsigned long precision10, mpfr_rnd_t rounding, int base = 10 ) ;
+			mpfr( const std::string&, unsigned long precision10, mpfr_rnd_t rounding, int base = 10 ) ;
 
 			mpfr( const mpfr& rhs ) ;
 			mpfr& operator=( const mpfr& rhs ) ;
 
-			mpfr_prec_t        getPrecisionLocal() ;
-			static mpfr_prec_t getPrecision() ;
-			static void        setPrecision( mpfr_prec_t prec ) ;
+			unsigned long        getPrecisionLocal() ;
+			static unsigned long getPrecision() ;
+			static void          setPrecision( unsigned long prec10 ) ;
 
-			mpfr_rnd_t         getRoundingLocal() ;
-			static mpfr_rnd_t  getRounding() ;
-			static void        setRounding( mpfr_rnd_t rnd ) ;
+			mpfr_rnd_t           getRoundingLocal() ;
+			static mpfr_rnd_t    getRounding() ;
+			static void          setRounding( mpfr_rnd_t rnd ) ;
 
 			std::string toString() const ;
 
 			friend std::ostream& operator<<( std::ostream& os, const mpfr& mpfr ) ;
 
 			static std::string version() ;
-			static std::string random( int bytes ) ; // random number of n bytes as hex string
+			static std::string random( int bytes ) ; //TODO  random number of n bytes as hex string
 
 			mpfr& operator-=( const mpfr& op2 ) ;
 			mpfr& operator+=( const mpfr& op2 ) ;
@@ -96,11 +90,14 @@ namespace alby::bigmath
 			mpfr pow10()					; // return 10 pow this
 			mpfr root ( const mpfr& op2 ) 	; // return the op2'th root of this
 
+			mpfr sqrt()						; // return square root
+			mpfr fact()						; // return factorial
+
 			mpfr ceil()  ;
 			mpfr floor() ;
 			mpfr trunc() ;
 			
-			unsigned long getBinaryPrecision( unsigned long precisionDecimal ) ;
+//ALBY			unsigned long getBinaryPrecision( unsigned long precisionDecimal ) ;
 
 	} ;
 } 

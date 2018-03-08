@@ -24,7 +24,7 @@ build: bin/mpfrtest
 
 rebuild: clean build
 
-run: build
+test: build
 	bin/mpfrtest
 
 

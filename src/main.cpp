@@ -13,8 +13,8 @@
 #include <gmp.h>
 #include <mpfr.h>
 
-#include "./mpfr_t_wrapper.h"
-#include "./mpfr.h"
+#include "mpfr_t_wrapper.h"
+#include "mpfr.h"
 
 using namespace alby::bigmath ; 
 
@@ -25,7 +25,7 @@ int main( void )
 	try
 	{
 		std::cout << mpfr::version()   << std::endl ;
-		std::cout << mpfr::random(256) << std::endl ;
+		//std::cout << mpfr::random(256) << std::endl ; //ALBY fix me
 
 		doMpfrMath1() ;
 	}
@@ -43,7 +43,7 @@ int main( void )
 
 void doMpfrMath1()
 {
-	mpfr::setPrecision( 300 ) ;
+	mpfr::setPrecision( 50 ) ; // decimal digits of precision
 		
 	std::string str = "3.14" ;
 
@@ -264,7 +264,6 @@ void doMpfrMath1()
 	z = "200.01" ^ a.pi() ;
 	std::cout << z << std::endl ;
 
-
 	// 1e10
 	mpfr a1( "-1.23E-2" ) ;
 	std::cout << a1 << std::endl ;
@@ -272,7 +271,35 @@ void doMpfrMath1()
 	auto sum = mpfr( "1.1e1000" ) + mpfr( "1.2e-1000" ) + "1.2" ;
 	std::cout << sum << std::endl ;
 
+	// fact
+	mpfr a2( "4.49" ) ; // expect 1.2.3.4 = 24
+	std::cout << a2.fact() << std::endl ;
+	
+	a2 = "4.9999" ; // expect 1.2.3.4 = 24
+	std::cout << a2.fact() << std::endl ;
 
+	// sqrt
+	mpfr a3( "100.01", 3 ) ;
+	std::cout << a3.sqrt() << std::endl ;
+	
+	a3 = "0.0" ;
+	std::cout << a3.sqrt() << std::endl ;
+
+	a3 = "-10.0" ;
+	std::cout << a3.sqrt() << std::endl ;
+
+	// recurring
+	mpfr a4 = mpfr( "1" ) / mpfr( "3") ;
+	std::cout << a4 << std::endl ;
+	
+	a4 = mpfr( "2" ) / mpfr( "3") ;
+	std::cout << a4 << std::endl ;
+
+	//mpfr::setPrecision( 30 ) ;
+	//ALBY not working !!!
+	mpfr a5( "1", 30 ) ;
+	a5 = mpfr( "8", 20 ) / mpfr( "9", 20 ) ;
+	std::cout << a5 << std::endl ;
 
 
 /*

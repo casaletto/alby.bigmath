@@ -3,7 +3,9 @@
 	"files.exclude": 
     {
         "**/*.o": true,
-        "mpfrtest": true
+        "mpfrtest": true,
+        "obj": true,
+        "bin": true
     },
     "files.associations": {
         "iostream": "cpp",

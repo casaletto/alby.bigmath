@@ -2,13 +2,7 @@
 backlog
 ---------------------------------------------------------------------
 
-// change precision  to # of significant decimal digits
-. Add 10 or more bin digits to sig decimal digits for extra x decimal places
-
-binary precision = log2( power( 10, decimal sigdigs)) + 20
-
-* factorial
-* sqrt
+// bug:  precision
 
 
 
@@ -16,7 +10,9 @@ binary precision = log2( power( 10, decimal sigdigs)) + 20
 
 // tostring()
 . Tostring to default to  removing trailing zeros
-.normalise())
+. round last sig fig
+
+
 
 // demo 1e1000 + 1e-1000 + 1
 
@@ -33,7 +29,7 @@ binary precision = log2( power( 10, decimal sigdigs)) + 20
 
 
 . Round function to x dp
-... Convert to rational, fix numerator, convert back to mpfr
+... Convert to rational, fix numerator, convert back to mpfr ?????
 // rounding to x dp 0.5 goes up
 
 .
@@ -98,3 +94,18 @@ done
 
 // change name precison to sifnificantFigures ??? no, changed name to local and global
 
+// cahnge to 
+static const mpfr_prec_t precisionDefault = (mpfr_prec_t) 100 
+// to
+static const unsigned long precision10default = 100 ;
+
+
+
+
+// change precision  to # of significant decimal digits
+. Add 10 or more bin digits to sig decimal digits for extra x decimal places
+
+binary precision = log2( power( 10, decimal sigdigs)) + 20
+
+* factorial
+* sqrt
