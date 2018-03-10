@@ -13,7 +13,7 @@
 #include <gmp.h>
 #include <mpfr.h>
 #include "stringhlp.h"
-#include "sprintf.h"
+#include "stringcat.h"
 #include "mpfr_t_wrapper.h"
 #include "mpfr.h"
 
@@ -303,7 +303,7 @@ void doMpfrMath1()
 	a5 = abm::mpfr( "8", 20 ) / abm::mpfr( "9", 20 ) ;
 	std::cout << a5 << std::endl ;
 
-	auto fmt = abm::sprintf( "HeLlOwOrLd a5", " = ", a5 ) ;
+	auto fmt = abm::stringcat( "HeLlOwOrLd a5", " = ", a5 ) ;
 	std::cout << fmt << std::endl ;
 	std::cout << abm::stringhlp::toUpper( fmt  ) << std::endl ;
 	std::cout << abm::stringhlp::toLower( fmt  ) << std::endl ;
@@ -316,8 +316,8 @@ void doMpfrMath1()
 	std::cout << abm::stringhlp::toUpper( str1 ) << std::endl ;
 	std::cout << abm::stringhlp::toUpper( str2 ) << std::endl ;
 
-	std::cout <<  abm::sprintf( "HeLlOwOrLd a5", " = ", a5 ) << std::endl ;
-	fmt = abm::sprintf( "HeLlOwOrLd !!! a5", " = ", a5 ) ;
+	std::cout <<  abm::stringcat( "HeLlOwOrLd a5", " = ", a5 ) << std::endl ;
+	fmt = abm::stringcat( "HeLlOwOrLd !!! a5", " = ", a5 ) ;
 	std::cout <<  fmt << std::endl ;
 
 	auto str3 = abm::stringhlp::printf( 200,  ">>> %s ! %s ! %s ! %s ! %d <<<", "aaaaa", "bbbbb", "cccccc", str1.c_str(), 42 ) ;

@@ -13,7 +13,7 @@
 #include <gmp.h>
 #include <mpfr.h>
 #include "stringhlp.h"
-#include "sprintf.h"
+#include "stringcat.h"
 #include "mpfr_t_wrapper.h"
 #include "mpfr.h"
 
@@ -567,42 +567,17 @@ namespace alby::bigmath
         return toString() ;
     }
 
-
-///////////////////////////////////////////////////
-///////////////////////////////////////////////////
-///////////////////////////////////////////////////
-///////////////////////////////////////////////////
 //ALBY TODO
 	std::string 
 	mpfr::toString() const
 	{
 		return p->toString( true ) ;
-
-		/*
-		// take into account - and + and .
-
-		auto digits10 = 20 ; // fix me
-
-		char format[100] ;
-		std::sprintf( format, "%%.%uRF", digits10 ) ;
-
-		char buffer[ digits10+2 ] ;
-		mpfr_snprintf( buffer, digits10+1, format, p->get() ) ;
-
-		return std::string( buffer ) ;
-		*/
 	}
-
-
-
-
-
-
 
 	std::string 
 	mpfr::version() 
 	{
-		return sprintf
+		return stringcat
 		(
 			"MPFR library  ",
 			mpfr_get_version(),

@@ -13,7 +13,7 @@
 #include <gmp.h>
 #include <mpfr.h>
 #include "stringhlp.h"
-#include "sprintf.h"
+#include "stringcat.h"
 #include "mpfr_t_wrapper.h"
 
 namespace alby::bigmath 

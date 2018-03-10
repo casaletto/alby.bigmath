@@ -2,25 +2,25 @@
 
 namespace alby::bigmath
 {
-	class sprintf
+	class stringcat
 	{
 		protected:
 			std::stringstream ss ;
 
 		public:
-			virtual ~sprintf() 
+			virtual ~stringcat() 
 			{}
 
-			sprintf() 
+			stringcat() 
 			{}
 
-			sprintf( const sprintf& rhs ) 
+			stringcat( const stringcat& rhs ) 
 			{
 				ss = std::stringstream() ;
 				ss << rhs.ss.str() ;
 			}
 
-			sprintf& operator=( const sprintf& rhs ) 
+			stringcat& operator=( const stringcat& rhs ) 
 			{
 				ss = std::stringstream() ;
 				ss << rhs.ss.str() ;
@@ -33,7 +33,7 @@ namespace alby::bigmath
 		        return ss.str() ;
     		}
 
-			friend std::ostream& operator<<( std::ostream& os, const sprintf& rhs ) 
+			friend std::ostream& operator<<( std::ostream& os, const stringcat& rhs ) 
 			{  
 				os << rhs.toString() ;  
 				return os ;   
@@ -45,7 +45,7 @@ namespace alby::bigmath
 			}
 			
 			template<typename U, typename... T>
-			sprintf( const U& head, const T&... tail ) 
+			stringcat( const U& head, const T&... tail ) 
 			{
 				stream( head, tail ... ) ;
 			}

@@ -10,11 +10,6 @@ namespace alby::bigmath
 			unsigned long  			precision2  ;
 			static unsigned long 	objectCount ;
 
-// ALBY TO DO
-// digits10 ;
-// digits2  ;
-
-
 //ALBY fix me
 			static const unsigned long extraPrecision10 = 10 ; // ten extra decimal place to mitigate rounding errors
 			// 2^20 = 1,048,576 = 7 extra decimal digits for greater accuracy of temporay calculations
