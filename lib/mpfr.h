@@ -12,7 +12,7 @@ namespace alby::bigmath
 			static       mpfr_rnd_t    roundingGlobal    ;
 							
 		protected:
-			mpfr_t_wrapper* p               = nullptr             ;
+			mpfr_t_wrapper* p                = nullptr             ;
 			mpfr_prec_t 	precision10local = precision10default ;
 			mpfr_rnd_t  	roundingLocal    = roundingDefault    ;
 

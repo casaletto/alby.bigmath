@@ -12,11 +12,12 @@
 #include <assert.h>    
 #include <gmp.h>
 #include <mpfr.h>
-#include "stringhlp.h"
-#include "stringcat.h"
-#include "mpfr_t_wrapper.h"
-#include "mpfr.h"
 
+#include "./stringhlp.h"
+#include "./stringcat.h"
+#include "./mpfr_t_wrapper.h"
+#include "./mpfr.h"
+ 
 namespace alby::bigmath 
 {
 	unsigned long mpfr::precision10global = mpfr::precision10default ;
@@ -168,7 +169,7 @@ namespace alby::bigmath
 
 		mpfr_set_str( deref(*this), str, base, roundingLocal ) ; 
 	}
-
+ 
 	mpfr::mpfr( const std::string& str, int base ) // constr
 	{
 		init() ;
@@ -192,7 +193,7 @@ namespace alby::bigmath
 
 		mpfr_set_str( deref(*this), str.c_str(), base, roundingLocal ) ; 	
 	}
-	
+
 	//----------------------------------------------------------------------------------------------------------------------
 
 	std::ostream& 
@@ -604,6 +605,8 @@ namespace alby::bigmath
 	std::string 
 	mpfr::random( int bytes ) // string of hex random bytes
 	{
+
+//ALBY fix me		
 		std::vector<char> buffer ;
 		buffer.resize( bytes ) ;
 		std::fill( buffer.begin(), buffer.end(), 0 ) ;

@@ -4,31 +4,36 @@ default: build
 obj/main.o: src/main.cpp 
 	g++ -c -Os src/main.cpp -o obj/main.o
 
-obj/mpfr.o: src/mpfr.cpp src/mpfr.h 
-	g++ -c -Os src/mpfr.cpp -o obj/mpfr.o
+obj/mpfr.o: lib/mpfr.cpp lib/mpfr.h 
+	g++ -c -Os lib/mpfr.cpp -o obj/mpfr.o
 
-obj/mpfr_t_wrapper.o: src/mpfr_t_wrapper.cpp src/mpfr_t_wrapper.h
-	g++ -c -Os src/mpfr_t_wrapper.cpp -o obj/mpfr_t_wrapper.o
+obj/mpfr_t_wrapper.o: lib/mpfr_t_wrapper.cpp lib/mpfr_t_wrapper.h
+	g++ -c -Os lib/mpfr_t_wrapper.cpp -o obj/mpfr_t_wrapper.o
 
-obj/stringhlp.o: src/stringhlp.cpp src/stringhlp.h 
-	g++ -c -Os src/stringhlp.cpp -o obj/stringhlp.o
+obj/stringhlp.o: lib/stringhlp.cpp lib/stringhlp.h 
+	g++ -c -Os lib/stringhlp.cpp -o obj/stringhlp.o
 
-bin/mpfrtest: obj/main.o obj/mpfr.o obj/mpfr_t_wrapper.o obj/stringhlp.o
-	g++ -s -o \
-		bin/mpfrtest \
-		obj/main.o \
+bin/libalbybigmath.a: obj/mpfr.o obj/mpfr_t_wrapper.o obj/stringhlp.o
+	ar rvs bin/libalbybigmath.a \
 		obj/mpfr.o \
 		obj/mpfr_t_wrapper.o \
-		obj/stringhlp.o \
-		-static -static-libgcc -static-libstdc++ \
-		-l:libmpfr.a -l:libgmp.a 
+		obj/stringhlp.o
+
+bin/mpfrtest: obj/main.o bin/libalbybigmath.a
+	g++ -s -static -static-libgcc -static-libstdc++ \
+		obj/main.o \
+		-L bin \
+		-l:libalbybigmath.a \
+		-l:libmpfr.a \
+		-l:libgmp.a \
+		-o bin/mpfrtest \
 	#ldd ./mpfrtest
 		
 clean:
-	rm -vf obj/*.o 
-	rm -vf bin/mpfrtest
+	rm -vf obj/*
+	rm -vf bin/*
 
-build: bin/mpfrtest
+build: bin/libalbybigmath.a bin/mpfrtest
 
 rebuild: clean build
 

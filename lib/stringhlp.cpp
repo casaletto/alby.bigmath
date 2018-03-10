@@ -11,7 +11,8 @@
 #include <iomanip>
 #include <assert.h>    
 #include <algorithm>
-#include "stringhlp.h"
+
+#include "./stringhlp.h"
 
 namespace alby::bigmath 
 {

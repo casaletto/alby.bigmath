@@ -12,10 +12,11 @@
 #include <assert.h>    
 #include <gmp.h>
 #include <mpfr.h>
-#include "stringhlp.h"
-#include "stringcat.h"
-#include "mpfr_t_wrapper.h"
-#include "mpfr.h"
+
+#include "../lib/stringhlp.h"
+#include "../lib/stringcat.h"
+#include "../lib/mpfr_t_wrapper.h"
+#include "../lib/mpfr.h"
 
 namespace abm = alby::bigmath ; 
 

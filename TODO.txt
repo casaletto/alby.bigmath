@@ -2,10 +2,8 @@
 backlog
 ---------------------------------------------------------------------
 
-// rename .h files to "alby_big+math_xxx.h"
 
-// change file nam stringhlper to stringhlp
-// change sprintf to cat
+// fix random() to stringcat
 
 
 // BUG:  precision
@@ -49,11 +47,6 @@ backlog
 // rounding to x dp 0.5 goes up
 
 .
-* do proper tests - do asserts for unit tests - for each section
-void print_number(int* myInt) {
-  assert (myInt!=NULL);
-  printf ("%d\n",*myInt);
-}
 
 
  Get rid of gmp cxx, make my own c++ class
@@ -78,12 +71,15 @@ vs compare to
 http://www.piday.org/million/
 
 
-* put in lib
 
 * unit tests - which framework ???
+* do proper tests - do asserts for unit tests - for each section
+void print_number(int* myInt) {
+  assert (myInt!=NULL);
+  printf ("%d\n",*myInt);
+}
 
 * put thest code in /test folder
------------------
 
 
 
@@ -134,3 +130,8 @@ binary precision = log2( power( 10, decimal sigdigs)) + 20
 
 * factorial
 * sqrt
+
+// change file nam stringhlper to stringhlp
+// change sprintf to cat
+
+* put in lib
