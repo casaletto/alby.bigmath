@@ -25,15 +25,15 @@ move seamlessly between exact rational number arithmetic (gmp) and almost unlimi
 *.cpp
 
 ```
-#include "mpfr_t_wrapper.h"
-#include "mpfr.h"
+#include "alby_bigmath_mpfr_t_wrapper.h"
+#include "alby_bigmath.h"
 ```
 
 makefile
 
 ```
 g++ -c *.cpp
-g++ -s -o exefile *.o -static -static-libgcc -static-libstdc++ -l:libmpfr.a -l:libgmp.a -llibalbympfr.a
+g++ -s -o exefile *.o -static -static-libgcc -static-libstdc++ -l:libmpfr.a -l:libgmp.a -llibalbybigmath.a
 ```
 
 I hate dll hell. I do static linking as much as possible.
@@ -59,14 +59,14 @@ I had a bad dream that I partly developed and tested this on windoze 10 mingw64/
 1.2e1000 + 3.4e-1000 + 5.6 
 
 ```
-#include "mpfr_t_wrapper.h"
-#include "mpfr.h"
+#include "alby_bigmath_mpfr_t_wrapper.h"
+#include "alby_bigmath.h"
 
-using namespace alby::bigmath ; 
+namespace abm = alby::bigmath ; 
 
-mpfr::setPrecision( 2100 ) ; // number of required decimal digits
+abm::mpfr::setPrecision( 2100 ) ; // number of required decimal digits
 
-auto sum = mpfr( "1.2e1000" ) + mpfr( "3.4e-1000" ) + "5.6" ;
+auto sum = abm::mpfr( "1.2e1000" ) + abm::mpfr( "3.4e-1000" ) + "5.6" ;
 std::cout << sum << std::endl ;
 ```
 

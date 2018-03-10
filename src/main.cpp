@@ -12,11 +12,12 @@
 #include <assert.h>    
 #include <gmp.h>
 #include <mpfr.h>
-
+#include "stringhlp.h"
+#include "sprintf.h"
 #include "mpfr_t_wrapper.h"
 #include "mpfr.h"
 
-using namespace alby::bigmath ; 
+namespace abm = alby::bigmath ; 
 
 void doMpfrMath1() ;
 
@@ -24,8 +25,9 @@ int main( void )
 {
 	try
 	{
-		std::cout << mpfr::version()   << std::endl ;
-		//std::cout << mpfr::random(256) << std::endl ; //ALBY fix me
+		std::cout << abm::mpfr::version()   << std::endl ;
+		
+		std::cout << abm::mpfr::random(256) << std::endl ; //ALBY fix me
 
 		doMpfrMath1() ;
 	}
@@ -43,14 +45,14 @@ int main( void )
 
 void doMpfrMath1()
 {
-	mpfr::setPrecision( 50 ) ; // decimal digits of precision
+	abm::mpfr::setPrecision( 50 ) ; // decimal digits of precision
 		
 	std::string str = "3.14" ;
 
-	mpfr a ;
-	mpfr b( "2.0234" ) ;
-	mpfr c( "8.02345333" ) ;
-	mpfr d( str ) ;
+	abm::mpfr a ;
+	abm::mpfr b( "2.0234" ) ;
+	abm::mpfr c( "8.02345333" ) ;
+	abm::mpfr d( str ) ;
 
 	auto s = b.toString() ;
 	auto aa = a ;
@@ -97,7 +99,7 @@ void doMpfrMath1()
 	std::cout << f << std::endl ;
 	std::cout << g << std::endl ;
 
-	mpfr h( "1.0"  ) ;
+	abm::mpfr h( "1.0"  ) ;
 	auto i = h.sin() ;
 	std::cout << "sin " << i << std::endl ;
 
@@ -164,15 +166,15 @@ void doMpfrMath1()
 	t = r.root( a.e() ) ;
 	std::cout << t << std::endl ;
 
-	std::cout << mpfr( "1000.00001" ).root( mpfr( "3.000001" ) ) << std::endl ;
+	std::cout << abm::mpfr( "1000.00001" ).root( abm::mpfr( "3.000001" ) ) << std::endl ;
 	
-	auto u = mpfr( "-FFee.100", 16 ) ;
+	auto u = abm::mpfr( "-FFee.100", 16 ) ;
 	std::cout << u << std::endl ;
 
-	u = mpfr( "FFFF.FFFF", 16 ) ;
+	u = abm::mpfr( "FFFF.FFFF", 16 ) ;
 	std::cout << u << std::endl ;
 
-	auto v = mpfr( "-11111111.01", 2 ) ;
+	auto v = abm::mpfr( "-11111111.01", 2 ) ;
 	std::cout << v << std::endl ;
 
 	v = v.abs() ;
@@ -265,21 +267,21 @@ void doMpfrMath1()
 	std::cout << z << std::endl ;
 
 	// 1e10
-	mpfr a1( "-1.23E-2" ) ;
+	abm::mpfr a1( "-1.23E-2" ) ;
 	std::cout << a1 << std::endl ;
 
-	auto sum = mpfr( "1.1e1000" ) + mpfr( "1.2e-1000" ) + "1.2" ;
+	auto sum = abm::mpfr( "1.1e1000" ) + abm::mpfr( "1.2e-1000" ) + "1.2" ;
 	std::cout << sum << std::endl ;
 
 	// fact
-	mpfr a2( "4.49" ) ; // expect 1.2.3.4 = 24
+	abm::mpfr a2( "4.49" ) ; // expect 1.2.3.4 = 24
 	std::cout << a2.fact() << std::endl ;
 	
 	a2 = "4.9999" ; // expect 1.2.3.4 = 24
 	std::cout << a2.fact() << std::endl ;
 
 	// sqrt
-	mpfr a3( "100.01", 3 ) ;
+	abm::mpfr a3( "100.01", 3 ) ;
 	std::cout << a3.sqrt() << std::endl ;
 	
 	a3 = "0.0" ;
@@ -289,17 +291,39 @@ void doMpfrMath1()
 	std::cout << a3.sqrt() << std::endl ;
 
 	// recurring
-	mpfr a4 = mpfr( "1" ) / mpfr( "3") ;
+	abm::mpfr a4 = abm::mpfr( "1" ) / abm::mpfr( "3") ;
 	std::cout << a4 << std::endl ;
 	
-	a4 = mpfr( "2" ) / mpfr( "3") ;
+	a4 = abm::mpfr( "2" ) / abm::mpfr( "3") ;
 	std::cout << a4 << std::endl ;
 
-	//mpfr::setPrecision( 30 ) ;
-	//ALBY not working !!!
-	mpfr a5( "1", 30 ) ;
-	a5 = mpfr( "8", 20 ) / mpfr( "9", 20 ) ;
+	//abm::mpfr::setPrecision( 30 ) ;
+	//ALBY FIXME not working !!!
+	abm::mpfr a5( "1", 30 ) ;
+	a5 = abm::mpfr( "8", 20 ) / abm::mpfr( "9", 20 ) ;
 	std::cout << a5 << std::endl ;
+
+	auto fmt = abm::sprintf( "HeLlOwOrLd a5", " = ", a5 ) ;
+	std::cout << fmt << std::endl ;
+	std::cout << abm::stringhlp::toUpper( fmt  ) << std::endl ;
+	std::cout << abm::stringhlp::toLower( fmt  ) << std::endl ;
+
+
+	std::string str1 = fmt ;
+	std::string str2 = a5 ;
+	std::cout << a5  << std::endl ;
+	std::cout << abm::stringhlp::toUpper( a5   ) << std::endl ;
+	std::cout << abm::stringhlp::toUpper( str1 ) << std::endl ;
+	std::cout << abm::stringhlp::toUpper( str2 ) << std::endl ;
+
+	std::cout <<  abm::sprintf( "HeLlOwOrLd a5", " = ", a5 ) << std::endl ;
+	fmt = abm::sprintf( "HeLlOwOrLd !!! a5", " = ", a5 ) ;
+	std::cout <<  fmt << std::endl ;
+
+	auto str3 = abm::stringhlp::printf( 200,  ">>> %s ! %s ! %s ! %s ! %d <<<", "aaaaa", "bbbbb", "cccccc", str1.c_str(), 42 ) ;
+	std::cout <<  str3 << std::endl ;
+
+
 
 
 /*

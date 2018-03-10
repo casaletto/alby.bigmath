@@ -46,6 +46,7 @@ namespace alby::bigmath
 			static void          setRounding( mpfr_rnd_t rnd ) ;
 
 			std::string toString() const ;
+			operator std::string() const ;
 
 			friend std::ostream& operator<<( std::ostream& os, const mpfr& mpfr ) ;
 

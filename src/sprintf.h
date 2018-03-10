@@ -1,89 +1,69 @@
 #pragma once
 
-namespace alby   
+namespace alby::bigmath
 {
-	namespace assemblyAttributes 
+	class sprintf
 	{
-		namespace lib 
-		{
-			class sprintf
+		protected:
+			std::stringstream ss ;
+
+		public:
+			virtual ~sprintf() 
+			{}
+
+			sprintf() 
+			{}
+
+			sprintf( const sprintf& rhs ) 
 			{
-				protected:
-					std::wstringstream _ss ;
+				ss = std::stringstream() ;
+				ss << rhs.ss.str() ;
+			}
 
-				public:
-					sprintf()
-					{
-					}
+			sprintf& operator=( const sprintf& rhs ) 
+			{
+				ss = std::stringstream() ;
+				ss << rhs.ss.str() ;
 
-					virtual ~sprintf()
-					{
-					}
+				return *this ;
+			}
 
-					sprintf::sprintf( const sprintf& rhs ) 
-					{
-						_ss = std::wstringstream() ;
-						this->_ss << rhs._ss.str() ;
-					}
+			std::string toString() const 
+		    {
+		        return ss.str() ;
+    		}
 
-					sprintf& sprintf::operator=( const sprintf& rhs ) 
-					{
-						_ss = std::wstringstream();
-						this->_ss << rhs._ss.str();
+			friend std::ostream& operator<<( std::ostream& os, const sprintf& rhs ) 
+			{  
+				os << rhs.toString() ;  
+				return os ;   
+			}  
 
-						return *this;
-					}
+			operator std::string() const 
+			{
+				return toString() ;
+			}
+			
+			template<typename U, typename... T>
+			sprintf( const U& head, const T&... tail ) 
+			{
+				stream( head, tail ... ) ;
+			}
 
-					std::wstring ws()
-					{
-						return _ss.rdbuf()->str() ;
-					}
+		protected:
+			void stream() 
+			{}
 
-					std::string s()
-					{		
-						return lib::stringHelper::ws2s( this->ws() ) ;
-					}
+			template<typename U, typename ... T>
+			void stream( const U& head, const T& ... tail ) 
+			{
+				ss << head ;
 
-					template<typename U, typename ... T>
-					sprintf( const U& head, const T& ... tail )
-					{
-						stream( head, tail ... ) ;
-					}
+				stream( tail ... ) ;			
+			}
+	} ;
+} 
 
-					void stdOutput()
-					{
-						std::cout << this->s() << std::endl ;
-					}
 
-					void stdError()
-					{
-						std::cerr << this->s() << std::endl;
-					}
 
-					void debug()
-					{
-						::OutputDebugStringW( this->ws().c_str() );
-					}
-
-				protected:
-
-					void stream()
-					{
-					}
-
-					template<typename U, typename ... T>
-					void stream( const U& head, const T& ... tail ) 
-					{
-						_ss << head ;
-
-						stream( tail ... ) ;
-					}
-
-			} ; // end class
-
-		} // ns lib
-
-	} // ns assemblyAttributes
-
-} //  ns alby
 

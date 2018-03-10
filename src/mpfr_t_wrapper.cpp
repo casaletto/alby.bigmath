@@ -12,7 +12,8 @@
 #include <assert.h>    
 #include <gmp.h>
 #include <mpfr.h>
-
+#include "stringhlp.h"
+#include "sprintf.h"
 #include "mpfr_t_wrapper.h"
 
 namespace alby::bigmath 
@@ -39,27 +40,32 @@ namespace alby::bigmath
 		//std::cout << "mpfr_t_wrapper constr " << *this << std::endl ; 
 	}
 
-	mpfr_t* mpfr_t_wrapper::get()
+	mpfr_t* 
+	mpfr_t_wrapper::get()
 	{
 		return &x ;
 	}
 
-	unsigned long mpfr_t_wrapper::getPrecision10() 
+	unsigned long 
+	mpfr_t_wrapper::getPrecision10() 
 	{
 		return precision10 ;
 	}
 
-	unsigned long mpfr_t_wrapper::getPrecision2()  
+	unsigned long 
+	mpfr_t_wrapper::getPrecision2()  
 	{
 		return precision2 ;
 	}
 
-	unsigned long mpfr_t_wrapper::getObjectCount() // static   
+	unsigned long 
+	mpfr_t_wrapper::getObjectCount() // static   
 	{
 		return objectCount ;
 	}
 
-	unsigned long mpfr_t_wrapper::calcPrecision2( unsigned long thePrecision10 ) // static
+	unsigned long 
+	mpfr_t_wrapper::calcPrecision2( unsigned long thePrecision10 ) // static
 	{
 		// the number of binary bits for x decimal places
 
@@ -68,7 +74,8 @@ namespace alby::bigmath
 		return prec2 ;
 	}
 
-	std::string mpfr_t_wrapper::toString( bool detailed ) const
+	std::string 
+	mpfr_t_wrapper::toString( bool detailed ) const
 	{
 		char format[100] ;
 		std::sprintf( format, "%%+.%luRF", precision10 ) ;
@@ -91,11 +98,11 @@ namespace alby::bigmath
 				<< precision10 << "(10) " 
 				<< precision2  << "(2)]" ;
 
-
 		return bob.str() ;
 	}
 
-	std::ostream& operator<<( std::ostream& os, const mpfr_t_wrapper& rhs )  
+	std::ostream& 
+	operator<<( std::ostream& os, const mpfr_t_wrapper& rhs )  
 	{  
 		os << rhs.toString() ;  
 		return os ;   
