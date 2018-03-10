@@ -5,16 +5,13 @@ namespace alby::bigmath
 	class mpfr
 	{
 		public:
-			static const unsigned long precision10default =  100       ; // the default number of decimal digits required 
+			static const unsigned long precision10default = 100        ; // the default number of decimal digits required 
 			static const mpfr_rnd_t    roundingDefault    = MPFR_RNDN  ; // the default rounding
-
 			static       unsigned long precision10global ;
-			static       mpfr_rnd_t    roundingGlobal    ;
 							
 		protected:
-			mpfr_t_wrapper* p                = nullptr             ;
-			mpfr_prec_t 	precision10local = precision10default ;
-			mpfr_rnd_t  	roundingLocal    = roundingDefault    ;
+			mpfr_t_wrapper* p           = nullptr            ;
+			mpfr_prec_t 	precision10 = precision10default ;
 
 			void init()    ;
 			void cleanup() ;
@@ -25,29 +22,23 @@ namespace alby::bigmath
 			virtual ~mpfr() ;
 
 			mpfr() ;               
-			mpfr(                  unsigned long precision10, mpfr_rnd_t rounding ) ;
-			mpfr( const mpfr& rhs, unsigned long precision10, mpfr_rnd_t rounding ) ;
-
-			mpfr( const char*,        int base = 10 ) ;
-			mpfr( const std::string&, int base = 10 ) ;
-
-			mpfr( const char*,        unsigned long precision10, mpfr_rnd_t rounding, int base = 10 ) ;
-			mpfr( const std::string&, unsigned long precision10, mpfr_rnd_t rounding, int base = 10 ) ;
-
 			mpfr( const mpfr& rhs ) ;
 			mpfr& operator=( const mpfr& rhs ) ;
 
+			mpfr( const char* ) ;
+			mpfr( const char*, int base ) ;
+			mpfr( const char*, int base, unsigned long thePrecision10 ) ;
+
+			mpfr( const std::string& ) ;
+			mpfr( const std::string&, int base ) ;
+			mpfr( const std::string&, int base, unsigned long thePrecision10 ) ;
+
 			unsigned long        getPrecisionLocal() ;
 			static unsigned long getPrecision() ;
-			static void          setPrecision( unsigned long prec10 ) ;
-
-			mpfr_rnd_t           getRoundingLocal() ;
-			static mpfr_rnd_t    getRounding() ;
-			static void          setRounding( mpfr_rnd_t rnd ) ;
+			static void          setPrecision( unsigned long thePrecision10 ) ;
 
 			std::string toString() const ;
 			operator std::string() const ;
-
 			friend std::ostream& operator<<( std::ostream& os, const mpfr& mpfr ) ;
 
 			static std::string version() ;
@@ -72,16 +63,16 @@ namespace alby::bigmath
 			friend bool operator==( const mpfr& op1, const mpfr& op2 ) ;
 			friend bool operator!=( const mpfr& op1, const mpfr& op2 ) ;
 
-			mpfr e()   ; // return e  ;
-			mpfr pi()  ; // return pi ;
+			mpfr e()   						; // return e  ;
+			mpfr pi()  						; // return pi ;
 
-			mpfr sin() ; // return sin( this )
-			mpfr cos() ; // return cos( this )
-			mpfr tan() ; // return tan( this )
+			mpfr sin()						; // return sin( this )
+			mpfr cos() 						; // return cos( this )
+			mpfr tan() 						; // return tan( this )
 
-			mpfr neg() ; // return this * -1.0 ;
-			mpfr inv() ; // return 1.0 / recip ;
-			mpfr abs() ; // return abs( this ) ;
+			mpfr neg() 						; // return this * -1.0 ;
+			mpfr inv() 						; // return 1.0 / recip ;
+			mpfr abs() 						; // return abs( this ) ;
 
 			mpfr exp  ()					; // return e pow this 
 			mpfr log  ()					; // return ln( this )
@@ -94,9 +85,9 @@ namespace alby::bigmath
 			mpfr sqrt()						; // return square root
 			mpfr fact()						; // return factorial
 
-			mpfr ceil()  ;
-			mpfr floor() ;
-			mpfr trunc() ;
+			mpfr ceil()  					; // ceiling
+			mpfr floor() 					; // floor
+			mpfr trunc() 					; // trunc towards 0
 	} ;
 } 
 

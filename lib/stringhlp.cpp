@@ -156,6 +156,30 @@ namespace alby::bigmath
 	}
 
 	std::string
+	stringhlp::left( const std::string& str, int chars )
+	{
+		if ( str.empty() ) return str ;
+
+		if ( chars == 0 ) return "" ;
+
+		if ( chars >= str.length() ) return str ;
+
+		return str.substr( 0, chars ) ; 
+	}
+
+	std::string
+	stringhlp::right( const std::string& str, int chars )
+	{
+		if ( str.empty() ) return str ;
+
+		if ( chars == 0 ) return "" ;
+
+		if ( chars >= str.length() ) return str ;
+
+		return str.substr( str.length() - chars, chars ) ; 
+	}
+
+	std::string
 	stringhlp::printf( unsigned long bytes, const std::string& format, ... )
 	{
   		va_list args ;
@@ -179,4 +203,5 @@ namespace alby::bigmath
 		return buffer.data() ; 	
 	}
 
-}
+} // end ns
+

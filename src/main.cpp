@@ -298,12 +298,7 @@ void doMpfrMath1()
 	a4 = abm::mpfr( "2" ) / abm::mpfr( "3") ;
 	std::cout << a4 << std::endl ;
 
-	//abm::mpfr::setPrecision( 30 ) ;
-	//ALBY FIXME not working !!!
-	abm::mpfr a5( "1", 30 ) ;
-	a5 = abm::mpfr( "8", 20 ) / abm::mpfr( "9", 20 ) ;
-	std::cout << a5 << std::endl ;
-
+	abm::mpfr a5( "1" ) ;
 	auto fmt = abm::stringcat( "HeLlOwOrLd a5", " = ", a5 ) ;
 	std::cout << fmt << std::endl ;
 	std::cout << abm::stringhlp::toUpper( fmt  ) << std::endl ;
@@ -324,7 +319,28 @@ void doMpfrMath1()
 	auto str3 = abm::stringhlp::printf( 200,  ">>> %s ! %s ! %s ! %s ! %d <<<", "aaaaa", "bbbbb", "cccccc", str1.c_str(), 42 ) ;
 	std::cout <<  str3 << std::endl ;
 
+	// left and right
+	str = "1234567890abcdefghijklmnopqrstuvwxyz" ; // 10 + 26
 
+	std::cout << "---" << std::endl ;
+	std::cout << str << std::endl ;
+	std::cout << abm::stringhlp::left( str, 0 ) << std::endl ;
+	std::cout << abm::stringhlp::left( str, 1 ) << std::endl ;
+	std::cout << abm::stringhlp::left( str, 2 ) << std::endl ;
+	std::cout << abm::stringhlp::left( str, 10 ) << std::endl ;
+	std::cout << abm::stringhlp::left( str, 35 ) << std::endl ;
+	std::cout << abm::stringhlp::left( str, 36 ) << std::endl ;
+	std::cout << abm::stringhlp::left( str, 37 ) << std::endl ;
+
+	std::cout << "---" << std::endl ;
+	std::cout << str << std::endl ;
+	std::cout << abm::stringhlp::right( str, 0 ) << std::endl ;
+	std::cout << abm::stringhlp::right( str, 1 ) << std::endl ;
+	std::cout << abm::stringhlp::right( str, 2 ) << std::endl ;
+	std::cout << abm::stringhlp::right( str, 10 ) << std::endl ;
+	std::cout << abm::stringhlp::right( str, 35 ) << std::endl ;
+	std::cout << abm::stringhlp::right( str, 36 ) << std::endl ;
+	std::cout << abm::stringhlp::right( str, 37 ) << std::endl ;
 
 
 /*
@@ -340,6 +356,18 @@ void doMpfrMath1()
 	std::cout << std::boolalpha << ( a3 == b3 )<< std::endl ;
 	std::cout << std::boolalpha << ( a3 != b3 )<< std::endl ;
 */	
+
+	//abm::mpfr::setPrecision( 30 ) ;
+	abm::mpfr a6( "0", 10, 22 ) ;
+	std::cout << a6 << std::endl ;
+
+	abm::mpfr a7( "8", 10, 33  ) ;
+	abm::mpfr a8( "9", 10, 44 ) ;
+	
+	a6 = a7 / a8 ;
+	std::cout << a6 << std::endl ;
+	std::cout << a7 << std::endl ;
+	std::cout << a8 << std::endl ;
 
 	
 }

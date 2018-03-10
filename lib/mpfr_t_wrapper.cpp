@@ -70,16 +70,22 @@ namespace alby::bigmath
 	{
 		// the number of binary bits for x decimal places
 
-		auto prec2 = (unsigned long) ::ceil( ::log2( ::pow( 10.0, thePrecision10 + extraPrecision10 ) ) )  ; // add some extra digits for rounding
+		auto prec2 = (unsigned long) 
+			::ceil( 
+				::log2( 
+					::pow( 10.0, thePrecision10 + extraPrecision10 ) ) )  ; // add some extra digits for rounding
 
 		return prec2 ;
 	}
+
+////////////////////////////////
+//ALBY fix me
 
 	std::string 
 	mpfr_t_wrapper::toString( bool detailed ) const
 	{
 		char format[100] ;
-		std::sprintf( format, "%%+.%luRF", precision10 ) ;
+		std::sprintf( format, "%%+.%luRF", precision10 ) ; //ALBY fix me with my libs
 
 //ALBY fix me + - .
 		char buffer[ precision10+10 ] ;
@@ -88,10 +94,16 @@ namespace alby::bigmath
 //ALBy str.left()
 //ALBY +- need string function nos
 
+//ALBY to do : rounding
+//ALBY to do : significant digits
+
+		std::string str = buffer ;
+		str = stringhlp::left( str, precision10 + 2 ) ; // add space for sign, decimal point
+
+//ALBy this deosnt work very < 0.1
 
 		std::stringstream bob ;
-
-		bob	<< buffer ;
+		bob	<< str ;
 
 		if ( detailed )
 			 bob 
@@ -108,4 +120,5 @@ namespace alby::bigmath
 		os << rhs.toString() ;  
 		return os ;   
 	}  
-}
+
+} // end ns

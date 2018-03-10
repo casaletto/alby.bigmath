@@ -5,14 +5,12 @@ namespace alby::bigmath
 	class mpfr_t_wrapper
 	{
 		protected:
-			mpfr_t        			x ;
-			unsigned long 			precision10 ;
-			unsigned long  			precision2  ;
-			static unsigned long 	objectCount ;
+			mpfr_t        			   x           ;
+			unsigned long 			   precision10 ;
+			unsigned long  			   precision2  ;
+			static unsigned long 	   objectCount ;
 
-//ALBY fix me
 			static const unsigned long extraPrecision10 = 10 ; // ten extra decimal place to mitigate rounding errors
-			// 2^20 = 1,048,576 = 7 extra decimal digits for greater accuracy of temporay calculations
 
 		public:
 			virtual ~mpfr_t_wrapper() ;
