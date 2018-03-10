@@ -568,7 +568,6 @@ namespace alby::bigmath
         return toString() ;
     }
 
-//ALBY TODO
 	std::string 
 	mpfr::toString() const
 	{
@@ -603,10 +602,8 @@ namespace alby::bigmath
 	}
 
 	std::string 
-	mpfr::random( int bytes ) // string of hex random bytes
+	mpfr::randomBytes( int bytes ) // hex string of random bytes
 	{
-
-//ALBY fix me		
 		std::vector<char> buffer ;
 		buffer.resize( bytes ) ;
 		std::fill( buffer.begin(), buffer.end(), 0 ) ;
@@ -617,23 +614,13 @@ namespace alby::bigmath
 		mystream.seekg( 0, std::ios_base::beg ) ;
 		mystream.read ( buffer.data(), bytes ) ;
 
-		std::stringstream bob ;
+		std::string str ;
 
 		for ( auto c : buffer )
-		{
-			auto x = (int) (unsigned char) c ;
-			bob
-				<< std::uppercase
-				<< std::right
-				<< std::setw(2) 
-				<< std::setfill( '0' ) 
-				<< std::hex 
-				<< x ;
-		}
+			str += stringhlp::printf( 100, "%02X", (unsigned int) (unsigned char) c ) 	;
 
-		return bob.str() ;
+		return str ;
 	}
-	
 
 } // end ns
 

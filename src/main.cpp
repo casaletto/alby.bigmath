@@ -28,7 +28,7 @@ int main( void )
 	{
 		std::cout << abm::mpfr::version()   << std::endl ;
 		
-		std::cout << abm::mpfr::random(256) << std::endl ; //ALBY fix me
+		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY fix me
 
 		doMpfrMath1() ;
 	}

@@ -51,7 +51,7 @@ namespace alby::bigmath
 			friend std::ostream& operator<<( std::ostream& os, const mpfr& mpfr ) ;
 
 			static std::string version() ;
-			static std::string random( int bytes ) ; //TODO  random number of n bytes as hex string
+			static std::string randomBytes( int bytes ) ; 
 
 			mpfr& operator-=( const mpfr& op2 ) ;
 			mpfr& operator+=( const mpfr& op2 ) ;
@@ -97,9 +97,6 @@ namespace alby::bigmath
 			mpfr ceil()  ;
 			mpfr floor() ;
 			mpfr trunc() ;
-			
-//ALBY			unsigned long getBinaryPrecision( unsigned long precisionDecimal ) ;
-
 	} ;
 } 
 

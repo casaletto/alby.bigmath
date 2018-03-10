@@ -20,20 +20,29 @@ move seamlessly between exact rational number arithmetic (gmp) and almost unlimi
 * libmpfr4
 
 
-# how to build
+# how do I build it?
+
+```
+$ make 
+```
+
+
+# how do you use it in your project?
 
 *.cpp
 
 ```
-#include "alby_bigmath_mpfr_t_wrapper.h"
-#include "alby_bigmath.h"
+#include ".../lib/stringhlp.h"
+#include ".../lib/stringcat.h"
+#include ".../lib/mpfr_t_wrapper.h"
+#include ".../lib/mpfr.h"
 ```
 
-makefile
+in your makefile
 
 ```
-g++ -c *.cpp
-g++ -s -o exefile *.o -static -static-libgcc -static-libstdc++ -l:libmpfr.a -l:libgmp.a -llibalbybigmath.a
+$ g++ -c *.cpp
+$ g++ -s -o exefile *.o -static -static-libgcc -static-libstdc++ -l:libmpfr.a -l:libgmp.a -llibalbybigmath.a
 ```
 
 I hate dll hell. I do static linking as much as possible.
@@ -59,8 +68,10 @@ I had a bad dream that I partly developed and tested this on windoze 10 mingw64/
 1.2e1000 + 3.4e-1000 + 5.6 
 
 ```
-#include "alby_bigmath_mpfr_t_wrapper.h"
-#include "alby_bigmath.h"
+#include ".../lib/stringhlp.h"
+#include ".../lib/stringcat.h"
+#include ".../lib/mpfr_t_wrapper.h"
+#include ".../lib/mpfr.h"
 
 namespace abm = alby::bigmath ; 
 
@@ -94,6 +105,12 @@ where
 	C = ( 5280 ( 236 674 + 30 303 sqrt(61) ) )  pow 3.
 ```
 
+
+# how do i run the unit tests?
+
+```
+$ make test
+```
 
 
 

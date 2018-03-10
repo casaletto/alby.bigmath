@@ -136,13 +136,8 @@ namespace alby::bigmath
 
 		auto result = str ; 
 
-		std::transform( result.begin(), 
-						result.end(), 
-						result.begin(), 
-						[] (unsigned char c) -> unsigned char 
-						{ 
-							return std::toupper( c ) ; 
-						} ) ; 
+		for ( auto& c : result )
+			c = std::toupper( c ) ;
 
 		return result ;
 	}
@@ -154,13 +149,8 @@ namespace alby::bigmath
 
 		auto result = str ; 
 
-		std::transform( result.begin(), 
-						result.end(), 
-						result.begin(), 
-						[] (unsigned char c) -> unsigned char 
-						{ 
-							return std::tolower( c ) ; 
-						} ) ; 
+		for ( auto& c : result )
+			c = std::tolower( c ) ;
 
 		return result ;
 	}
