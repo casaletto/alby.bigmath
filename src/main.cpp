@@ -10,6 +10,9 @@
 #include <fstream>
 #include <iomanip>
 #include <assert.h>    
+#include <algorithm>
+#include <regex>
+
 #include <gmp.h>
 #include <mpfr.h>
 
@@ -438,9 +441,140 @@ void doMpfrMath1()
 void doMpfrMathNormalise()
 {
 	//ALBY add sub function
-	
+
+	std::string strScientificNotation ;
+	std::string decimalSign  ;
+	std::string decimal      ;
+	std::string fraction     ; 
+	std::string exponentSign ;
+	std::string exponent     ;
+
+	auto str = "  -0123456.12345678901234567890e+09876  " ;
+	auto b = abm::numberParser::regex( str, decimalSign, decimal, fraction, exponentSign, exponent ) ;
+	//std::cout << "[" << str << "] --> " 
+	//	<< std::boolalpha << b 
+	//	<< "[" << decimalSign << "]" 
+	//	<< "[" << decimal << "]" 
+	//	<< "[" << fraction << "]" 
+	//	<< "[" << exponentSign << "]" 
+	//	<< "[" << exponent << "]" 
+	//	<< std::endl ;
+
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "42" ;
+	b = abm::numberParser::regex( str, decimalSign, decimal, fraction, exponentSign, exponent ) ;
+	//std::cout << "[" << str << "] --> " 
+	//	<< std::boolalpha << b 
+	//	<< "[" << decimalSign << "]" 
+	//	<< "[" << decimal << "]" 
+	//	<< "[" << fraction << "]" 
+	//	<< "[" << exponentSign << "]" 
+	//	<< "[" << exponent << "]" 
+	//	<< std::endl ;
+
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "00000042" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "42.00" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "042.0" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "000000.0000000000000000E-00000000" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "000000.00000020000000000E-000000200" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "-0.0000002E20" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "1123560e20" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "-3.14" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "-314.12345e-20" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "-314.12345e20" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "-314.12345e0000" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "-0.12345e10" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "-0.12345e1" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "-0.12345e0" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "-0.12345e-1" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "9e2" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "9.0e2" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "0.9e2" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "0.90e2" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "0.999e2" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "0.0999e2" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "0.00999e2" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "0.000999e2" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	str = "0.0000999e2" ;
+	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+
+	/*
 	auto str = "123456.12345678901234567890" ;
-	std::string strNormalised ;
 
 	bool b = abm::numberParser::normalise( str, strNormalised ) ;
 	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
@@ -464,6 +598,7 @@ void doMpfrMathNormalise()
 	str = "-000000123.45678" ;
 	b = abm::numberParser::normalise( str, strNormalised ) ;
 	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+	*/
 }
 
 

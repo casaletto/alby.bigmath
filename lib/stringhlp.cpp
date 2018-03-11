@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <assert.h>    
 #include <algorithm>
+#include <regex>
 
 #include "./stringhlp.h"
 
@@ -27,11 +28,39 @@ namespace alby::bigmath
 	const std::string stringhlp::__delimiters = " \f\n\r\t\v" ;
 
 	std::string 
+	stringhlp::ltrim( const std::string& str, const std::string& delim )
+	{
+		if ( str.empty() ) return str ;
+
+		auto pos = str.find_first_not_of( delim ) ;
+
+		if ( pos == std::string::npos ) return "" ;
+
+		return str.substr( pos ) ;
+	}
+
+	std::string 
+	stringhlp::rtrim( const std::string& str, const std::string& delim )
+	{
+		if ( str.empty() ) return str ;
+
+		auto pos = str.find_last_not_of( delim ) ;
+
+		if ( pos == std::string::npos ) return "" ;
+
+		return str.substr( 0, pos + 1 ) ;
+	}
+
+	std::string 
 	stringhlp::ltrim( const std::string& str )
 	{
 		if ( str.empty() ) return str ;
 
-		return str.substr( str.find_first_not_of( __delimiters ) ) ;
+		auto pos = str.find_first_not_of( __delimiters ) ;
+
+		if ( pos == std::string::npos ) return "" ;
+
+		return str.substr( pos ) ;
 	}
 
 	std::string 
@@ -39,7 +68,11 @@ namespace alby::bigmath
 	{
 		if ( str.empty() ) return str ;
 
-		return str.substr( 0, str.find_last_not_of( __delimiters ) + 1 ) ;
+		auto pos = str.find_last_not_of( __delimiters ) ;
+
+		if ( pos == std::string::npos ) return "" ;
+
+		return str.substr( 0, pos + 1 ) ;
 	}
 
 	std::string 
@@ -149,6 +182,18 @@ namespace alby::bigmath
 
 		if ( pos2 == std::string::npos ) return -1 ;
 		return pos2 ;
+	}
+
+	long 
+	stringhlp::positionOfNot( const std::string& str, const std::string& delim )
+	{
+		if ( str.empty() ) return -1 ;
+
+		auto pos = str.find_first_not_of( delim ) ;
+
+		if ( pos == std::string::npos ) return -1 ;
+
+		return pos ;
 	}
 
 	std::string 

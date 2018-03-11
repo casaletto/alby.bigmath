@@ -37,7 +37,9 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "typeinfo": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "algorithm": "cpp",
+        "climits": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

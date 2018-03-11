@@ -10,6 +10,9 @@
 #include <fstream>
 #include <iomanip>
 #include <assert.h>    
+#include <algorithm>
+#include <regex>
+
 #include <gmp.h>
 #include <mpfr.h>
 
