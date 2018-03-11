@@ -129,6 +129,28 @@ namespace alby::bigmath
 		return pos2 != std::string::npos ;
 	}
 
+	long
+	stringhlp::positionOf( const std::string& str, const std::string& subString, bool caseSensitive ) // return -1 if not found
+	{
+		if ( str.empty()                   ) return false ;
+		if ( subString.empty()             ) return true  ;
+		if ( subString.size() > str.size() ) return false ;
+
+		auto str2       = str       ;
+		auto subString2 = subString ;
+
+		if ( ! caseSensitive ) // case insensitive, convert to upper case
+		{
+			str2		= toUpper( str2       ) ;
+			subString2	= toUpper( subString2 ) ;
+		}
+
+		auto pos2 = str2.find( subString2 ) ;
+
+		if ( pos2 == std::string::npos ) return -1 ;
+		return pos2 ;
+	}
+
 	std::string 
 	stringhlp::toUpper( const std::string& str )
 	{
@@ -156,7 +178,7 @@ namespace alby::bigmath
 	}
 
 	std::string
-	stringhlp::left( const std::string& str, int chars )
+	stringhlp::left( const std::string& str, unsigned long chars )
 	{
 		if ( str.empty() ) return str ;
 
@@ -168,7 +190,7 @@ namespace alby::bigmath
 	}
 
 	std::string
-	stringhlp::right( const std::string& str, int chars )
+	stringhlp::right( const std::string& str, unsigned long chars )
 	{
 		if ( str.empty() ) return str ;
 

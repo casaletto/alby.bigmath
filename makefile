@@ -13,11 +13,15 @@ obj/mpfr_t_wrapper.o: lib/mpfr_t_wrapper.cpp lib/mpfr_t_wrapper.h
 obj/stringhlp.o: lib/stringhlp.cpp lib/stringhlp.h 
 	g++ -c -Os lib/stringhlp.cpp -o obj/stringhlp.o
 
-bin/libalbybigmath.a: obj/mpfr.o obj/mpfr_t_wrapper.o obj/stringhlp.o
+obj/numberParser.o: lib/numberParser.cpp lib/numberParser.h 
+	g++ -c -Os lib/numberParser.cpp -o obj/numberParser.o
+
+bin/libalbybigmath.a: obj/mpfr.o obj/mpfr_t_wrapper.o obj/stringhlp.o obj/numberParser.o
 	ar rvs bin/libalbybigmath.a \
 		obj/mpfr.o \
 		obj/mpfr_t_wrapper.o \
-		obj/stringhlp.o
+		obj/stringhlp.o \
+		obj/numberParser.o \
 
 bin/mpfrtest: obj/main.o bin/libalbybigmath.a
 	g++ -s -static -static-libgcc -static-libstdc++ \

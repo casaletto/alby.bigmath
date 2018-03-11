@@ -15,6 +15,7 @@
 
 #include "./stringhlp.h"
 #include "./stringcat.h"
+#include "./numberParser.h"
 #include "./mpfr_t_wrapper.h"
 #include "./mpfr.h"
  
@@ -113,7 +114,11 @@ namespace alby::bigmath
 
 		p = new mpfr_t_wrapper( precision10 ) ;
 
+//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
+//ALBY: round to precision10 significaant digits
+
 		mpfr_set_str( deref(*this), str, 10, roundingDefault ) ; 
+
 	}
 
 	mpfr::mpfr( const char* str, int base ) // constr
@@ -123,6 +128,9 @@ namespace alby::bigmath
 		precision10 = precision10global ;
 
 		p = new mpfr_t_wrapper( precision10 ) ;
+
+//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
+//ALBY: round to precision10 significaant digits
 
 		mpfr_set_str( deref(*this), str, base, roundingDefault ) ; 
 	}
@@ -134,6 +142,9 @@ namespace alby::bigmath
 		precision10 = thePrecision10 ;
 
 		p = new mpfr_t_wrapper( precision10 ) ;
+
+//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
+//ALBY: round to precision10 significaant digits
 
 		mpfr_set_str( deref(*this), str, base, roundingDefault ) ; 
 	}
@@ -148,6 +159,9 @@ namespace alby::bigmath
 
 		p = new mpfr_t_wrapper( precision10 ) ;
 
+//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
+//ALBY: round to precision10 significaant digits
+
 		mpfr_set_str( deref(*this), str.c_str(), 10, roundingDefault ) ; 	
 	}
 
@@ -159,6 +173,9 @@ namespace alby::bigmath
 
 		p = new mpfr_t_wrapper( precision10 ) ;
 
+//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
+//ALBY: round to precision10 significaant digits
+
 		mpfr_set_str( deref(*this), str.c_str(), base, roundingDefault ) ; 	
 	}
 
@@ -169,6 +186,9 @@ namespace alby::bigmath
 		precision10 = thePrecision10 ;
 
 		p = new mpfr_t_wrapper( precision10 ) ;
+
+//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
+//ALBY: round to precision10 significaant digits
 
 		mpfr_set_str( deref(*this), str.c_str(), base, roundingDefault ) ; 	
 	}
@@ -193,6 +213,10 @@ namespace alby::bigmath
     {
         return toString() ;
     }
+
+	//ALBY here or in wrapper?
+	//ALBY: toScientificNotation( bool ) // bool - remove unnecessary  zeros
+	//ALBY: toDecimal() 				 // bool - remove unnecessary  zeros
 
 	//----------------------------------------------------------------------------------------------------------------------
 
@@ -558,6 +582,9 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
+
+
+	//----------------------------------------------------------------------------------------------------------------------
 
 	std::string 
 	mpfr::version() 

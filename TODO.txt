@@ -3,15 +3,39 @@ backlog
 ---------------------------------------------------------------------
 
 
-// BUG:  precision
+//ALBY need to have a new method of determining precision
+// BUG:  precision - THIS IS A BIG ONE 
+
+
+// when i add two numbers, i have to determine each one to its each precision
+// then conversion the less precision one to the higher precision
+// then add the two numbers
+// same for other math operations
+
+// eg, we cant have the situation where adding the same two numbers in different ways produces differnet results:
+
+ERROR:
+a14               -12.345678900000000000000000000000000000000000 [prec 44(10) 180(2)]
+a15               -12.345                                        [prec 5(10) 50(2)]
+
+a16 = a14 + a15 = -24.691357799999995792313711717724800109863281 [prec 44(10) 180(2)]
+a17 = a15 + a14 = -24.691                                        [prec 5(10) 50(2)]
+
+CORRECT:
+
+	std:string normalise( const std:string& str, unsigned long sigfig )
+
 
 
 // tostring()
 . Tostring to default to  removing trailing zeros
 . round last sig fig
 . chenge -0.0 to +0.0
+. handle "-0.00000123456789" to 5 dp
 
+// handle -0.0, convert to +0.0
 
+-----------------------------------------------------------------------
 
 // demo 1e1000 + 1e-1000 + 1
 
@@ -30,7 +54,7 @@ backlog
 
 // mpfr_urandomb ( seed ??? )
 
-// test that precision coims from the lhs
+// test that precision comes from the lhs
  
 
 

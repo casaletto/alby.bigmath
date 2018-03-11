@@ -15,12 +15,14 @@
 
 #include "../lib/stringhlp.h"
 #include "../lib/stringcat.h"
+#include "../lib/numberParser.h"
 #include "../lib/mpfr_t_wrapper.h"
 #include "../lib/mpfr.h"
 
 namespace abm = alby::bigmath ; 
 
 void doMpfrMath1() ;
+void doMpfrMathNormalise() ;
 
 int main( void )
 {
@@ -31,6 +33,7 @@ int main( void )
 		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY fix me
 
 		doMpfrMath1() ;
+		doMpfrMathNormalise() ;
 	}
 	catch( std::exception ex )
 	{
@@ -343,6 +346,79 @@ void doMpfrMath1()
 	std::cout << abm::stringhlp::right( str, 37 ) << std::endl ;
 
 
+	//---------------------------------------------------
+
+	abm::mpfr::setPrecision( 44 ) ;
+
+	abm::mpfr a6( "0", 10, 5 ) ; 
+	std::cout << a6 << std::endl ; // prec 5
+
+	abm::mpfr a7( "8", 10, 10  ) ; 
+	abm::mpfr a8( "9", 10, 8   ) ; 
+	
+	a6 = a7 / a8 ; 
+	std::cout << a6 << std::endl ; // prec 10
+	std::cout << a7 << std::endl ; // prec 10
+	std::cout << a8 << std::endl ; // prec 8
+
+	abm::mpfr a9( "-12.3456789", 10, 5 ) ;
+	std::cout << a9 << std::endl ; // prec 5
+	
+	auto a10 = a9 ;
+	std::cout << a10 << std::endl ; // prec 5
+
+	a10 = a7 ;
+	std::cout << a10 << std::endl ; // prec 10
+
+	auto a11 = abm::mpfr( "10.1" ) + abm::mpfr( "23.2" ) ;
+	std::cout << a11 << std::endl ; // prec 44
+
+	a11 = a7 + abm::mpfr( "23.2" ) ;
+	std::cout << a11 << std::endl ; // prec 10
+
+	a11 = abm::mpfr( "23.2" ) + a7 ;
+	std::cout << a11 << std::endl ; // prec 44
+
+	abm::mpfr a12( "-12.3456789", 10, 5 ) ;
+	a12 += a11 ;
+	std::cout << a12 << std::endl ; // prec 5
+
+	abm::mpfr a13( "-12.3456789"  ) ;
+	a13 += a11 ;
+	std::cout << a13 << std::endl ; // prec 44
+
+	std::cout << "---" << std::endl ;
+
+	auto a14 = abm::mpfr( "-12.3456789" )  ;
+	auto a15 = abm::mpfr( "-12.3456789", 10, 5 ) ;
+	auto a16 = a14 + a15 ;
+	auto a17 = a15 + a14 ;
+
+	auto a18 = a14 + a14 ;
+	auto a19 = a15 + a15 ;
+	auto a20 = a14 * "2" ;
+	auto a21 = a15 * abm::mpfr( "2",10, 5 )  ;
+
+	std::cout << "a14               " << a14 << std::endl ; // prec ??
+	std::cout << "a15               " << a15 << std::endl ; // prec ??
+	std::cout << "a16 = a14 + a15 = " << a16 << std::endl ; // prec ?? <---------------
+	std::cout << "a17 = a15 + a14 = " << a17 << std::endl ; // prec ??
+	//std::cout << "a18 " << a18 << std::endl ; // prec ??
+	//std::cout << "a19 " << a19 << std::endl ; // prec ??
+	//std::cout << "a20 " << a20 << std::endl ; // prec ??
+	//std::cout << "a21 " << a21 << std::endl ; // prec ??
+
+	std::cout << "---" << std::endl ;
+
+	auto a22 = abm::mpfr( "-12.3456789" ) ;
+	auto a23 = a14 + a22 ;
+	auto a24 = a22 + a14 ;
+	std::cout << "a14               " << a14 << std::endl ; // prec ??
+	std::cout << "a22               " << a15 << std::endl ; // prec ??
+	std::cout << "a23 = a14 + a15 = " << a16 << std::endl ; // prec ?? <---------------
+	std::cout << "a24 = a15 + a14 = " << a17 << std::endl ; // prec ??
+
+
 /*
 	mpfr a3 = "1.23" ;
 	mpfr b3 = "10.23" ;
@@ -356,21 +432,38 @@ void doMpfrMath1()
 	std::cout << std::boolalpha << ( a3 == b3 )<< std::endl ;
 	std::cout << std::boolalpha << ( a3 != b3 )<< std::endl ;
 */	
-
-	//abm::mpfr::setPrecision( 30 ) ;
-	abm::mpfr a6( "0", 10, 22 ) ;
-	std::cout << a6 << std::endl ;
-
-	abm::mpfr a7( "8", 10, 33  ) ;
-	abm::mpfr a8( "9", 10, 44 ) ;
-	
-	a6 = a7 / a8 ;
-	std::cout << a6 << std::endl ;
-	std::cout << a7 << std::endl ;
-	std::cout << a8 << std::endl ;
-
 	
 }
 
+void doMpfrMathNormalise()
+{
+	//ALBY add sub function
+	
+	auto str = "123456.12345678901234567890" ;
+	std::string strNormalised ;
+
+	bool b = abm::numberParser::normalise( str, strNormalised ) ;
+	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+
+	str = "-123456.789e-1234" ;
+	b = abm::numberParser::normalise( str, strNormalised ) ;
+	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+
+	str = "42" ;
+	b = abm::numberParser::normalise( str, strNormalised ) ;
+	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+
+	str = "0.0" ;
+	b = abm::numberParser::normalise( str, strNormalised ) ;
+	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+
+	str = "-0.0" ;
+	b = abm::numberParser::normalise( str, strNormalised ) ;
+	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+
+	str = "-000000123.45678" ;
+	b = abm::numberParser::normalise( str, strNormalised ) ;
+	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+}
 
 

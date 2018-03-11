@@ -7,7 +7,7 @@ namespace alby::bigmath
 		public:
 			static const unsigned long precision10default = 100        ; // the default number of decimal digits required 
 			static const mpfr_rnd_t    roundingDefault    = MPFR_RNDN  ; // the default rounding
-			static       unsigned long precision10global ;
+			static       unsigned long precision10global               ;
 							
 		protected:
 			mpfr_t_wrapper* p           = nullptr            ;
@@ -21,27 +21,27 @@ namespace alby::bigmath
 		public:
 			virtual ~mpfr() ;
 
-			mpfr() ;               
-			mpfr( const mpfr& rhs ) ;
+			mpfr()                             ;               
+			mpfr( const mpfr& rhs )            ;
 			mpfr& operator=( const mpfr& rhs ) ;
 
-			mpfr( const char* ) ;
-			mpfr( const char*, int base ) ;
+			mpfr( const char* )                ;
+			mpfr( const char*, int base )      ;
 			mpfr( const char*, int base, unsigned long thePrecision10 ) ;
 
-			mpfr( const std::string& ) ;
+			mpfr( const std::string& )           ;
 			mpfr( const std::string&, int base ) ;
 			mpfr( const std::string&, int base, unsigned long thePrecision10 ) ;
 
 			unsigned long        getPrecisionLocal() ;
-			static unsigned long getPrecision() ;
+			static unsigned long getPrecision()      ;
 			static void          setPrecision( unsigned long thePrecision10 ) ;
 
 			std::string toString() const ;
 			operator std::string() const ;
 			friend std::ostream& operator<<( std::ostream& os, const mpfr& mpfr ) ;
 
-			static std::string version() ;
+			static std::string version()                ;
 			static std::string randomBytes( int bytes ) ; 
 
 			mpfr& operator-=( const mpfr& op2 ) ;

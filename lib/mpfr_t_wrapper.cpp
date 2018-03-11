@@ -84,6 +84,9 @@ namespace alby::bigmath
 	std::string 
 	mpfr_t_wrapper::toString( bool detailed ) const
 	{
+//ALBY - change this to E format - sci not is your friend, eg 1.2345000e1111 has 8 sigfigs
+//ALBY on the way out:  format %0.200E
+
 		char format[100] ;
 		std::sprintf( format, "%%+.%luRF", precision10 ) ; //ALBY fix me with my libs
 
@@ -101,13 +104,12 @@ namespace alby::bigmath
 		str = stringhlp::left( str, precision10 + 2 ) ; // add space for sign, decimal point
 
 //ALBy this deosnt work very < 0.1
-
 		std::stringstream bob ;
 		bob	<< str ;
 
 		if ( detailed )
 			 bob 
-				<<  " [prec "
+				<< " [prec "
 				<< precision10 << "(10) " 
 				<< precision2  << "(2)]" ;
 
