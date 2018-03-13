@@ -2,30 +2,9 @@
 backlog
 ---------------------------------------------------------------------
 
+// print to n significant digits
 
-//ALBY need to have a new method of determining precision
-// BUG:  precision - THIS IS A BIG ONE 
-
-
-// when i add two numbers, i have to determine each one to its each precision
-// then conversion the less precision one to the higher precision
-// then add the two numbers
-// same for other math operations
-
-// eg, we cant have the situation where adding the same two numbers in different ways produces differnet results:
-
-ERROR:
-a14               -12.345678900000000000000000000000000000000000 [prec 44(10) 180(2)]
-a15               -12.345                                        [prec 5(10) 50(2)]
-
-a16 = a14 + a15 = -24.691357799999995792313711717724800109863281 [prec 44(10) 180(2)]
-a17 = a15 + a14 = -24.691                                        [prec 5(10) 50(2)]
-
-CORRECT:
-
-	std:string normalise( const std:string& str, unsigned long sigfig )
-
-
+// round to n significant digits
 
 // tostring()
 . Tostring to default to  removing trailing zeros
@@ -33,11 +12,37 @@ CORRECT:
 . chenge -0.0 to +0.0
 . handle "-0.00000123456789" to 5 dp
 
-// handle -0.0, convert to +0.0
+
+. Round function to x dp
+... Convert to rational, fix numerator, convert back to mpfr ?????
+// rounding to x dp 0.5 goes up
 
 -----------------------------------------------------------------------
 
-// demo 1e1000 + 1e-1000 + 1
+// function to convert to rational numertaor / denominator, reduced to lcm/gcf
+
+-----------------------------------------------------------------------
+
+
+// when i add / mult / whatever numbers,  what precision do i use ?
+// test that precision comes from the lhs, maybe ???
+
+// eg, we cant have the situation where adding the same two numbers in different ways produces differnet results:
+
+
+----------------------------------------------------------------------
+// should be able to add / multiply two numbers in ether direction and get same result
+
+// fix this test
+ERROR:
+a14               -12.345678900000000000000000000000000000000000 [prec 44(10) 180(2)]
+a15               -12.345                                        [prec 5(10) 50(2)]
+
+a16 = a14 + a15 = -24.691357799999995792313711717724800109863281 [prec 44(10) 180(2)]
+a17 = a15 + a14 = -24.691                                        [prec 5(10) 50(2)]
+
+
+-----------------------------------------------------------------------
 
 // < > == >= <=
 . Comparison functions need string comparision
@@ -52,29 +57,31 @@ CORRECT:
 //-> becomes   3140000.     vs   3140001.           
 // convert the number to numerator denom with same pow10 base , can just shift decimal point, then compare as gmp integers.
 
+
+-----------------------------------------------------------------------
+
+// demo 1e1000 + 1e-1000 + 1
+
+-----------------------------------------------------------------------
+
+// create function to random [0.0, 1)
+
 // mpfr_urandomb ( seed ??? )
 
-// test that precision comes from the lhs
+-----------------------------------------------------------------------
+
  
-
-
-
-
-. Round function to x dp
-... Convert to rational, fix numerator, convert back to mpfr ?????
-// rounding to x dp 0.5 goes up
-
-.
-
 
  Get rid of gmp cxx, make my own c++ class
 . Repeat pattern for gmp
 . Conversion between mrfp and gmp
 
+
+-----------------------------------------------------------------------
+
 * pi calculation example in readme - 2 examples
 
 https://en.wikipedia.org/wiki/Borwein%27s_algorithm
-
 
 
 Class number three Ramanujan type series for l/ pi
@@ -85,10 +92,10 @@ A = 212 175 710 912 sqrt(61) + 1 657 145 277 365,
 B = 13 773 980 892 672 sqrt(61) + 107 578 229 802 750,
 C = [ 5280 (236 674 + 30 303 sqrt(61) ) ]  pow 3.
 
-vs compare to
-http://www.piday.org/million/
+vs compare to refernce pi
 
 
+-----------------------------------------------------------------------
 
 * unit tests - which framework ???
 * do proper tests - do asserts for unit tests - for each section
@@ -98,9 +105,6 @@ void print_number(int* myInt) {
 }
 
 * put thest code in /test folder
-
-
-
 
 
 ---------------------------------------------------------------------
@@ -155,4 +159,6 @@ binary precision = log2( power( 10, decimal sigdigs)) + 20
 * put in lib
 
 // fix random() to stringcat
+
+// handle -0.0, convert to +0.0
 
