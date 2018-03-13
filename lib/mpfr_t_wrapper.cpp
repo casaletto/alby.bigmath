@@ -18,6 +18,7 @@
 
 #include "./stringhlp.h"
 #include "./stringcat.h"
+#include "./numberhlp.h"
 #include "./mpfr_t_wrapper.h"
 
 namespace alby::bigmath 

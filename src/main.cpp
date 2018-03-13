@@ -18,25 +18,26 @@
 
 #include "../lib/stringhlp.h"
 #include "../lib/stringcat.h"
-#include "../lib/numberParser.h"
+#include "../lib/numberhlp.h"
 #include "../lib/mpfr_t_wrapper.h"
 #include "../lib/mpfr.h"
 
 namespace abm = alby::bigmath ; 
 
 void doMpfrMath1() ;
-void doMpfrMathNormalise() ;
+void doMpfrMathtoCanonical() ;
+void doMpfrMathtoSigFig() ;
 
 int main( void )
 {
 	try
 	{
-		std::cout << abm::mpfr::version()   << std::endl ;
-		
+		std::cout << abm::mpfr::version()   << std::endl ;		
 		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY fix me
 
 		doMpfrMath1() ;
-		doMpfrMathNormalise() ;
+		doMpfrMathtoCanonical() ;
+		doMpfrMathtoSigFig() ;
 	}
 	catch( std::exception ex )
 	{
@@ -438,10 +439,9 @@ void doMpfrMath1()
 	
 }
 
-void doMpfrMathNormalise()
+void doMpfrMathtoCanonical()
 {
-	//ALBY add sub function
-
+	std::string strDecimal            ;
 	std::string strScientificNotation ;
 	std::string decimalSign  ;
 	std::string decimal      ;
@@ -449,7 +449,7 @@ void doMpfrMathNormalise()
 	std::string exponentSign ;
 	std::string exponent     ;
 
-	auto str = "  -0123456.12345678901234567890e+09876  " ;
+	auto str = "  -0123456.12345678901234567890e+0121  " ;
 	auto b = abm::numberParser::regex( str, decimalSign, decimal, fraction, exponentSign, exponent ) ;
 	//std::cout << "[" << str << "] --> " 
 	//	<< std::boolalpha << b 
@@ -460,8 +460,13 @@ void doMpfrMathNormalise()
 	//	<< "[" << exponent << "]" 
 	//	<< std::endl ;
 
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "42" ;
 	b = abm::numberParser::regex( str, decimalSign, decimal, fraction, exponentSign, exponent ) ;
@@ -474,131 +479,1067 @@ void doMpfrMathNormalise()
 	//	<< "[" << exponent << "]" 
 	//	<< std::endl ;
 
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "123456.12345678901234567890" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "00000042" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "42.00" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "042.0" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "000000.0000000000000000E-00000000" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
-	str = "000000.00000020000000000E-000000200" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	str = "000000.00000020000000000E-000000111" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "-0.0000002E20" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "1123560e20" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
-
-	str = "-3.14" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
-	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
-
-	str = "-314.12345e-20" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
-	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
-
-	str = "-314.12345e20" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
-	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
-
-	str = "-314.12345e0000" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
-	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "-0.12345e10" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "-0.12345e1" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "-0.12345e0" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "-0.12345e-1" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "9e2" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "9.0e2" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "0.9e2" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "0.90e2" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "0.999e2" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "0.0999e2" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "0.00999e2" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "0.000999e2" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "0.0000999e2" ;
-	b = abm::numberParser::normalise( str, strScientificNotation ) ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
-	/*
-	auto str = "123456.12345678901234567890" ;
 
-	bool b = abm::numberParser::normalise( str, strNormalised ) ;
-	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+	str = "9e0" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
-	str = "-123456.789e-1234" ;
-	b = abm::numberParser::normalise( str, strNormalised ) ;
-	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+	str = "9.0e0" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
-	str = "42" ;
-	b = abm::numberParser::normalise( str, strNormalised ) ;
-	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+	str = "0.9e0" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.90e0" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.999e0" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.0999e0" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.00999e0" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.000999e0" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.0000999e0" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+
+
+	str = "9e-2" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "9.0e-2" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.9e-2" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.90e-2" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.999e-2" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.0999e-2" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.00999e-2" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.000999e-2" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.0000999e-2" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-0" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "0.0" ;
-	b = abm::numberParser::normalise( str, strNormalised ) ;
-	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
 	str = "-0.0" ;
-	b = abm::numberParser::normalise( str, strNormalised ) ;
-	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 
-	str = "-000000123.45678" ;
-	b = abm::numberParser::normalise( str, strNormalised ) ;
-	std::cout << str << " --> " << std::boolalpha << b << " [" << strNormalised << std::endl ;
-	*/
+	str = "0.0e100" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-0.0e-100" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+
+
+	str = "-31415935253238" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-31415935253238.9" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-31415935253238.979" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-31415935253238e40" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-31415935253238.9e40" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-31415935253238.979e40" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-31415935253238e-40" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-31415935253238.9e-40" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-31415935253238.979e-40" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+
+
+	str = "-3.14" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-3.1415935253238979" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-31.415935253238979" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314.15935253238979" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314159352532.38979" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+
+	str = "-3.14e20" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-3.1415935253238979e20" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-31.415935253238979e20" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314.15935253238979e20" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314159352532.38979e20" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314159352532.38979e4" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314159352532.38979e5" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314159352532.38979e6" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-3.14e-20" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-3.1415935253238979e-20" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-31.415935253238979e-20" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314.15935253238979e-20" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314159352532.38979e-20" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314159352532.38979e-4" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314159352532.38979e-5" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-314159352532.38979e-6" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "-000000123.45678000000" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "123456789123456789" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "123456789.67" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "12.3456789" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+
+
+
+	str = "1" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "10" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "12" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "100" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "123" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "120" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "1000" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "1234" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "1230" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "1200" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "1001" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "20000" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "20001" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+
+
+
+
+	str = "0.1" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.01" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.12" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.001" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.123" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.0001" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.1234" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.0002" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+
+	str = "0.00000000012300000" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "12.345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "1.2345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.12345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.012345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.0012345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.00012345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.000012345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.0000012345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.00000012345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.000000012345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.0000000012345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
+
+	str = "0.00000000012345" ;
+	b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( strScientificNotation, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "_____________________" << std::endl ;
 }
+
+
+void doMpfrMathtoSigFig()
+{
+	std::string strDecimal            ;
+	std::string strScientificNotation ;
+
+	auto str = "0.00000000012345" ;
+	auto b = abm::numberParser::toScientificNotation( str, strScientificNotation ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberParser::toDecimal( str, strDecimal ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " [" << strDecimal << "]" << std::endl ;
+	std::cout << "---------------------------" << std::endl ;
+
+
+}
+
 
 

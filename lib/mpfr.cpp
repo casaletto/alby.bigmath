@@ -18,7 +18,7 @@
 
 #include "./stringhlp.h"
 #include "./stringcat.h"
-#include "./numberParser.h"
+#include "./numberhlp.h"
 #include "./mpfr_t_wrapper.h"
 #include "./mpfr.h"
  
