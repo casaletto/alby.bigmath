@@ -117,10 +117,23 @@ namespace alby::bigmath
 		std::string& exponent               
 	)
 	{
-		// adjust the number so that the decimal is from 1 to 9
+		// adjust the number so that the decimal is from 1 to 9, remove unnecessary zeros
 
 		// assume exponent can be expressed by a long 
 		// 8 bytes = 64 bits = 0x7FFFFFFFFFFFFFFF = 9,223,372,036,854,775,807
+
+		// remove leading zeros from decimal and exponent
+		// remove trailing zeros from fraction
+		decimal  = stringhlp::ltrim( decimal,  "0" ) ;
+		fraction = stringhlp::rtrim( fraction, "0" ) ;
+		exponent = stringhlp::ltrim( exponent, "0" ) ;
+
+		// defaults 
+		if ( decimalSign.empty()  ) decimalSign  = "+" ;
+		if ( decimal.empty()      ) decimal      = "0" ;
+		if ( fraction.empty()     )	fraction     = "0" ;
+		if ( exponentSign.empty() ) exponentSign = "+" ;
+		if ( exponent.empty()     ) exponent     = "0" ;
 
 		// [ 0.0 ] 
 		// handle 0.0, special case

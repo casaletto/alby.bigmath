@@ -36,10 +36,10 @@ int main( void )
 		std::cout << abm::mpfr::version()   << std::endl ;		
 		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY fix me
 
-		//doMpfrMath1() ;
-		//doMpfrMathtoCanonical() ;
+		doMpfrMath1() ;
+		doMpfrMathtoCanonical() ;
 		doMpfrMathtoSigFig() ;
-		//doMpfrMathtoRound() ;
+		doMpfrMathtoRound() ;
 	}
 	catch( std::exception ex )
 	{
