@@ -38,16 +38,16 @@
 
 namespace alby::bigmath 
 {
-	numberParser::numberParser()
+	numberhlp::numberhlp()
 	{
 	}
 
-	numberParser::~numberParser()
+	numberhlp::~numberhlp()
 	{
 	}
 
 	bool
-	numberParser::regex
+	numberhlp::regex
 	( 
 		const std::string& 	str, 
 		std::string& 		decimalSign, 
@@ -66,7 +66,7 @@ namespace alby::bigmath
 		auto str1 = stringhlp::trim( str ) ;
 		str1 = stringhlp::toUpper( str1 ) ;
 
-		auto expr = R"(^([+\-])?(\d+)(\.(\d+))?([eE]([+\-])?(\d+))?$)" ; // regex pattern for a number, eg 6.02e23
+		static const char* expr = R"(^([+\-])?(\d+)(\.(\d+))?([eE]([+\-])?(\d+))?$)" ; // regex pattern for a number, eg 6.02e23
 
 		std::regex  regex( expr ) ;
 		std::smatch sm ;
@@ -108,7 +108,7 @@ namespace alby::bigmath
 	}
 
 	void
-	numberParser::adjustScientificNotation
+	numberhlp::adjustScientificNotation
 	( 
 		std::string& decimalSign, 
 		std::string& decimal, 
@@ -187,14 +187,14 @@ namespace alby::bigmath
 	}
 
 	bool
-	numberParser::toScientificNotation
+	numberhlp::toScientificNotation
 	( 
 		const std::string& str, 
 		std::string&       strScientificNotation,
 		unsigned long 	   significantFigures
 	) 
 	{
-		// convert a number the the form aaaa.bbbbEeee, eg 314.15 => +3.1415e+2
+		// convert a number to the form aaaa.bbbbEeee, eg 314.15 => +3.1415e+2
 		// return true if valid 
 
 		strScientificNotation = "" ;	
@@ -228,26 +228,38 @@ namespace alby::bigmath
 			exponent 
 		) ;
 
-		// round to significant figures
-		/*
-		toSignificantFigures
-		( 
-			significantFigures, 
-			decimalSign, 
-			decimal, 
-			fraction, 
-			exponentSign,	 
-			exponent 
-		) ;			
-		*/
+		// significant figures and rounding is required
+		if ( significantFigures > 0 )
+		{
+			toSignificantFigures
+			( 
+				significantFigures + 1, 
+				decimal, 
+				fraction 
+			) ;	
+
+			toRound
+			( 
+				significantFigures,
+				decimal, 
+				fraction, 
+				exponent 
+			) ;
+
+			toSignificantFigures
+			( 
+				significantFigures, 
+				decimal, 
+				fraction 
+			) ;	
+		}
 
 		strScientificNotation = decimalSign + decimal + "." + fraction + "E" + exponentSign + exponent ;	
-
 		return true ;
 	}
 
 	bool
-	numberParser::toDecimal
+	numberhlp::toDecimal
 	( 
 		const std::string& str, 
 		std::string&       strDecimal,
@@ -292,31 +304,29 @@ namespace alby::bigmath
 			exponent 
 		) ;
 
-		// round to significant figures
-		/*
-		toSignificantFigures
-		( 
-			significantFigures, 
-			decimalSign, 
-			decimal, 
-			fraction, 
-			exponentSign,	 
-			exponent 
-		) ;			
-		*/
+		//ALBY TO Do rounding here - should be same code as above to sci notation
+		// to sig fig + 1
+		// round
+		// to sig fig
+		//
+
+
+
+
+		// remove the exponent
 
 		// exponent as a number
 		auto expstr = exponentSign + exponent ;
 		auto exp = std::atol( expstr.c_str() ) ;
 
-		if ( decimal + "." + fraction == "0.0" ) // [ 0.0 ] special case 0.0 
+		if ( decimal == "0" &&  fraction == "0" ) // [ 0.0 ] special case 0.0 
 		{
-			strDecimal = "+0.0" ;
+			decimalSign = "+" ;
 		}
 		else
-		if ( exp == 0 ) // [ 1.0, 10 ) numbers from 1 to 10, nothing to do 
+		if ( exp == 0 ) // [ 1.0, 10 ) numbers from 1 to 10
 		{
-			strDecimal = decimalSign + decimal + "." + fraction ;
+			// nothing to do
 		}
 		else
 		if ( exp > 0 ) // [ 10, inf ] numbers 10 and above
@@ -330,67 +340,177 @@ namespace alby::bigmath
 			if ( decimal3.empty()  ) decimal3  = "0" ;
 			if ( fraction2.empty() ) fraction2 = "0" ;
 
-			strDecimal = decimalSign + decimal3 + "." + fraction2 ;		
+			decimal  = decimal3  ;
+			fraction = fraction2 ;
 		}
 		else // exp < 0, ( 0.0, 1.0 ) numbers between 0 and 1
 		{
 			auto fraction2 = std::string( std::abs( exp ) - 1, '0' ) + decimal + fraction  ;
 			fraction2      = stringhlp::rtrim( fraction2, "0" ) ;
 		
-			strDecimal = decimalSign + "0." + fraction2 ;		
+			decimal  = "0" ;
+			fraction = fraction2 ;
 		}
 
+		// format to significant figures
+		toSignificantFigures
+		( 
+			significantFigures, 
+			decimal, 
+			fraction 
+		) ;	
+
+		strDecimal = decimalSign + decimal + "." + fraction ;	
 		return true ;
 	}
 
-	/*
-	void
-	numberParser::toSignificantFigures
+	void 
+	numberhlp::toSignificantFigures
 	( 
 		unsigned long significantFigures, 
-		std::string&  decimalSign, 
 		std::string&  decimal, 
-		std::string&  fraction, 
-		std::string&  exponentSign,	 
-		std::string&  exponent 
+		std::string&  fraction	
 	)
 	{
+		// note: this function does not do rounding
+
+		if ( significantFigures == 0 ) return ; // 0 means do nothing
+
+		if ( decimal == "0" ) // 0.xxxxxxxx
+		{
+			auto fraction1 = std::string() ;
+			auto fraction2 = fraction ;
+
+			auto pos = stringhlp::positionOfNot( fraction, "0" ) ; // position of first non zero
+
+			if ( pos >= 1 )
+ 			     fraction1 = stringhlp::left( fraction, pos ) ;
+
+			if ( pos >= 0 )
+ 			     fraction2 = stringhlp::substr( fraction, pos ) ;
+
+			fraction2 += std::string( significantFigures, '0' ) ;
+			fraction2  = stringhlp::left( fraction2, significantFigures ) ;
+
+			fraction = fraction1 + fraction2 ;
+			return ; 			
+		}
+
+		// decimal and fraction are the correct length
+		auto declen  = decimal.length()  ; 
+		auto fraclen = fraction.length() ; 
+
+		if ( declen + fraclen == significantFigures ) return ;
+
+		// decimal is the exact length
+		if ( declen == significantFigures ) 
+		{
+			fraction = "0" ;
+			return ; 
+		}
+
+		// decimal is too long, needs to be truncated to sf and then appended by 0's
+		if ( declen > significantFigures ) 
+		{
+			decimal  = stringhlp::left( decimal, significantFigures ) + std::string( declen - significantFigures, '0' ) ;
+			fraction = "0" ;
+			return ; 
+		}
+
+		// decimal + fraction is too long, needs to be truncated to sf
+		if ( declen + fraclen > significantFigures ) 
+		{
+			fraction = stringhlp::left( fraction, significantFigures - declen ) ;
+			return ; 
+		}
+
+		// decimal + fraction is too short, needs to be appended
+		fraction += std::string( significantFigures - declen - fraclen, '0' ) ;  
+	}
+
+//ALBY here
+	void 
+	numberhlp::toRound
+	(
+		unsigned long significantFigures, 
+		std::string&  decimal, 
+		std::string&  fraction,	
+		std::string&  exponent
+	)
+	{
+		// note input must be standard exponential format, ie
+		// [1-9].xxxxxEyyyyy
+
+		if ( significantFigures == 0 ) return ; // 0 means do nothing
+		
+		auto declen  = decimal.length()  ; 
+		auto fraclen = fraction.length() ; 
+		auto explen  = exponent.length() ; 
+
+		if ( declen  != 1 ) return ; // standard format expected
+		if ( fraclen <  1 ) return ; 
+		if ( explen  <  1 ) return ; 
+
+		if ( significantFigures > declen + fraclen ) return ; // beyond the fraction boundary, nothing to round
+
+		if ( significantFigures <= 2 )
+			 if ( fraction == "0" ) return ; // nothing to do, ie x.0
+		
+
+
 
 
 	}
-	*/
 
-	std::string 
-	numberParser::toSignificantFigures
+//ALBY TO DO change name to roundString ???
+	bool 
+	numberhlp::round
 	( 
-		const std::string& strDecimal, 
-		unsigned long      significantFigures 
+		const std::string& 	strNumber,        
+		const std::string& 	strRoundingDigit, // last digit is the rounding digit	
+		std::string& 		strResult 
 	)
 	{
-		if ( significantFigures == 0 ) return strDecimal ; // 0 means do not round
+		// [0, 4] round down, ie do nothing
+		// [5, 9] round up
+		//
+		// return true if carry set			
 
-		// note: this function does not do rounding !!!
+		strResult = strNumber ;
+		if ( strNumber.empty()        ) return false ; 
+		if ( strRoundingDigit.empty() ) return false ; 
 
-		// 123456.123456    1sf  -> 100000.0
-		// 123456.123456    2sf  -> 120000.0
-		// 123456.123456    5sf  -> 123450.0
-		// 123456.123456    6sf  -> 123456.0
-		// 123456.123456    7sf  -> 123456.1
-		// 123456.123456    10sf -> 123456.1234
-		// 123456.123456    20sf -> 123456.12345600000000
+		auto _0 = (unsigned int) '0' ;
 
-		// 1.23456    10sf -> 1.234560000   
-		// 1.23456    3sf  -> 1.23
-		// 1.23456    2sf  -> 1.2
-		// 1.23456    1sf  -> 1.0
-		
-		// 0.00000123456    10sf -> 0.000001234560000   
-		// 0.00000123456    3sf  -> 0.00000123
-		// 0.00000123456    2sf  -> 0.0000012
-		// 0.00000123456    1sf  -> 0.000001
+		auto roundingDigit = (unsigned int) stringhlp::left( strRoundingDigit, 1 )[0] ;		
+		roundingDigit     -= _0 ;		
 
+		if ( roundingDigit < 5 ) return false ; // round down, nothing to do
 
-		return strDecimal ; 
+		// round up from now on
+		auto strReverse = stringhlp::reverse( strResult ) ;
+		auto carry = false ;
+
+		for ( auto& c : strReverse ) 
+		{
+			auto value = (unsigned int) c ;
+			value     -= _0 ;
+			value++ ;
+
+			if ( value <= 9 )
+			{
+				c = (char) ( value + _0 ) ;
+				carry = false ;
+				break ;
+			}
+			
+			c = '0' ; // 10 == carry
+			carry = true ;
+		}
+
+		// finished
+		strResult = stringhlp::reverse( strReverse ) ;
+		return carry ; 
 	}
 
 } // end ns

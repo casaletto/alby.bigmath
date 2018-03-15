@@ -286,5 +286,17 @@ namespace alby::bigmath
 		return buffer.data() ; 	
 	}
 
+	std::string 
+	stringhlp::reverse( const std::string& str ) 
+	{
+		if ( str.empty() ) return str ;
+
+		auto str1 = str ; 
+
+		std::reverse( str1.begin(), str1.end() ) ;
+
+		return str1 ;
+	}
+
 } // end ns
 

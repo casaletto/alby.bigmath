@@ -2,9 +2,10 @@
 backlog
 ---------------------------------------------------------------------
 
-// print to n significant digits
 
 // round to n significant digits
+
+// round to n dp
 
 // tostring()
 . Tostring to default to  removing trailing zeros
@@ -16,6 +17,13 @@ backlog
 . Round function to x dp
 ... Convert to rational, fix numerator, convert back to mpfr ?????
 // rounding to x dp 0.5 goes up
+
+-----------------------------------------------------------------------
+
+new functions 
+
+mprf::roundDecimalPlaces( x ) ;                  // 1.29456e23  1dp -->  1.3E23,    0 dp ==> 1.0E23
+mprf::roundSignificantFigures( x ) ;             // 2sf => 1.3e23
 
 -----------------------------------------------------------------------
 
@@ -162,3 +170,4 @@ binary precision = log2( power( 10, decimal sigdigs)) + 20
 
 // handle -0.0, convert to +0.0
 
+// print to n significant digits
