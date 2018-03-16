@@ -88,36 +88,19 @@ namespace alby::bigmath
 	std::string 
 	mpfr_t_wrapper::toString( bool detailed ) const
 	{
-//ALBY - change this to E format - sci not is your friend, eg 1.2345000e1111 has 8 sigfigs
-//ALBY on the way out:  format %0.200E
-
 		char format[100] ;
-		std::sprintf( format, "%%+.%luRF", precision10 ) ; //ALBY fix me with my libs
+		std::sprintf( format, "%%+.%luRE", precision10 ) ; // alt is "%%+.%luRF"
 
-//ALBY fix me + - .
-		char buffer[ precision10+10 ] ;
-		mpfr_snprintf( buffer, precision10+3, format, x ) ; // add space for sign, decimal point, terminating zero
+//ALBY change to vector
+		char buffer[ precision10 + 100 ] ;
+		mpfr_snprintf( buffer, precision10 + 100 - 1 , format, x ) ; // add space for sign, decimal point, terminating zero, exponent
 
-//ALBy str.left()
-//ALBY +- need string function nos
+		std::string result ;
+		numberhlp::toDecimal( buffer, result, precision10 ) ;
 
-//ALBY to do : rounding
-//ALBY to do : significant digits
+		if ( ! detailed ) return result ;
 
-		std::string str = buffer ;
-		str = stringhlp::left( str, precision10 + 2 ) ; // add space for sign, decimal point
-
-//ALBy this deosnt work very < 0.1
-		std::stringstream bob ;
-		bob	<< str ;
-
-		if ( detailed )
-			 bob 
-				<< " [prec "
-				<< precision10 << "(10) " 
-				<< precision2  << "(2)]" ;
-
-		return bob.str() ;
+		return stringcat( result, " [prec ", precision10, "(10) ", precision2, "(2)]" ) ;
 	}
 
 	std::ostream& 

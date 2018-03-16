@@ -226,9 +226,20 @@ namespace alby::bigmath
 	mpfr 
 	operator+( const mpfr& op1, const mpfr& op2 )  
 	{  
-		mpfr result( op1 ) ; 
+		//mpfr result( op1 ) ; 
 		
-		mpfr_add( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;
+//ALBY------- ++++ FIX THIS
+		auto maxprec = std::max( op1.precision10, op2.precision10 ) ;
+
+
+		mpfr result( "0", 10, maxprec ) ;
+
+		mpfr op11( op1, 10, maxprec ) ;
+
+		mpfr op22( op2, 10, maxprec ) ;
+
+		mpfr_add( mpfr::deref(result), mpfr::deref(op11), mpfr::deref(op22), mpfr::roundingDefault ) ;
+	//	mpfr_add( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;
 
 		return result ;   
 	}  

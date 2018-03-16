@@ -27,7 +27,7 @@ namespace abm = alby::bigmath ;
 void doMpfrMath1() ;
 void doMpfrMathtoCanonical() ;
 void doMpfrMathtoSigFig() ;
-void doMpfrMathtoRound() ;
+void roundToSignificantDigits() ;
 
 int main( void )
 {
@@ -37,9 +37,9 @@ int main( void )
 		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY fix me
 
 		doMpfrMath1() ;
-		doMpfrMathtoCanonical() ;
-		doMpfrMathtoSigFig() ;
-		doMpfrMathtoRound() ;
+		//doMpfrMathtoCanonical() ;
+		//doMpfrMathtoSigFig() ;
+		//roundToSignificantDigits() ;
 	}
 	catch( std::exception ex )
 	{
@@ -423,10 +423,6 @@ void doMpfrMath1()
 	std::cout << "a22               " << a15 << std::endl ; // prec ??
 	std::cout << "a23 = a14 + a15 = " << a16 << std::endl ; // prec ?? <---------------
 	std::cout << "a24 = a15 + a14 = " << a17 << std::endl ; // prec ??
-
-
-
-	
 }
 
 void doMpfrMathtoCanonical()
@@ -1943,6 +1939,42 @@ void doMpfrMathtoSigFig()
 	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
 
+	sd = 4 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 5 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 6 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 7 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 8 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 9 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
 	sd = 10 ;
 	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
@@ -1993,249 +2025,339 @@ void doMpfrMathtoSigFig()
 	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
 	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
 
+	std::cout << "---------------------------" << std::endl ;
+
+	str = "9999.999" ;
+	sd = 0 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 1 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 2 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 3 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 4 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 5 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 6 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 7 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 8 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	sd = 9 ;
+	b = abm::numberhlp::toScientificNotation( str, strScientificNotation, sd ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strScientificNotation << "]" << std::endl ;
+	b = abm::numberhlp::toDecimal( str, strDecimal, sd  ) ;
+	std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << sd << " [" << strDecimal << "]" << std::endl ;
+
+	std::cout << "---------------------------" << std::endl ;
+
+	str = "9.999e-2" ;
+	for ( int i = 0 ; i <= 6 ; i++ )
+	{
+		b = abm::numberhlp::toScientificNotation( str, strScientificNotation, i ) ;
+		std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << i << " [" << strScientificNotation << "]" << std::endl ;
+		b = abm::numberhlp::toDecimal( str, strDecimal, i  ) ;
+		std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << i << " [" << strDecimal << "]" << std::endl ;
+	}
+
+	std::cout << "---------------------------" << std::endl ;
+
+	str = "9.999e-1" ;
+	for ( int i = 0 ; i <= 6 ; i++ )
+	{
+		b = abm::numberhlp::toScientificNotation( str, strScientificNotation, i ) ;
+		std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << i << " [" << strScientificNotation << "]" << std::endl ;
+		b = abm::numberhlp::toDecimal( str, strDecimal, i  ) ;
+		std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << i << " [" << strDecimal << "]" << std::endl ;
+	}
+
+	std::cout << "---------------------------" << std::endl ;
+
+	str = "9.999e-0" ;
+	for ( int i = 0 ; i <= 6 ; i++ )
+	{
+		b = abm::numberhlp::toScientificNotation( str, strScientificNotation, i ) ;
+		std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << i << " [" << strScientificNotation << "]" << std::endl ;
+		b = abm::numberhlp::toDecimal( str, strDecimal, i  ) ;
+		std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << i << " [" << strDecimal << "]" << std::endl ;
+	}
+
+	std::cout << "---------------------------" << std::endl ;
+
+	str = "9.999e1" ;
+	for ( int i = 0 ; i <= 6 ; i++ )
+	{
+		b = abm::numberhlp::toScientificNotation( str, strScientificNotation, i ) ;
+		std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << i << " [" << strScientificNotation << "]" << std::endl ;
+		b = abm::numberhlp::toDecimal( str, strDecimal, i  ) ;
+		std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << i << " [" << strDecimal << "]" << std::endl ;
+	}
+
+	std::cout << "---------------------------" << std::endl ;
+
+	str = "9.999e2" ;
+	for ( int i = 0 ; i <= 6 ; i++ )
+	{
+		b = abm::numberhlp::toScientificNotation( str, strScientificNotation, i ) ;
+		std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << i << " [" << strScientificNotation << "]" << std::endl ;
+		b = abm::numberhlp::toDecimal( str, strDecimal, i  ) ;
+		std::cout << "[" << str << "] --> " << std::boolalpha << b << " --> " << i << " [" << strDecimal << "]" << std::endl ;
+	}
+
+	std::cout << "---------------------------" << std::endl ;
+
 }
 
-void doMpfrMathtoRound() 
+void roundToSignificantDigits() 
 {
-	std::string strRounded            ;
-	std::string strDecimal            ;
+	std::string str ;
+	std::string strRounded ;
 	std::string strScientificNotation ;
 
 	std::cout << "---------------------------" << std::endl ;
 	std::cout << "---------------------------" << std::endl ;
 	std::cout << "---------------------------" << std::endl ;
 
-	auto str = "123456789" ;
-	auto rnd = "0" ;
-	auto carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "123456789.0" ;
+	for ( int i = 0 ; i <= 11 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	str = "12345678" ;
-	rnd = "9" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "12345678.9" ;
+	for ( int i = 0 ; i <= 11 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	str = "1234567" ;
-	rnd = "8" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "1234567.8" ;
+	for ( int i = 0 ; i <= 11 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	str = "123456" ;
-	rnd = "7" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "123456.7" ;
+	for ( int i = 0 ; i <= 11 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	str = "12345" ;
-	rnd = "6" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "12345.6" ;
+	for ( int i = 0 ; i <= 9 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	str = "1234" ;
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "1234.5" ;
+	for ( int i = 0 ; i <= 9 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	str = "123" ;
-	rnd = "4" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "123.4" ;
+	for ( int i = 0 ; i <= 9 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	str = "12" ;
-	rnd = "3" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "12.3" ;
+	for ( int i = 0 ; i <= 5 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	std::cout << "---------------------------" << std::endl ;
+	str = "1.2" ;
+	for ( int i = 0 ; i <= 5 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	str = "1" ;
-	rnd = "2" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	for ( int i = 0 ; i <= 9 ; i++ )
+	{
+		auto s = abm::stringcat( "0.", i ) ;
 
-	str = "0" ;
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+		abm::numberhlp::toScientificNotation( s, strScientificNotation ) ;
+		std::cout << "[" << s <<  "] --> " << 0 << " --> [" << strScientificNotation << "]" << std::endl ;
 
-	str = "1" ;
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+		abm::numberhlp::toScientificNotation( s, strScientificNotation, 1 ) ;
+		std::cout << "[" << s <<  "] --> " << 1 << " --> [" << strScientificNotation << "]" << std::endl ;
 
-	str = "2" ;
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+		abm::numberhlp::toDecimal( s, strRounded, 1 ) ;
+		std::cout << "[" << s <<  "] --> " << 1 << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	str = "3" ;
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	for ( int i = 0 ; i <= 9 ; i++ )
+	{
+		auto s = abm::stringcat( i, ".5" ) ;
 
-	str = "4" ;
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+		abm::numberhlp::toScientificNotation( s, strScientificNotation ) ;
+		std::cout << "[" << s <<  "] --> " << 0 << " --> [" << strScientificNotation << "]" << std::endl ;
 
-	str = "5" ;
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+		abm::numberhlp::toScientificNotation( s, strScientificNotation, 1 ) ;
+		std::cout << "[" << s <<  "] --> " << 1 << " --> [" << strScientificNotation << "]" << std::endl ;
 
-	str = "6" ;
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	str = "7" ;
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	str = "8" ;
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	str = "9" ;
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	std::cout << "---------------------------" << std::endl ;
+		abm::numberhlp::toDecimal( s, strRounded, 1 ) ;
+		std::cout << "[" << s <<  "] --> " << 1 << " --> [" << strRounded << "]" << std::endl ;
+	}
 
 	str = "9999" ;
-	rnd = "0" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "1" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "9900" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "2" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "9090" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "3" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "9099" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "4" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "9009" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "6" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "7" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "8" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "9" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	std::cout << "---------------------------" << std::endl ;
-
-	str = "8888" ;
-	rnd = "0" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "1" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "2" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "3" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "4" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "6" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "7" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "8" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "9" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	std::cout << "---------------------------" << std::endl ;
+	str = "305.459" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
 	str = "1111" ;
-	rnd = "0" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "1" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "2222" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "2" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "3333" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "3" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "4444" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "4" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "5555" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "5" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "6666" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}	
 
-	rnd = "6" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "7777" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "7" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
+	str = "8888" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
-	rnd = "8" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	rnd = "9" ;
-	carry = abm::numberhlp::round( str, rnd, strRounded ) ;
-	std::cout << "[" << str << "." << rnd << "] --> " << std::boolalpha << carry << " --> [" << strRounded << "]" << std::endl ;
-
-	std::cout << "---------------------------" << std::endl ;
-
+	str = "9999" ;
+	for ( int i = 0 ; i <= 7 ; i++ )
+	{
+		abm::numberhlp::toDecimal( str, strRounded, i ) ;
+		std::cout << "[" << str <<  "] --> " << i << " --> [" << strRounded << "]" << std::endl ;
+	}
 
 
 }
+
+
+
 
 
 

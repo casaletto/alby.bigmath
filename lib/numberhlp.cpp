@@ -135,6 +135,9 @@ namespace alby::bigmath
 		if ( exponentSign.empty() ) exponentSign = "+" ;
 		if ( exponent.empty()     ) exponent     = "0" ;
 
+		// normalise 0 exponent special case
+		if ( exponent == "0" ) exponentSign = "+" ;
+
 		// [ 0.0 ] 
 		// handle 0.0, special case
 		if ( decimal + "." + fraction == "0.0" )
@@ -256,6 +259,7 @@ namespace alby::bigmath
 				significantFigures,
 				decimal, 
 				fraction, 
+				exponentSign, 
 				exponent 
 			) ;
 
@@ -317,18 +321,34 @@ namespace alby::bigmath
 			exponent 
 		) ;
 
-		//ALBY TO Do rounding here - should be same code as above to sci notation
-		// to sig fig + 1
-		// round
-		// to sig fig
-		//
+		// significant figures and rounding is required
+		if ( significantFigures > 0 )
+		{
+			toSignificantFigures
+			( 
+				significantFigures + 1, 
+				decimal, 
+				fraction 
+			) ;	
 
+			toRound
+			( 
+				significantFigures,
+				decimal, 
+				fraction, 
+				exponentSign, 
+				exponent 
+			) ;
 
-
+			toSignificantFigures
+			( 
+				significantFigures, 
+				decimal, 
+				fraction 
+			) ;	
+		}
 
 		// remove the exponent
-
-		// exponent as a number
 		auto expstr = exponentSign + exponent ;
 		auto exp = std::atol( expstr.c_str() ) ;
 
@@ -441,13 +461,13 @@ namespace alby::bigmath
 		fraction += std::string( significantFigures - declen - fraclen, '0' ) ;  
 	}
 
-//ALBY here
 	void 
 	numberhlp::toRound
 	(
 		unsigned long significantFigures, 
 		std::string&  decimal, 
 		std::string&  fraction,	
+		std::string&  exponentSign, 
 		std::string&  exponent
 	)
 	{
@@ -468,28 +488,56 @@ namespace alby::bigmath
 
 		if ( significantFigures <= 2 )
 			 if ( fraction == "0" ) return ; // nothing to do, ie x.0
-		
 
+		auto temp          = decimal + fraction ;
+		auto number        = stringhlp::left ( temp, significantFigures ) ;
+		auto roundingDigit = temp.substr( significantFigures, 1 ) ;
 
+		std::string result ;
+		bool        carry  ;
 
+		auto rounded = round( number, roundingDigit, result, carry ) ;
+		if ( ! rounded ) return ;
 
+		if ( carry ) // add 1 to exponent, and digit becomes 1
+		{
+			auto expstr = exponentSign + exponent ;
+			auto exp = std::atol( expstr.c_str() ) ;
+			exp = exp + 1 ;
+
+			exponentSign = exp < 0 ? "-" : "+" ;
+			exponent     = stringhlp::printf( 1000, "%ld", std::abs( exp ) ) ;		
+		}
+
+		// the rounded decimal and fraction
+		if ( carry )
+			 decimal = "1" ;
+		else
+			 decimal = stringhlp::left( result, 1 ) ;
+
+		fraction = stringhlp::substr( result, 1 ) ;
+
+		if ( decimal.empty()  ) decimal  = "0" ; 
+		if ( fraction.empty() ) fraction = "0" ; 
 	}
 
-//ALBY TO DO change name to roundString ???
 	bool 
 	numberhlp::round
 	( 
 		const std::string& 	strNumber,        
 		const std::string& 	strRoundingDigit, // last digit is the rounding digit	
-		std::string& 		strResult 
+		std::string& 		strResult, 
+		bool& 				carry 
 	)
 	{
 		// [0, 4] round down, ie do nothing
 		// [5, 9] round up
 		//
-		// return true if carry set			
+		// return false if no rounding done
 
+		carry     = false ;
 		strResult = strNumber ;
+
 		if ( strNumber.empty()        ) return false ; 
 		if ( strRoundingDigit.empty() ) return false ; 
 
@@ -502,7 +550,6 @@ namespace alby::bigmath
 
 		// round up from now on
 		auto strReverse = stringhlp::reverse( strResult ) ;
-		auto carry = false ;
 
 		for ( auto& c : strReverse ) 
 		{
@@ -523,7 +570,7 @@ namespace alby::bigmath
 
 		// finished
 		strResult = stringhlp::reverse( strReverse ) ;
-		return carry ; 
+		return true ; // rounding done 
 	}
 
 } // end ns

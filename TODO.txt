@@ -2,8 +2,13 @@
 backlog
 ---------------------------------------------------------------------
 
+// refactor numberhlp
 
-// round to n significant digits
+//ALBY change to vector  tostring
+
+
+// fix 	operator+( const mpfr& op1, const mpfr& op2 )  
+
 
 // round to n dp
 
@@ -171,3 +176,5 @@ binary precision = log2( power( 10, decimal sigdigs)) + 20
 // handle -0.0, convert to +0.0
 
 // print to n significant digits
+
+// round to n significant digits
