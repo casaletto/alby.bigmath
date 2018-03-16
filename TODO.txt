@@ -2,14 +2,18 @@
 backlog
 ---------------------------------------------------------------------
 
-// refactor numberhlp
 
 //ALBY change to vector  tostring
 
-// maths operations should throw an exextion if the number cant be represebted
+// fix constructir stuff
+
+// fix misc tostring functions
+mprf::toDecimalPlaces( x ) ;                  // 1.29456e23  1dp -->  1.3E23,    0 dp ==> 1.0E23
+mprf::toSignificantFigures( x ) ;             // 2sf => 1.3e23
 
 // fix 	operator+( const mpfr& op1, const mpfr& op2 )  
 
+// maths operations should throw an exextion if the number cant be represebted
 
 // round to n dp
 
@@ -24,12 +28,11 @@ backlog
 ... Convert to rational, fix numerator, convert back to mpfr ?????
 // rounding to x dp 0.5 goes up
 
+
 -----------------------------------------------------------------------
 
 new functions 
 
-mprf::roundDecimalPlaces( x ) ;                  // 1.29456e23  1dp -->  1.3E23,    0 dp ==> 1.0E23
-mprf::roundSignificantFigures( x ) ;             // 2sf => 1.3e23
 
 -----------------------------------------------------------------------
 
@@ -179,3 +182,6 @@ binary precision = log2( power( 10, decimal sigdigs)) + 20
 // print to n significant digits
 
 // round to n significant digits
+
+// refactor numberhlp
+

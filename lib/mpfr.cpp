@@ -118,7 +118,7 @@ namespace alby::bigmath
 		p = new mpfr_t_wrapper( precision10 ) ;
 
 //ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant digits
+//ALBY: round to precision10 significaant figures
 
 		mpfr_set_str( deref(*this), str, 10, roundingDefault ) ; 
 
@@ -133,7 +133,7 @@ namespace alby::bigmath
 		p = new mpfr_t_wrapper( precision10 ) ;
 
 //ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant digits
+//ALBY: round to precision10 significaant figures
 
 		mpfr_set_str( deref(*this), str, base, roundingDefault ) ; 
 	}
@@ -147,7 +147,7 @@ namespace alby::bigmath
 		p = new mpfr_t_wrapper( precision10 ) ;
 
 //ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant digits
+//ALBY: round to precision10 significaant figures
 
 		mpfr_set_str( deref(*this), str, base, roundingDefault ) ; 
 	}
@@ -163,7 +163,7 @@ namespace alby::bigmath
 		p = new mpfr_t_wrapper( precision10 ) ;
 
 //ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant digits
+//ALBY: round to precision10 significaant figures
 
 		mpfr_set_str( deref(*this), str.c_str(), 10, roundingDefault ) ; 	
 	}
@@ -177,7 +177,7 @@ namespace alby::bigmath
 		p = new mpfr_t_wrapper( precision10 ) ;
 
 //ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant digits
+//ALBY: round to precision10 significaant figures
 
 		mpfr_set_str( deref(*this), str.c_str(), base, roundingDefault ) ; 	
 	}
@@ -191,18 +191,12 @@ namespace alby::bigmath
 		p = new mpfr_t_wrapper( precision10 ) ;
 
 //ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant digits
+//ALBY: round to precision10 significaant figures
 
 		mpfr_set_str( deref(*this), str.c_str(), base, roundingDefault ) ; 	
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------
-
-	std::string 
-	mpfr::toString() const
-	{
-		return p->toString( true ) ;
-	}
 
 	std::ostream& 
 	operator<<( std::ostream& os, const mpfr& mpfr )  
@@ -217,12 +211,27 @@ namespace alby::bigmath
         return toString() ;
     }
 
-	//ALBY here or in wrapper?
-	//ALBY: toScientificNotation( bool ) // bool - remove unnecessary  zeros
-	//ALBY: toDecimal() 				 // bool - remove unnecessary  zeros
+	std::string 
+	mpfr::toString() const // return decimal string with full precision
+	{
+		return p->toString( true ) ;
+	}
 
 	//----------------------------------------------------------------------------------------------------------------------
 
+	std::string 
+	mpfr::toDecimal( bool fullPrecision ) // default true, false means remove trailing zeros
+	{
+		return std::string() ; //ALBY to do
+	}
+
+	std::string 
+	mpfr::toScientificNotation( bool fullPrecision ) // default true, false means remove trailing zeros
+	{
+		return std::string() ; //ALBY to do
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
 	mpfr 
 	operator+( const mpfr& op1, const mpfr& op2 )  
 	{  
@@ -596,7 +605,17 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
+	mpfr 
+	mpfr::roundDecimalPlaces( unsigned long dp ) // return number rounded to x decimal places
+	{
+		return mpfr() ; //ALBY to do
+	}
 
+	mpfr 
+	mpfr::roundSignificantFigures( unsigned long sf ) // return number rounded to x significant figures
+	{
+		return mpfr() ; //ALBY to do
+	}
 
 	//----------------------------------------------------------------------------------------------------------------------
 

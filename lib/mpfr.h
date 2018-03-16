@@ -41,6 +41,10 @@ namespace alby::bigmath
 			operator std::string() const ;
 			friend std::ostream& operator<<( std::ostream& os, const mpfr& mpfr ) ;
 
+			std::string toDecimal           ( bool fullPrecision = true ) ;
+			std::string toScientificNotation( bool fullPrecision = true ) ;
+			
+
 			static std::string version()                ;
 			static std::string randomBytes( int bytes ) ; 
 
@@ -88,6 +92,9 @@ namespace alby::bigmath
 			mpfr ceil()  					; // ceiling
 			mpfr floor() 					; // floor
 			mpfr trunc() 					; // trunc towards 0
+
+			mpfr roundDecimalPlaces     ( unsigned long dp ) ;
+			mpfr roundSignificantFigures( unsigned long sf ) ;			
 	} ;
 } 
 

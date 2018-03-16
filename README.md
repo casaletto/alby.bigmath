@@ -87,7 +87,6 @@ std::cout << sum << std::endl ;
 ```
 Nilakantha’s accelerated series for π
 
-
 	π = 3 + 4/(2*3*4) - 4/(4*5*6) + 4/(6*7*8) - 4/(8*9*10) + 4/(10*11*12) - 4/(12*13*14) ...
 ```
 
@@ -107,7 +106,7 @@ where
 ```
 
 
-# how do i run the unit tests?
+# how do I run the unit tests?
 
 ```
 $ make test
