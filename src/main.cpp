@@ -37,9 +37,9 @@ int main( void )
 		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY fix me
 
 		doMpfrMath1() ;
-		//doMpfrMathtoCanonical() ;
-		//doMpfrMathtoSigFig() ;
-		//roundToSignificantDigits() ;
+		doMpfrMathtoCanonical() ;
+		doMpfrMathtoSigFig() ;
+		roundToSignificantDigits() ;
 	}
 	catch( std::exception ex )
 	{

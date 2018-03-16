@@ -85,13 +85,14 @@ std::cout << sum << std::endl ;
 # calculate π to 10,000 decimal places TODO
 
 ```
-the Nilakantha series
+Nilakantha’s accelerated series for π
+
 
 	π = 3 + 4/(2*3*4) - 4/(4*5*6) + 4/(6*7*8) - 4/(8*9*10) + 4/(10*11*12) - 4/(12*13*14) ...
 ```
 
 ```
-the class number three Ramanujan type series, 25 digits per term
+the class two 1989 Ramanujan–Sato series, 25 digits per term
 
 	1 / 12π = sum( n = 0, n = ∞ ) ( num / den )
 
@@ -111,6 +112,15 @@ where
 ```
 $ make test
 ```
+
+
+# useful links
+
+* http://www.mpfr.org
+* https://gmplib.org
+* https://regexr.com/3m16c
+* https://en.wikipedia.org/wiki/Borwein%27s_algorithm
+* https://helloacm.com/two-simple-equations-to-compute-pi/
 
 
 

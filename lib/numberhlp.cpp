@@ -17,6 +17,7 @@
 #include "./stringcat.h"
 #include "./numberhlp.h"
 
+//
 // the 4 kinds of numbers
 //
 // +-#####
@@ -35,6 +36,12 @@
 //
 // [decimal      ] . [fraction] E [exponent     ]
 // [sign][integer] . [integer ] E [sign][integer]
+//
+//
+// assumption: 
+// 	exponent can be expressed by a long 
+// 	8 bytes = 64 bits = 0x7FFFFFFFFFFFFFFF = 9,223,372,036,854,775,807
+//
 
 namespace alby::bigmath 
 {
@@ -47,9 +54,106 @@ namespace alby::bigmath
 	}
 
 	bool
+	numberhlp::toScientificNotation
+	( 
+		const std::string& strNumber, 
+		std::string&       strScientificNotation,
+		unsigned long 	   significantFigures
+	) 
+	{
+		// convert a number to the form aaaa.bbbbEeee, eg 314.15 => +3.1415e+2
+		// return true if valid 
+
+		strScientificNotation = "" ;	
+
+		std::string decimalSign  ;
+		std::string decimal      ;
+		std::string fraction     ; 
+		std::string exponentSign ;
+		std::string exponent     ;
+
+		toScientificNotation( strNumber, decimalSign, decimal, fraction, exponentSign, exponent, significantFigures ) ;
+
+		strScientificNotation = decimalSign + decimal + "." + fraction + "E" + exponentSign + exponent ;	
+		return true ;
+	}
+
+	bool
+	numberhlp::toDecimal
+	( 
+		const std::string& strNumber, 
+		std::string&       strDecimal,
+		unsigned long 	   significantFigures	
+	) 
+	{
+		// we convert the string to its canonical exponential representation
+		// and then convert back to a normalised decimal format, eg 
+		// -000000123.45678000000 => -1.2345678E+2 => -123.45678
+		// return true if valid 
+		
+		strDecimal = "" ;
+
+		std::string decimalSign  ;
+		std::string decimal      ;
+		std::string fraction     ; 
+		std::string exponentSign ;
+		std::string exponent     ;
+
+		toScientificNotation( strNumber, decimalSign, decimal, fraction, exponentSign, exponent, significantFigures ) ;
+
+		// remove the exponent by moving the decimal point and adding zeros
+		auto expstr = exponentSign + exponent ;
+		auto exp = std::atol( expstr.c_str() ) ;
+
+		if ( decimal == "0" &&  fraction == "0" ) // [ 0.0 ] special case 0.0 
+		{
+			decimalSign = "+" ;
+		}
+		else
+		if ( exp == 0 ) // [ 1.0, 10 ) numbers from 1 to 10
+		{
+			// nothing to do
+		}
+		else
+		if ( exp > 0 ) // [ 10, inf ] numbers 10 and above
+		{
+			auto decimal2 = decimal + fraction + std::string( exp, '0' ) ;
+			auto decimal3 = stringhlp::left( decimal2, exp + 1 ) ;
+
+			auto fraction2 = stringhlp::substr( decimal2, exp + 1 ) ;
+			fraction2      = stringhlp::rtrim( fraction2, "0" ) ;
+			
+			if ( decimal3.empty()  ) decimal3  = "0" ;
+			if ( fraction2.empty() ) fraction2 = "0" ;
+
+			decimal  = decimal3  ;
+			fraction = fraction2 ;
+		}
+		else // exp < 0, ( 0.0, 1.0 ) numbers between 0 and 1
+		{
+			auto fraction2 = std::string( std::abs( exp ) - 1, '0' ) + decimal + fraction  ;
+			fraction2      = stringhlp::rtrim( fraction2, "0" ) ;
+		
+			decimal  = "0" ;
+			fraction = fraction2 ;
+		}
+
+		// format to significant figures if required 
+		toSignificantFigures
+		( 
+			decimal, 
+			fraction, 
+			significantFigures 
+		) ;	
+
+		strDecimal = decimalSign + decimal + "." + fraction ;	
+		return true ;
+	}
+
+	bool
 	numberhlp::regex
 	( 
-		const std::string& 	str, 
+		const std::string& 	strNumber, 
 		std::string& 		decimalSign, 
 		std::string& 		decimal, 
 		std::string& 		fraction, 
@@ -57,14 +161,16 @@ namespace alby::bigmath
 		std::string& 		exponent 
 	)
 	{
+		// return true if valid 
+		
 		decimalSign 	= "" ; 
 		decimal 		= "" ;
 		fraction 		= "" ; 
 		exponentSign	= "" ;	 
 		exponent 		= "" ; 
 
-		auto str1 = stringhlp::trim( str ) ;
-		str1 = stringhlp::toUpper( str1 ) ;
+		auto str = stringhlp::trim( strNumber ) ;
+		str = stringhlp::toUpper( str ) ;
 
 		static const char* expr = R"(^([+\-])?(\d+)(\.(\d+))?([eE]([+\-])?(\d+))?$)" ; // regex pattern for a number, eg 6.02e23
 
@@ -72,7 +178,7 @@ namespace alby::bigmath
 		std::smatch sm ;
 
 		// do the regex, return if no match, up to caller to throw an exception if required
-		auto matched = std::regex_match( str1, sm, regex ) ; 
+		auto matched = std::regex_match( str, sm, regex ) ; 
 		if ( ! matched ) return false ;
 
 		// 0 regex [-123456.12345678901234567890E+9876]
@@ -118,9 +224,6 @@ namespace alby::bigmath
 	)
 	{
 		// adjust the number so that the decimal is from 1 to 9, remove unnecessary zeros
-
-		// assume exponent can be expressed by a long 
-		// 8 bytes = 64 bits = 0x7FFFFFFFFFFFFFFF = 9,223,372,036,854,775,807
 
 		// remove leading zeros from decimal and exponent
 		// remove trailing zeros from fraction
@@ -205,26 +308,22 @@ namespace alby::bigmath
 	bool
 	numberhlp::toScientificNotation
 	( 
-		const std::string& str, 
-		std::string&       strScientificNotation,
-		unsigned long 	   significantFigures
+		const std::string&	strNumber, 
+		std::string& 		decimalSign, 
+		std::string& 		decimal,      
+		std::string&		fraction,      
+		std::string&		exponentSign, 
+		std::string&		exponent,     
+		unsigned long 		significantFigures
 	) 
 	{
 		// convert a number to the form aaaa.bbbbEeee, eg 314.15 => +3.1415e+2
 		// return true if valid 
 
-		strScientificNotation = "" ;	
-
-		std::string decimalSign  ;
-		std::string decimal      ;
-		std::string fraction     ; 
-		std::string exponentSign ;
-		std::string exponent     ;
-
 		// convert the number to standard form 
 		auto ok = regex
 		( 
-			str, 
+			strNumber, 
 			decimalSign, 
 			decimal, 
 			fraction, 
@@ -244,165 +343,44 @@ namespace alby::bigmath
 			exponent 
 		) ;
 
-		// significant figures and rounding is required
-		if ( significantFigures > 0 )
-		{
-			toSignificantFigures
-			( 
-				significantFigures + 1, 
-				decimal, 
-				fraction 
-			) ;	
+		// significant figures and rounding if required
+		if ( significantFigures == 0 ) return true ;
 
-			toRound
-			( 
-				significantFigures,
-				decimal, 
-				fraction, 
-				exponentSign, 
-				exponent 
-			) ;
-
-			toSignificantFigures
-			( 
-				significantFigures, 
-				decimal, 
-				fraction 
-			) ;	
-		}
-
-		strScientificNotation = decimalSign + decimal + "." + fraction + "E" + exponentSign + exponent ;	
-		return true ;
-	}
-
-	bool
-	numberhlp::toDecimal
-	( 
-		const std::string& str, 
-		std::string&       strDecimal,
-		unsigned long 	   significantFigures	
-	) 
-	{
-		// we convert the string to its canonical exponential representation
-		// and then convert back to a normalised decimal format, eg 
-		// -000000123.45678000000 => -1.2345678E+2 => -123.45678
-
-		// assume exponent can be expressed by a long 
-		// 8 bytes = 64 bits = 0x7FFFFFFFFFFFFFFF = 9,223,372,036,854,775,807
-		
-		strDecimal = "" ;
-
-		std::string decimalSign  ;
-		std::string decimal      ;
-		std::string fraction     ; 
-		std::string exponentSign ;
-		std::string exponent     ;
-
-		// convert the number to standard form 
-		auto ok = regex
-		( 
-			str, 
-			decimalSign, 
-			decimal, 
-			fraction, 
-			exponentSign, 
-			exponent 
-		) ;
-
-		if ( ! ok ) return false ;
-
-		// normalise the exponent
-		adjustScientificNotation
-		( 
-			decimalSign, 
-			decimal, 
-			fraction, 
-			exponentSign, 
-			exponent 
-		) ;
-
-		// significant figures and rounding is required
-		if ( significantFigures > 0 )
-		{
-			toSignificantFigures
-			( 
-				significantFigures + 1, 
-				decimal, 
-				fraction 
-			) ;	
-
-			toRound
-			( 
-				significantFigures,
-				decimal, 
-				fraction, 
-				exponentSign, 
-				exponent 
-			) ;
-
-			toSignificantFigures
-			( 
-				significantFigures, 
-				decimal, 
-				fraction 
-			) ;	
-		}
-
-		// remove the exponent
-		auto expstr = exponentSign + exponent ;
-		auto exp = std::atol( expstr.c_str() ) ;
-
-		if ( decimal == "0" &&  fraction == "0" ) // [ 0.0 ] special case 0.0 
-		{
-			decimalSign = "+" ;
-		}
-		else
-		if ( exp == 0 ) // [ 1.0, 10 ) numbers from 1 to 10
-		{
-			// nothing to do
-		}
-		else
-		if ( exp > 0 ) // [ 10, inf ] numbers 10 and above
-		{
-			auto decimal2 = decimal + fraction + std::string( exp, '0' ) ;
-			auto decimal3 = stringhlp::left( decimal2, exp + 1 ) ;
-
-			auto fraction2 = stringhlp::substr( decimal2, exp + 1 ) ;
-			fraction2      = stringhlp::rtrim( fraction2, "0" ) ;
-			
-			if ( decimal3.empty()  ) decimal3  = "0" ;
-			if ( fraction2.empty() ) fraction2 = "0" ;
-
-			decimal  = decimal3  ;
-			fraction = fraction2 ;
-		}
-		else // exp < 0, ( 0.0, 1.0 ) numbers between 0 and 1
-		{
-			auto fraction2 = std::string( std::abs( exp ) - 1, '0' ) + decimal + fraction  ;
-			fraction2      = stringhlp::rtrim( fraction2, "0" ) ;
-		
-			decimal  = "0" ;
-			fraction = fraction2 ;
-		}
-
-		// format to significant figures
+		// truncate to n+1 significant figures
 		toSignificantFigures
 		( 
-			significantFigures, 
 			decimal, 
-			fraction 
+			fraction, 
+			significantFigures + 1 
 		) ;	
 
-		strDecimal = decimalSign + decimal + "." + fraction ;	
+		// round to n significant digits
+		roundSignificantFigures
+		( 
+			decimal, 
+			fraction, 
+			exponentSign, 
+			exponent, 
+			significantFigures
+		) ;
+
+		// truncate to n significant figures
+		toSignificantFigures
+		( 
+			decimal, 
+			fraction, 
+			significantFigures 
+		) ;	
+
 		return true ;
 	}
 
 	void 
 	numberhlp::toSignificantFigures
 	( 
-		unsigned long significantFigures, 
 		std::string&  decimal, 
-		std::string&  fraction	
+		std::string&  fraction,	
+		unsigned long significantFigures 
 	)
 	{
 		// note: this function does not do rounding
@@ -462,13 +440,13 @@ namespace alby::bigmath
 	}
 
 	void 
-	numberhlp::toRound
+	numberhlp::roundSignificantFigures
 	(
-		unsigned long significantFigures, 
 		std::string&  decimal, 
 		std::string&  fraction,	
 		std::string&  exponentSign, 
-		std::string&  exponent
+		std::string&  exponent,
+		unsigned long significantFigures 
 	)
 	{
 		// note input must be standard exponential format, ie
@@ -496,7 +474,7 @@ namespace alby::bigmath
 		std::string result ;
 		bool        carry  ;
 
-		auto rounded = round( number, roundingDigit, result, carry ) ;
+		auto rounded = roundNumber( number, roundingDigit, result, carry ) ;
 		if ( ! rounded ) return ;
 
 		if ( carry ) // add 1 to exponent, and digit becomes 1
@@ -522,7 +500,7 @@ namespace alby::bigmath
 	}
 
 	bool 
-	numberhlp::round
+	numberhlp::roundNumber
 	( 
 		const std::string& 	strNumber,        
 		const std::string& 	strRoundingDigit, // last digit is the rounding digit	

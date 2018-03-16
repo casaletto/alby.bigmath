@@ -6,6 +6,7 @@ backlog
 
 //ALBY change to vector  tostring
 
+// maths operations should throw an exextion if the number cant be represebted
 
 // fix 	operator+( const mpfr& op1, const mpfr& op2 )  
 
@@ -97,7 +98,7 @@ a17 = a15 + a14 = -24.691                                        [prec 5(10) 50(
 https://en.wikipedia.org/wiki/Borwein%27s_algorithm
 
 
-Class number three Ramanujan type series for l/ pi
+Class number 2 (1989) Ramanujan–Sato series for l/ pi
 25 digits per term
 
 where
