@@ -27,7 +27,7 @@ bin/libalbybigmath.a: obj/mpfr.o obj/mpfr_t_wrapper.o obj/stringhlp.o obj/number
 obj/main.o: src/main.cpp lib/*.h
 	g++ -c -Os src/main.cpp -o obj/main.o
 
-bin/mpfrtest: obj/main.o bin/libalbybigmath.a
+bin/mpfrtest: bin/libalbybigmath.a obj/main.o 
 	g++ -s -static -static-libgcc -static-libstdc++ \
 		obj/main.o \
 		-L bin \

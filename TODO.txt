@@ -2,10 +2,9 @@
 backlog
 ---------------------------------------------------------------------
 
+//ALBY------- ++++ FIX THIS all operators like operator+
 
-//ALBY change to vector  tostring
 
-// fix constructir stuff
 
 // fix misc tostring functions
 mprf::toDecimalPlaces( x ) ;                  // 1.29456e23  1dp -->  1.3E23,    0 dp ==> 1.0E23
@@ -17,17 +16,12 @@ mprf::toSignificantFigures( x ) ;             // 2sf => 1.3e23
 
 // round to n dp
 
-// tostring()
-. Tostring to default to  removing trailing zeros
-. round last sig fig
-. chenge -0.0 to +0.0
-. handle "-0.00000123456789" to 5 dp
-
 
 . Round function to x dp
 ... Convert to rational, fix numerator, convert back to mpfr ?????
 // rounding to x dp 0.5 goes up
 
+// unit test the generate random numbers and test them  mpfr comapared to float
 
 -----------------------------------------------------------------------
 
@@ -184,4 +178,23 @@ binary precision = log2( power( 10, decimal sigdigs)) + 20
 // round to n significant digits
 
 // refactor numberhlp
+
+//ALBY change to vector  tostring
+
+// toStirng debug issue ????
+
+// fix constructir stuff
+
+
+// tostring()
+. Tostring to default to  removing trailing zeros
+. round last sig fig
+. chenge -0.0 to +0.0
+. handle "-0.00000123456789" to 5 dp
+
+
+		// make function call const
+		//auto str = const_cast<mpfr*>( &mpfr1 )->toString() ;
+				
+		//os << str ;
 

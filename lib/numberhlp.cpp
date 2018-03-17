@@ -72,7 +72,8 @@ namespace alby::bigmath
 		std::string exponentSign ;
 		std::string exponent     ;
 
-		toScientificNotation( strNumber, decimalSign, decimal, fraction, exponentSign, exponent, significantFigures ) ;
+		bool ok = toScientificNotation( strNumber, decimalSign, decimal, fraction, exponentSign, exponent, significantFigures ) ;
+		if ( ! ok ) return false ;
 
 		strScientificNotation = decimalSign + decimal + "." + fraction + "E" + exponentSign + exponent ;	
 		return true ;
@@ -99,7 +100,8 @@ namespace alby::bigmath
 		std::string exponentSign ;
 		std::string exponent     ;
 
-		toScientificNotation( strNumber, decimalSign, decimal, fraction, exponentSign, exponent, significantFigures ) ;
+		bool ok = toScientificNotation( strNumber, decimalSign, decimal, fraction, exponentSign, exponent, significantFigures ) ;
+		if ( ! ok ) return false ;
 
 		// remove the exponent by moving the decimal point and adding zeros
 		auto expstr = exponentSign + exponent ;
@@ -128,6 +130,7 @@ namespace alby::bigmath
 
 			decimal  = decimal3  ;
 			fraction = fraction2 ;
+		
 		}
 		else // exp < 0, ( 0.0, 1.0 ) numbers between 0 and 1
 		{
@@ -179,6 +182,7 @@ namespace alby::bigmath
 
 		// do the regex, return if no match, up to caller to throw an exception if required
 		auto matched = std::regex_match( str, sm, regex ) ; 
+
 		if ( ! matched ) return false ;
 
 		// 0 regex [-123456.12345678901234567890E+9876]

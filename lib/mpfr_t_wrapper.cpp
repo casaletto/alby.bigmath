@@ -64,50 +64,50 @@ namespace alby::bigmath
 	}
 
 	unsigned long 
-	mpfr_t_wrapper::getObjectCount() // static   
+	mpfr_t_wrapper::getObjectCount() 
 	{
 		return objectCount ;
 	}
 
 	unsigned long 
-	mpfr_t_wrapper::calcPrecision2( unsigned long thePrecision10 ) // static
+	mpfr_t_wrapper::calcPrecision2( unsigned long thePrecision10 ) 
 	{
 		// the number of binary bits for x decimal places
+		//
+		// precision2 = log2( pow( 10, precision10 ) ) ;
+		//
 
-		auto prec2 = (unsigned long) 
-			::ceil( 
-				::log2( 
-					::pow( 10.0, thePrecision10 + extraPrecision10 ) ) )  ; // add some extra digits for rounding
+		mpfr_t prec ;
+		mpfr_init2    ( prec, 100 ) ;                
+		mpfr_ui_pow_ui( prec, 10, thePrecision10 + extraPrecision10, MPFR_RNDN ) ;
+		mpfr_log2     ( prec, prec, MPFR_RNDN ) ;
 
-		return prec2 ;
+		unsigned long prec2 = mpfr_get_ui( prec, MPFR_RNDN ) ;
+		mpfr_clear( prec ) ; 
+
+		return prec2++ ;
 	}
-
-////////////////////////////////
-//ALBY fix me
 
 	std::string 
-	mpfr_t_wrapper::toString( bool detailed ) const
+	mpfr_t_wrapper::toString( bool debug ) // return full decimal
 	{
-		char format[100] ;
-		std::sprintf( format, "%%+.%luRE", precision10 ) ; // alt is "%%+.%luRF"
+		static const unsigned long extraBytes = 100 ; // add space for sign, decimal point, terminating zero, exponent, etc
 
-//ALBY change to vector
-		char buffer[ precision10 + 100 ] ;
-		mpfr_snprintf( buffer, precision10 + 100 - 1 , format, x ) ; // add space for sign, decimal point, terminating zero, exponent
+		char format[50] ;
+		std::sprintf( format, "%%+.%luRE", precision10 ) ; // exponential format, alternative decimal format "%%+.%luRF"
+
+		std::vector<char> buffer ;
+		buffer.resize( precision10 + extraBytes + 2 ) ;
+		std::fill( buffer.begin(), buffer.end(), 0 ) ;
+
+		mpfr_snprintf( buffer.data(), precision10 + extraBytes, format, x ) ; 
 
 		std::string result ;
-		numberhlp::toDecimal( buffer, result, precision10 ) ;
+		numberhlp::toDecimal( buffer.data(), result, precision10 ) ;
 
-		if ( ! detailed ) return result ;
+		if ( ! debug ) return result ;
 
-		return stringcat( result, " [prec ", precision10, "(10) ", precision2, "(2)]" ) ;
+		return stringcat( result, " [prec ", precision10, "(10), ", precision2, "(2), len ", result.length(), " ]" ) ;
 	}
-
-	std::ostream& 
-	operator<<( std::ostream& os, const mpfr_t_wrapper& rhs )  
-	{  
-		os << rhs.toString() ;  
-		return os ;   
-	}  
 
 } // end ns

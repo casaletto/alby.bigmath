@@ -25,6 +25,7 @@
 namespace alby::bigmath 
 {
 	unsigned long mpfr::precision10global = mpfr::precision10default ;
+	bool          mpfr::debug             = false                    ;
 
 	//----------------------------------------------------------------------------------------------------------------------
 
@@ -50,6 +51,18 @@ namespace alby::bigmath
 	mpfr::setPrecision( unsigned long prec10 )
 	{
 		precision10global = prec10 ;	
+	}
+
+	bool 
+	mpfr::getDebug()
+	{
+		return debug ;	
+	}
+
+	void 
+	mpfr::setDebug( bool theDebug )
+	{
+		debug = theDebug ;	
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------
@@ -117,11 +130,12 @@ namespace alby::bigmath
 
 		p = new mpfr_t_wrapper( precision10 ) ;
 
-//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant figures
+		std::string strScientificNotation ;
+		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, precision10 ) ;
 
-		mpfr_set_str( deref(*this), str, 10, roundingDefault ) ; 
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
+		mpfr_set_str( deref(*this), strScientificNotation.c_str(), 10, roundingDefault ) ; 
 	}
 
 	mpfr::mpfr( const char* str, int base ) // constr
@@ -132,10 +146,18 @@ namespace alby::bigmath
 
 		p = new mpfr_t_wrapper( precision10 ) ;
 
-//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant figures
+		if ( base != 10  )
+		{
+			mpfr_set_str( deref(*this), str, base, roundingDefault ) ; 
+			return ;
+		}
 
-		mpfr_set_str( deref(*this), str, base, roundingDefault ) ; 
+		std::string strScientificNotation ;
+		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, precision10 ) ;
+
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
+
+		mpfr_set_str( deref(*this), strScientificNotation.c_str(), base, roundingDefault ) ; 
 	}
 
 	mpfr::mpfr( const char* str, int base, unsigned long thePrecision10 ) // constr
@@ -146,10 +168,18 @@ namespace alby::bigmath
 
 		p = new mpfr_t_wrapper( precision10 ) ;
 
-//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant figures
+		if ( base != 10 )
+		{
+			mpfr_set_str( deref(*this), str, base, roundingDefault ) ; 
+			return ;
+		}
 
-		mpfr_set_str( deref(*this), str, base, roundingDefault ) ; 
+		std::string strScientificNotation ;
+		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, precision10 ) ;
+
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
+
+		mpfr_set_str( deref(*this), strScientificNotation.c_str(), base, roundingDefault ) ; 
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------
@@ -162,10 +192,12 @@ namespace alby::bigmath
 
 		p = new mpfr_t_wrapper( precision10 ) ;
 
-//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant figures
+		std::string strScientificNotation ;
+		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, precision10 ) ;
 
-		mpfr_set_str( deref(*this), str.c_str(), 10, roundingDefault ) ; 	
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
+
+		mpfr_set_str( deref(*this), strScientificNotation.c_str(), 10, roundingDefault ) ; 	
 	}
 
 	mpfr::mpfr( const std::string& str, int base ) // constr
@@ -176,10 +208,18 @@ namespace alby::bigmath
 
 		p = new mpfr_t_wrapper( precision10 ) ;
 
-//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant figures
+		if ( base != 10  )
+		{
+			mpfr_set_str( deref(*this), str.c_str(), base, roundingDefault ) ; 
+			return ;
+		}
+	
+		std::string strScientificNotation ;
+		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, precision10 ) ;
 
-		mpfr_set_str( deref(*this), str.c_str(), base, roundingDefault ) ; 	
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
+
+		mpfr_set_str( deref(*this), strScientificNotation.c_str(), base, roundingDefault ) ; 	
 	}
 
 	mpfr::mpfr( const std::string& str, int base, unsigned long thePrecision10 ) // constr
@@ -190,31 +230,49 @@ namespace alby::bigmath
 
 		p = new mpfr_t_wrapper( precision10 ) ;
 
-//ALBY: normalise the number here  eg "123.456", 10, 5 --> "123.46" , sci notation
-//ALBY: round to precision10 significaant figures
+		if ( base != 10  )
+		{
+			mpfr_set_str( deref(*this), str.c_str(), base, roundingDefault ) ; 
+			return ;
+		}
 
-		mpfr_set_str( deref(*this), str.c_str(), base, roundingDefault ) ; 	
+		std::string strScientificNotation ;
+		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, precision10 ) ;
+
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
+
+		mpfr_set_str( deref(*this), strScientificNotation.c_str(), base, roundingDefault ) ; 	
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------
 
 	std::ostream& 
-	operator<<( std::ostream& os, const mpfr& mpfr )  
+	operator<<( std::ostream& os, const mpfr& mpfr1 )  
 	{  
-		os << mpfr.toString() ;  
+		os << const_cast<mpfr*>( &mpfr1 )->toString() ;
+
 		return os ;   
 	}  
 
 	mpfr::operator 
-	std::string() const 
+	std::string() 
     {
         return toString() ;
     }
 
+	mpfr::operator 
+	std::string() const
+    {
+		return const_cast<mpfr*>(this)->toDecimal( false )  ;
+    }
+
 	std::string 
-	mpfr::toString() const // return decimal string with full precision
+	mpfr::toString() // return minumal decimal string
 	{
-		return p->toString( true ) ;
+		if ( debug )
+			 return p->toString( debug ) ;  
+
+		return toDecimal( false ) ;	 
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------
@@ -222,34 +280,57 @@ namespace alby::bigmath
 	std::string 
 	mpfr::toDecimal( bool fullPrecision ) // default true, false means remove trailing zeros
 	{
-		return std::string() ; //ALBY to do
+		std::string result ;
+
+		auto str = p->toString() ;
+
+		if ( fullPrecision )
+			 numberhlp::toDecimal( str, result, precision10 ) ;
+		else
+			 numberhlp::toDecimal( str, result ) ;
+
+		return result ;
 	}
 
 	std::string 
 	mpfr::toScientificNotation( bool fullPrecision ) // default true, false means remove trailing zeros
 	{
-		return std::string() ; //ALBY to do
+		std::string result ;
+
+		auto str = p->toString() ;
+
+		if ( fullPrecision )
+			 numberhlp::toScientificNotation( str, result, precision10 ) ;
+		else
+			 numberhlp::toScientificNotation( str, result ) ;
+
+		return result ;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------
 	mpfr 
 	operator+( const mpfr& op1, const mpfr& op2 )  
 	{  
-		//mpfr result( op1 ) ; 
-		
-//ALBY------- ++++ FIX THIS
-		auto maxprec = std::max( op1.precision10, op2.precision10 ) ;
+		// same precision
+		if ( op1.precision10 == op2.precision10 )
+		{
+			mpfr result( "0", 10, op1.precision10 ) ;
 
+			mpfr_add( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;			
+
+			return result ;   
+		}
+
+		// different precision, use max precision
+		auto maxprec = std::max( op1.precision10, op2.precision10 ) ;
 
 		mpfr result( "0", 10, maxprec ) ;
 
-		mpfr op11( op1, 10, maxprec ) ;
+		mpfr opA( op1, 10, maxprec ) ; 
+		mpfr opB( op2, 10, maxprec ) ;
 
-		mpfr op22( op2, 10, maxprec ) ;
-
-		mpfr_add( mpfr::deref(result), mpfr::deref(op11), mpfr::deref(op22), mpfr::roundingDefault ) ;
-	//	mpfr_add( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;
-
+		mpfr_add( mpfr::deref(result), mpfr::deref(opA), mpfr::deref(opB), mpfr::roundingDefault ) ;
+	
 		return result ;   
 	}  
 
@@ -432,7 +513,7 @@ namespace alby::bigmath
 	{
 		mpfr result( *this ) ; 
 
-		mpfr one( "1.0", 10, precision10 ) ;                                   //ALBY test precision
+		mpfr one( "1", 10, precision10 ) ; 
 
 		mpfr_exp( deref(result), deref(one), roundingDefault ) ;
 
@@ -444,7 +525,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::neg()  
 	{ 
-		mpfr minusone( "-1.0", 10, precision10 ) ;                                   //ALBY test precision
+		mpfr minusone( "-1", 10, precision10 ) ; 
 
 		return *this * minusone ;  
 	}
@@ -452,7 +533,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::inv()  
 	{ 
-		mpfr one( "1.0", 10, precision10 ) ;                                   //ALBY test precision
+		mpfr one( "1", 10, precision10 ) ; 
 
 		return one / *this ;   
 	}
@@ -516,7 +597,7 @@ namespace alby::bigmath
 	{
 		mpfr result( *this ) ; 
 
-		mpfr two( "2.0", 10, precision10 ) ;                                   //ALBY test precision
+		mpfr two( "2", 10, precision10 ) ; 
 
 		mpfr_pow( deref(result), deref(two), deref(*this), roundingDefault ) ;
 
@@ -528,7 +609,7 @@ namespace alby::bigmath
 	{
 		mpfr result( *this ) ; 
 
-		mpfr ten( "10.0", 10, precision10 ) ;                                   //ALBY test precision
+		mpfr ten( "10", 10, precision10 ) ; 
 
 		mpfr_pow( deref(result), deref(ten), deref(*this), roundingDefault ) ;
 
@@ -540,7 +621,7 @@ namespace alby::bigmath
 	{
 		mpfr result( *this ) ; 
 
-		mpfr one( "1.0", 10, precision10 ) ;                                   //ALBY test precision
+		mpfr one( "1", 10, precision10 ) ; 
 
 		mpfr index = one / op1 ;
 
@@ -554,7 +635,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::sqrt() // square root
 	{
-		mpfr two( "2.0", 10, precision10 ) ;                                   //ALBY test precision
+		mpfr two( "2", 10, precision10 ) ; 
 
 		return root( two ) ;
 	}

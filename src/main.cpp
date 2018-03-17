@@ -41,13 +41,13 @@ int main( void )
 		doMpfrMathtoSigFig() ;
 		roundToSignificantDigits() ;
 	}
-	catch( std::exception ex )
+	catch( const std::exception& ex )
 	{
-		std::cout << ex.what() << std::endl ;
+		std::cout << "EXCEPTION: " << ex.what() << std::endl ;
 	}
 	catch( ... )
 	{
-		std::cout << "..." << std::endl ;
+		std::cout << "EXCEPTION: ..." << std::endl ;
 	}
 	
 	return 0 ;
@@ -84,13 +84,13 @@ void doMpfrMath1()
 	std::cout << "..." << std::endl ;
 	
 	std::cout << a << std::endl ;
+
 	std::cout << bb << std::endl ;
 	std::cout << b << std::endl ;
 	std::cout << c << std::endl ;
 	std::cout << cc << std::endl ;
 	std::cout << d << std::endl ;
 	std::cout << dd << std::endl ;
-
 
 	dd = b ;
 	std::cout << b << std::endl ;
@@ -280,13 +280,18 @@ void doMpfrMath1()
 	abm::mpfr a1( "-1.23E-2" ) ;
 	std::cout << a1 << std::endl ;
 
-	auto sum = abm::mpfr( "1.1e1000" ) + abm::mpfr( "1.2e-1000" ) + "1.2" ;
+	auto sum = abm::mpfr( "1.1e100" ) + abm::mpfr( "1.2e-100", 10, 206 ) + abm::mpfr( "1.3" ) ;
+
+	abm::mpfr::setDebug( true ) ;
+	std::cout << sum << std::endl ;
+
+	abm::mpfr::setDebug( false ) ;
 	std::cout << sum << std::endl ;
 
 	// fact
 	abm::mpfr a2( "4.49" ) ; // expect 1.2.3.4 = 24
 	std::cout << a2.fact() << std::endl ;
-	
+
 	a2 = "4.9999" ; // expect 1.2.3.4 = 24
 	std::cout << a2.fact() << std::endl ;
 
@@ -298,14 +303,19 @@ void doMpfrMath1()
 	std::cout << a3.sqrt() << std::endl ;
 
 	a3 = "-10.0" ;
-	std::cout << a3.sqrt() << std::endl ;
+	std::cout << "sqrt [" << a3.sqrt() << "]" << std::endl ;
 
 	// recurring
 	abm::mpfr a4 = abm::mpfr( "1" ) / abm::mpfr( "3") ;
 	std::cout << a4 << std::endl ;
-	
-	a4 = abm::mpfr( "2" ) / abm::mpfr( "3") ;
+
+	a4 = abm::mpfr( "2", 10, 10 ) / abm::mpfr( "3", 10, 10 ) ;
+	abm::mpfr::setDebug( false ) ;
 	std::cout << a4 << std::endl ;
+	std::cout << "   1234567890" << std::endl ;
+	abm::mpfr::setDebug( true ) ;
+	std::cout << a4 << std::endl ;
+	abm::mpfr::setDebug( false ) ;
 
 	abm::mpfr a5( "1" ) ;
 	auto fmt = abm::stringcat( "HeLlOwOrLd a5", " = ", a5 ) ;
@@ -400,19 +410,19 @@ void doMpfrMath1()
 	auto a16 = a14 + a15 ;
 	auto a17 = a15 + a14 ;
 
-	auto a18 = a14 + a14 ;
-	auto a19 = a15 + a15 ;
-	auto a20 = a14 * "2" ;
-	auto a21 = a15 * abm::mpfr( "2",10, 5 )  ;
-
 	std::cout << "a14               " << a14 << std::endl ; // prec ??
 	std::cout << "a15               " << a15 << std::endl ; // prec ??
 	std::cout << "a16 = a14 + a15 = " << a16 << std::endl ; // prec ?? <---------------
 	std::cout << "a17 = a15 + a14 = " << a17 << std::endl ; // prec ??
-	//std::cout << "a18 " << a18 << std::endl ; // prec ??
-	//std::cout << "a19 " << a19 << std::endl ; // prec ??
-	//std::cout << "a20 " << a20 << std::endl ; // prec ??
-	//std::cout << "a21 " << a21 << std::endl ; // prec ??
+
+	auto a18 = a14 + a14 ;
+	auto a19 = a15 + a15 ;
+	auto a20 = a14 * "2" ;
+	auto a21 = a15 * abm::mpfr( "2",10, 5 )  ;
+	std::cout << "a18 " << a18 << std::endl ; // prec ??
+	std::cout << "a19 " << a19 << std::endl ; // prec ??
+	std::cout << "a20 " << a20 << std::endl ; // prec ??
+	std::cout << "a21 " << a21 << std::endl ; // prec ??
 
 	std::cout << "---" << std::endl ;
 

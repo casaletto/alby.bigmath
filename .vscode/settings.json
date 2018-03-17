@@ -39,7 +39,10 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "algorithm": "cpp",
-        "climits": "cpp"
+        "climits": "cpp",
+        "bitset": "cpp",
+        "functional": "cpp",
+        "memory": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

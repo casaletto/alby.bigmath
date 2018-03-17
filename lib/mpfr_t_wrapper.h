@@ -22,11 +22,10 @@ namespace alby::bigmath
 			static unsigned long 	getObjectCount()             				   ;
 			static unsigned long 	calcPrecision2( unsigned long thePrecision10 ) ;
 
-			mpfr_t_wrapper( const mpfr_t_wrapper& rhs )            = delete ;
+			mpfr_t_wrapper( const mpfr_t_wrapper& rhs )            = delete ; // do not copy these objects
 			mpfr_t_wrapper& operator=( const mpfr_t_wrapper& rhs ) = delete ;
 
-			std::string toString( bool detailed = false ) const ;
-			friend std::ostream& operator<<( std::ostream& os, const mpfr_t_wrapper& rhs ) ;		
+			std::string toString( bool debug = false ) ; 
 	} ;
 } 
 
