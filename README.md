@@ -2,7 +2,8 @@
 
 a c++ wrapper around mpfr and gmp to make extreme maths more pleasant.
 
-move seamlessly between exact rational number arithmetic (gmp) and almost unlimited precision floating point aritmetic (mpfr).
+move seamlessly between exact rational number arithmetic (gmp)\
+and almost unlimited precision floating point aritmetic (mpfr).
 
 
 
@@ -71,8 +72,8 @@ I had a bad dream that I partly developed and tested this on windoze 10 mingw64/
 
 # here's an example
 
-1.2e+10 + 3.4 + 5.6e-10
-and
+1.2e+10 + 3.4 + 5.6e-10\
+and\
 1.2e+1000 + 3.4 + 5.6e-1000
 
 ```
@@ -141,6 +142,7 @@ output
 +12000000000.0 + +3.4 + +0.00000000056
 
 = +12000000003.40000000056
+
 = +1.200000000340000000056E+10
 
 ```
