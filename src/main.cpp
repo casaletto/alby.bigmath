@@ -28,6 +28,7 @@ void doMpfrMath1() ;
 void doMpfrMathtoCanonical() ;
 void doMpfrMathtoSigFig() ;
 void roundToSignificantDigits() ;
+void example1() ;
 
 int main( void )
 {
@@ -36,10 +37,11 @@ int main( void )
 		std::cout << abm::mpfr::version()   << std::endl ;		
 		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY fix me
 
-		doMpfrMath1() ;
-		doMpfrMathtoCanonical() ;
-		doMpfrMathtoSigFig() ;
-		roundToSignificantDigits() ;
+		example1() ;
+		//doMpfrMath1() ;
+		//doMpfrMathtoCanonical() ;
+		//doMpfrMathtoSigFig() ;
+		//roundToSignificantDigits() ;
 	}
 	catch( const std::exception& ex )
 	{
@@ -51,6 +53,25 @@ int main( void )
 	}
 	
 	return 0 ;
+}
+
+void example1()
+{
+	// +   1   1000 zeros   . + 1000 decimal places
+	// 1 + 1 + 1000       + 1 + 1000 + 1
+	// 2004
+
+	abm::mpfr::setPrecision( 2010 ) ;
+
+	auto a = abm::mpfr( "1.2e1000" ) ;
+	auto b = abm::mpfr( "3.4" ) ;
+	auto c = abm::mpfr( "5.6e-1000" ) ;	
+
+	auto sum = a + b + c ;
+
+	std::cout << a.toScientificNotation()  << " + " << b << " + " << c.toScientificNotation() << " = " << std::endl ;
+	std::cout << sum << std::endl ;
+	std::cout << " length = " << sum.toString().length() - 2 << " digits " << std::endl ;
 }
 
 void doMpfrMath1()
@@ -280,6 +301,8 @@ void doMpfrMath1()
 	abm::mpfr a1( "-1.23E-2" ) ;
 	std::cout << a1 << std::endl ;
 
+	abm::mpfr::setPrecision( 204 ) ;
+
 	auto sum = abm::mpfr( "1.1e100" ) + abm::mpfr( "1.2e-100", 10, 206 ) + abm::mpfr( "1.3" ) ;
 
 	abm::mpfr::setDebug( true ) ;
@@ -287,6 +310,8 @@ void doMpfrMath1()
 
 	abm::mpfr::setDebug( false ) ;
 	std::cout << sum << std::endl ;
+
+	abm::mpfr::setPrecision( 50 ) ;
 
 	// fact
 	abm::mpfr a2( "4.49" ) ; // expect 1.2.3.4 = 24

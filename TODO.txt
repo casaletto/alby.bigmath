@@ -5,23 +5,59 @@ backlog
 //ALBY------- ++++ FIX THIS all operators like operator+
 
 
-
 // fix misc tostring functions
 mprf::toDecimalPlaces( x ) ;                  // 1.29456e23  1dp -->  1.3E23,    0 dp ==> 1.0E23
-mprf::toSignificantFigures( x ) ;             // 2sf => 1.3e23
-
-// fix 	operator+( const mpfr& op1, const mpfr& op2 )  
-
-// maths operations should throw an exextion if the number cant be represebted
-
 // round to n dp
 
-
+mprf::toSignificantFigures( x ) ;             // 2sf => 1.3e23
 . Round function to x dp
+
+-----------------------------------------------------------------------
+
+
+// demo 1e1000 + 1e-1000 + 1
+
+// fix 	operator+( const mpfr& op1, const mpfr& op2 )  et al 
+
+-----------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------
+
+// create function to random [0.0, 1)
+
+// mpfr_urandomb ( seed ??? )
+
+-----------------------------------------------------------------------
+
+
+
 ... Convert to rational, fix numerator, convert back to mpfr ?????
 // rounding to x dp 0.5 goes up
 
 // unit test the generate random numbers and test them  mpfr comapared to float
+????????????????
+
+
+power
+2147483647 (2^31-1) 
+
+double can do 15 or 16sf,
+
+eg
+while true
+
+	rnd1 = random 5dp
+	rnd2 = random 5dp 
+
+	numMe = rnd1 * 2147483647    large integer
+
+	num c++ = ditto (double)
+
+	// compare to 12 dp
 
 -----------------------------------------------------------------------
 
@@ -69,17 +105,6 @@ a17 = a15 + a14 = -24.691                                        [prec 5(10) 50(
 // convert the number to numerator denom with same pow10 base , can just shift decimal point, then compare as gmp integers.
 
 
------------------------------------------------------------------------
-
-// demo 1e1000 + 1e-1000 + 1
-
------------------------------------------------------------------------
-
-// create function to random [0.0, 1)
-
-// mpfr_urandomb ( seed ??? )
-
------------------------------------------------------------------------
 
  
 
@@ -148,13 +173,34 @@ done
 
 // change name precison to sifnificantFigures ??? no, changed name to local and global
 
-// cahnge to 
-static const mpfr_prec_t precisionDefault = (mpfr_prec_t) 100 
-// to
-static const unsigned long precision10default = 100 ;
+
+---------------------------------------------------------------
+
+To proper / improper fraction ( bool reduce)
+
+-3 +14/+100
+-3 7/+50
+
+-314 / -100 
+-157 / -50
+
+Function: void mpz_gcd (mpz_t rop, const mpz_t op1, const mpz_t op2)
+
+    Set rop to the greatest common divisor of op1 and op2. 
 
 
+mpz_t integ;
+  mpz_init (integ);
+  …
+  mpz_add (integ, …);
+  …
+  mpz_sub (integ, …);
 
+  /* Unless the program is about to exit, do ... */
+  mpz_clear (integ);
+
+
+---------------------------------------------------
 
 // change precision  to # of significant decimal digits
 . Add 10 or more bin digits to sig decimal digits for extra x decimal places
@@ -198,3 +244,9 @@ binary precision = log2( power( 10, decimal sigdigs)) + 20
 				
 		//os << str ;
 
+// cahnge to 
+static const mpfr_prec_t precisionDefault = (mpfr_prec_t) 100 
+// to
+static const unsigned long precision10default = 100 ;
+
+// maths operations should throw an exextion if the number cant be represebted
