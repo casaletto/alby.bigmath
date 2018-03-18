@@ -55,24 +55,61 @@ int main( void )
 	return 0 ;
 }
 
-void example1()
-{
 	// +   1   1000 zeros   . + 1000 decimal places
 	// 1 + 1 + 1000       + 1 + 1000 + 1
 	// 2004
 
-	abm::mpfr::setPrecision( 2010 ) ;
+void example1()
+{
+	abm::mpfr::setPrecision( 22 ) ;
 
-	auto a = abm::mpfr( "1.2e1000" ) ;
+	auto a = abm::mpfr( "1.2e10" ) ;
 	auto b = abm::mpfr( "3.4" ) ;
-	auto c = abm::mpfr( "5.6e-1000" ) ;	
+	auto c = abm::mpfr( "5.6e-10" ) ;	
 
 	auto sum = a + b + c ;
 
-	std::cout << a.toScientificNotation()  << " + " << b << " + " << c.toScientificNotation() << " = " << std::endl ;
-	std::cout << sum << std::endl ;
-	std::cout << " length = " << sum.toString().length() - 2 << " digits " << std::endl ;
+	std::cout 
+		<< a << " + " 
+		<< b << " + " 
+		<< c 
+		<< std::endl 
+		<< std::endl 
+		<< "= " 
+		<< sum 
+		<< std::endl 
+		<< std::endl 
+		<< "= " 
+		<< sum.toScientificNotation()
+		<< std::endl 
+		<< std::endl ;
+
+	abm::mpfr::setPrecision( 2002 ) ;
+
+	a = abm::mpfr( "1.2e1000" ) ;
+	b = abm::mpfr( "3.4" ) ;
+	c = abm::mpfr( "5.6e-1000" ) ;	
+
+	sum = a + b + c ;
+
+	std::cout 
+		<< a.toScientificNotation() << " + " 
+		<< b << " + " 
+		<< c.toScientificNotation() 
+		<< std::endl 
+		<< std::endl 
+		<< "= " 
+		<< sum 
+		<< std::endl 
+		<< std::endl  
+		<< "= " 
+		<< sum.toScientificNotation()  
+		<< std::endl ;
 }
+
+//	std::cout << " length = " << sum.toString().length() - 2 << " digits " << std::endl ;
+//	std::cout << " length = " << sum.toString().length() - 2 << " digits " << std::endl ;
+
 
 void doMpfrMath1()
 {
