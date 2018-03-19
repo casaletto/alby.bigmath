@@ -16,6 +16,7 @@
 #include <gmp.h>
 #include <mpfr.h>
 
+#include "../lib/numberBase.h"
 #include "../lib/stringhlp.h"
 #include "../lib/stringcat.h"
 #include "../lib/numberhlp.h"
@@ -24,6 +25,7 @@
 
 namespace abm = alby::bigmath ; 
 
+void doMpfrMath0() ;
 void doMpfrMath1() ;
 void doMpfrMathtoCanonical() ;
 void doMpfrMathtoSigFig() ;
@@ -38,10 +40,11 @@ int main( void )
 		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY fix me
 
 		example1() ;
-		//doMpfrMath1() ;
-		//doMpfrMathtoCanonical() ;
-		//doMpfrMathtoSigFig() ;
-		//roundToSignificantDigits() ;
+		doMpfrMath0() ;
+		doMpfrMath1() ;
+		doMpfrMathtoCanonical() ;
+		doMpfrMathtoSigFig() ;
+		roundToSignificantDigits() ;
 	}
 	catch( const std::exception& ex )
 	{
@@ -54,10 +57,6 @@ int main( void )
 	
 	return 0 ;
 }
-
-	// +   1   1000 zeros   . + 1000 decimal places
-	// 1 + 1 + 1000       + 1 + 1000 + 1
-	// 2004
 
 void example1()
 {
@@ -107,9 +106,59 @@ void example1()
 		<< std::endl ;
 }
 
-//	std::cout << " length = " << sum.toString().length() - 2 << " digits " << std::endl ;
-//	std::cout << " length = " << sum.toString().length() - 2 << " digits " << std::endl ;
+void doMpfrMath0()
+{
+	abm::mpfr::setDebug( true )   ; 
+	abm::mpfr::setPrecision( 10 ) ; 
 
+	abm::mpfr a( "2.0234" ) ;
+	abm::mpfr b( "3.1234" ) ;
+
+	std::cout << a << std::endl ;
+	std::cout << b << std::endl ;
+	std::cout << a + b << std::endl ;
+	std::cout << b + a << std::endl ;
+
+	b += a  ; 
+	std::cout << b << std::endl ;
+
+	abm::mpfr c( "2.0234", 20 ) ;
+	abm::mpfr d( "3.1234", 30 ) ;
+
+	std::cout << "c      = " << c << std::endl ;
+	std::cout << "d      = " << d << std::endl ;
+	std::cout << "c + d  = " << (c + d) << std::endl ;
+	std::cout << "d + c  = " << (d + c) << std::endl ;
+
+	d += c  ; 
+	c += d  ; 
+	std::cout << "c = " << c << std::endl ;
+	std::cout << "d = " << d << std::endl ;
+
+	abm::mpfr e( c, 3 ) ;
+	abm::mpfr f( d, 3 ) ;
+	std::cout << "e = " << e << std::endl ;
+	std::cout << "f = " << f << std::endl ;
+
+	abm::mpfr g( c, 2 ) ;
+	abm::mpfr h( d, 2 ) ;
+	std::cout << "g = " << g << std::endl ;
+	std::cout << "h = " << h << std::endl ;
+
+
+	abm::mpfr::setPrecision( 30 ) ; 
+
+	abm::mpfr k( "987654321.123456789", 30 ) ;
+	std::cout << "k = " << k << std::endl ;
+
+	for ( unsigned long i = 40 ; i >= 1 ; i-- )
+	{
+		abm::mpfr x( k, i ) ;
+		std::cout << i << " sf --> " << x << std::endl ;		
+	}
+
+
+}
 
 void doMpfrMath1()
 {
@@ -236,13 +285,13 @@ void doMpfrMath1()
 
 	std::cout << abm::mpfr( "1000.00001" ).root( abm::mpfr( "3.000001" ) ) << std::endl ;
 	
-	auto u = abm::mpfr( "-FFee.100", 16 ) ;
+	auto u = abm::mpfr( "-FFee.100", abm::mpfr::getPrecision(), abm::numberBase::_16 ) ;
 	std::cout << u << std::endl ;
 
-	u = abm::mpfr( "FFFF.FFFF", 16 ) ;
+	u = abm::mpfr( "FFFF.FFFF", abm::mpfr::getPrecision(), abm::numberBase::_16 ) ;
 	std::cout << u << std::endl ;
 
-	auto v = abm::mpfr( "-11111111.01", 2 ) ;
+	auto v = abm::mpfr( "-11111111.01", abm::mpfr::getPrecision(), abm::numberBase::_2 ) ;
 	std::cout << v << std::endl ;
 
 	v = v.abs() ;
@@ -340,7 +389,7 @@ void doMpfrMath1()
 
 	abm::mpfr::setPrecision( 204 ) ;
 
-	auto sum = abm::mpfr( "1.1e100" ) + abm::mpfr( "1.2e-100", 10, 206 ) + abm::mpfr( "1.3" ) ;
+	auto sum = abm::mpfr( "1.1e100" ) + abm::mpfr( "1.2e-100", 206 ) + abm::mpfr( "1.3" ) ;
 
 	abm::mpfr::setDebug( true ) ;
 	std::cout << sum << std::endl ;
@@ -371,7 +420,7 @@ void doMpfrMath1()
 	abm::mpfr a4 = abm::mpfr( "1" ) / abm::mpfr( "3") ;
 	std::cout << a4 << std::endl ;
 
-	a4 = abm::mpfr( "2", 10, 10 ) / abm::mpfr( "3", 10, 10 ) ;
+	a4 = abm::mpfr( "2", 10 ) / abm::mpfr( "3", 10 ) ;
 	abm::mpfr::setDebug( false ) ;
 	std::cout << a4 << std::endl ;
 	std::cout << "   1234567890" << std::endl ;
@@ -428,18 +477,18 @@ void doMpfrMath1()
 
 	abm::mpfr::setPrecision( 44 ) ;
 
-	abm::mpfr a6( "0", 10, 5 ) ; 
+	abm::mpfr a6( "0", 5 ) ; 
 	std::cout << a6 << std::endl ; // prec 5
 
-	abm::mpfr a7( "8", 10, 10  ) ; 
-	abm::mpfr a8( "9", 10, 8   ) ; 
+	abm::mpfr a7( "8", 10  ) ; 
+	abm::mpfr a8( "9", 8   ) ; 
 	
 	a6 = a7 / a8 ; 
 	std::cout << a6 << std::endl ; // prec 10
 	std::cout << a7 << std::endl ; // prec 10
 	std::cout << a8 << std::endl ; // prec 8
 
-	abm::mpfr a9( "-12.3456789", 10, 5 ) ;
+	abm::mpfr a9( "-12.3456789", 5 ) ;
 	std::cout << a9 << std::endl ; // prec 5
 	
 	auto a10 = a9 ;
@@ -457,7 +506,7 @@ void doMpfrMath1()
 	a11 = abm::mpfr( "23.2" ) + a7 ;
 	std::cout << a11 << std::endl ; // prec 44
 
-	abm::mpfr a12( "-12.3456789", 10, 5 ) ;
+	abm::mpfr a12( "-12.3456789", 5 ) ;
 	a12 += a11 ;
 	std::cout << a12 << std::endl ; // prec 5
 
@@ -468,7 +517,7 @@ void doMpfrMath1()
 	std::cout << "---" << std::endl ;
 
 	auto a14 = abm::mpfr( "-12.3456789" )  ;
-	auto a15 = abm::mpfr( "-12.3456789", 10, 5 ) ;
+	auto a15 = abm::mpfr( "-12.3456789", 5 ) ;
 	auto a16 = a14 + a15 ;
 	auto a17 = a15 + a14 ;
 
@@ -480,7 +529,7 @@ void doMpfrMath1()
 	auto a18 = a14 + a14 ;
 	auto a19 = a15 + a15 ;
 	auto a20 = a14 * "2" ;
-	auto a21 = a15 * abm::mpfr( "2",10, 5 )  ;
+	auto a21 = a15 * abm::mpfr( "2", 5 )  ;
 	std::cout << "a18 " << a18 << std::endl ; // prec ??
 	std::cout << "a19 " << a19 << std::endl ; // prec ??
 	std::cout << "a20 " << a20 << std::endl ; // prec ??

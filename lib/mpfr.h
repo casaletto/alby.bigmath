@@ -24,15 +24,15 @@ namespace alby::bigmath
 
 			mpfr()                             ;               
 			mpfr( const mpfr& rhs )            ;
+			mpfr( const mpfr& rhs, unsigned long thePrecision10 ) ;
+			
 			mpfr& operator=( const mpfr& rhs ) ;
 
 			mpfr( const char* )                ;
-			mpfr( const char*, int base )      ;
-			mpfr( const char*, int base, unsigned long thePrecision10 ) ;
+			mpfr( const char*, unsigned long thePrecision10, numberBase base = numberBase::_10 ) ;
 
 			mpfr( const std::string& )           ;
-			mpfr( const std::string&, int base ) ;
-			mpfr( const std::string&, int base, unsigned long thePrecision10 ) ;
+			mpfr( const std::string&, unsigned long thePrecision10, numberBase base = numberBase::_10 ) ;
 
 			unsigned long        getPrecisionLocal() ;
 			static unsigned long getPrecision()      ;
@@ -46,8 +46,9 @@ namespace alby::bigmath
 
 			friend std::ostream& operator<<( std::ostream& os, const mpfr& mpfr ) ;
 
-			std::string toDecimal           ( bool fullPrecision = false ) ;
-			std::string toScientificNotation( bool fullPrecision = false ) ;
+			std::string toDecimal              ( bool fullPrecision = false ) ;
+			std::string toScientificNotation   ( bool fullPrecision = false ) ;
+			mpfr        roundSignificantFigures( unsigned long sf )           ;			
 
 			static std::string version()                ;
 			static std::string randomBytes( int bytes ) ; 
@@ -97,13 +98,16 @@ namespace alby::bigmath
 			mpfr floor() 					; // floor
 			mpfr trunc() 					; // trunc towards 0
 
+
+
 //ALBY TODO
 			mpfr roundDecimalPlaces     ( unsigned long dp ) ;
-			mpfr roundSignificantFigures( unsigned long sf ) ;			
+
 
 			void toFraction     (                       std::string numerator, std::string& denominator, bool reduce = true ) ;			
 			void toMixedFraction( std::string& integer, std::string numerator, std::string& denominator, bool reduce = true ) ;			
-			
+
+			// gmp toGmp() ;			
 	} ;
 } 
 
