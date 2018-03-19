@@ -87,7 +87,7 @@ namespace abm = alby::bigmath ;
 
 void example1()
 {
-	abm::mpfr::setPrecision( 22 ) ;
+	abm::mpfr::setSignificantFigures( 22 ) ;
 
 	auto a = abm::mpfr( "1.2e10" ) ;
 	auto b = abm::mpfr( "3.4" ) ;
@@ -110,7 +110,7 @@ void example1()
 		<< std::endl 
 		<< std::endl ;
 
-	abm::mpfr::setPrecision( 2002 ) ;
+	abm::mpfr::setSignificantFigures( 2002 ) ;
 
 	a = abm::mpfr( "1.2e1000" ) ;
 	b = abm::mpfr( "3.4" ) ;

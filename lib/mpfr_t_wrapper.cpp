@@ -33,12 +33,12 @@ namespace alby::bigmath
 		//std::cout << "mpfr_t_wrapper destr " << *this << std::endl ;
 	}
 
-	mpfr_t_wrapper::mpfr_t_wrapper( unsigned long thePrecision10 )
+	mpfr_t_wrapper::mpfr_t_wrapper( unsigned long theSigFig10 )
 	{
-		precision10 = thePrecision10 ;
-		precision2  = calcPrecision2( precision10 ) ;
+		sigFig10 = theSigFig10 ;
+		sigFig2  = calcSignificantFigures2( sigFig10 ) ;
 
-		mpfr_init2 ( x, (mpfr_prec_t) precision2 ) ;                
+		mpfr_init2 ( x, (mpfr_prec_t) sigFig2 ) ;                
 		mpfr_set_ui( x, 0, MPFR_RNDN ) ; 
 
 		objectCount++ ;
@@ -52,15 +52,15 @@ namespace alby::bigmath
 	}
 
 	unsigned long 
-	mpfr_t_wrapper::getPrecision10() 
+	mpfr_t_wrapper::getSignificantFigures10() 
 	{
-		return precision10 ;
+		return sigFig10 ;
 	}
 
 	unsigned long 
-	mpfr_t_wrapper::getPrecision2()  
+	mpfr_t_wrapper::getSignificantFigures2()  
 	{
-		return precision2 ;
+		return sigFig2 ;
 	}
 
 	unsigned long 
@@ -70,22 +70,23 @@ namespace alby::bigmath
 	}
 
 	unsigned long 
-	mpfr_t_wrapper::calcPrecision2( unsigned long thePrecision10 ) 
+	mpfr_t_wrapper::calcSignificantFigures2( unsigned long theSigFig10 ) 
 	{
 		// the number of binary bits for x decimal places
 		//
-		// precision2 = log2( pow( 10, precision10 ) ) ;
-		//
+		// sig fig base 2 = log2( pow( 10, sig fig base 10 ) ) ;
+		
+		mpfr_t i ;
 
-		mpfr_t prec ;
-		mpfr_init2    ( prec, 100 ) ;                
-		mpfr_ui_pow_ui( prec, 10, thePrecision10 + extraPrecision10, MPFR_RNDN ) ;
-		mpfr_log2     ( prec, prec, MPFR_RNDN ) ;
+		mpfr_init2    ( i, 100 ) ;                
+		mpfr_ui_pow_ui( i, 10, theSigFig10 + extraSigFig10, MPFR_RNDN ) ;
+		mpfr_log2     ( i, i, MPFR_RNDN ) ;
 
-		unsigned long prec2 = mpfr_get_ui( prec, MPFR_RNDN ) ;
-		mpfr_clear( prec ) ; 
+		auto sf2 = mpfr_get_ui( i, MPFR_RNDN ) ;
+		mpfr_clear( i ) ; 
 
-		return prec2++ ;
+		sf2++ ;
+		return sf2 ;
 	}
 
 	std::string 
@@ -94,20 +95,20 @@ namespace alby::bigmath
 		static const unsigned long extraBytes = 100 ; // add space for sign, decimal point, terminating zero, exponent, etc
 
 		char format[50] ;
-		std::sprintf( format, "%%+.%luRE", precision10 ) ; // exponential format, alternative decimal format "%%+.%luRF"
+		std::sprintf( format, "%%+.%luRE", sigFig10 ) ; // exponential format, alternative decimal format "%%+.%luRF"
 
 		std::vector<char> buffer ;
-		buffer.resize( precision10 + extraBytes + 2 ) ;
+		buffer.resize( sigFig10 + extraBytes + 2 ) ;
 		std::fill( buffer.begin(), buffer.end(), 0 ) ;
 
-		mpfr_snprintf( buffer.data(), precision10 + extraBytes, format, x ) ; 
+		mpfr_snprintf( buffer.data(), sigFig10 + extraBytes, format, x ) ; 
 
 		std::string result ;
-		numberhlp::toDecimal( buffer.data(), result, precision10 ) ;
+		numberhlp::toDecimal( buffer.data(), result, sigFig10 ) ;
 
 		if ( ! debug ) return result ;
 
-		return stringcat( result, " [prec ", precision10, "(10), ", precision2, "(2), len ", result.length(), " ]" ) ;
+		return stringcat( result, " [sf ", sigFig10, "(10), ", sigFig2, "(2), len ", result.length(), " ]" ) ;
 	}
 
 } // end ns

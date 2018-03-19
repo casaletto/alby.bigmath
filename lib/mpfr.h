@@ -5,14 +5,14 @@ namespace alby::bigmath
 	class mpfr
 	{
 		public:
-			static const unsigned long precision10default = 100        ; // the default number of decimal digits required 
-			static const mpfr_rnd_t    roundingDefault    = MPFR_RNDN  ; // the default rounding
-			static       unsigned long precision10global               ;
-			static       bool  		   debug                           ;
+			static const unsigned long sigFig10default = 100        ; // the default number of decimal significant figures required 
+			static const mpfr_rnd_t    roundingDefault = MPFR_RNDN  ; // the default rounding
+			static       unsigned long sigFig10global               ;
+			static       bool  		   debug                        ;
 							
 		protected:
-			mpfr_t_wrapper* p           = nullptr            ;
-			mpfr_prec_t 	precision10 = precision10default ;
+			mpfr_t_wrapper* p        = nullptr         ;
+			mpfr_prec_t 	sigFig10 = sigFig10default ;
 
 			void init()    ;
 			void cleanup() ;
@@ -24,31 +24,31 @@ namespace alby::bigmath
 
 			mpfr()                             ;               
 			mpfr( const mpfr& rhs )            ;
-			mpfr( const mpfr& rhs, unsigned long thePrecision10 ) ;
+			mpfr( const mpfr& rhs, unsigned long theSigFig10 ) ;
 			
 			mpfr& operator=( const mpfr& rhs ) ;
 
 			mpfr( const char* )                ;
-			mpfr( const char*, unsigned long thePrecision10, numberBase base = numberBase::_10 ) ;
+			mpfr( const char*, unsigned long theSigFig10, numberBase base = numberBase::_10 ) ;
 
 			mpfr( const std::string& )           ;
-			mpfr( const std::string&, unsigned long thePrecision10, numberBase base = numberBase::_10 ) ;
+			mpfr( const std::string&, unsigned long theSigFig10, numberBase base = numberBase::_10 ) ;
 
-			unsigned long        getPrecisionLocal() ;
-			static unsigned long getPrecision()      ;
-			static void          setPrecision( unsigned long thePrecision10 ) ;
+			unsigned long        getSignificantFiguresLocal() ;
+			static unsigned long getSignificantFigures()      ;
+			static void          setSignificantFigures( unsigned long theSigFig10 ) ;
 			static bool          getDebug()             ;
 			static void          setDebug( bool debug ) ;
 
-			std::string toString() ;
-			operator std::string() ;
-			operator std::string() const ;
+			std::string toString()          ;
+			operator    std::string()       ;
+			operator    std::string() const ;
 
 			friend std::ostream& operator<<( std::ostream& os, const mpfr& mpfr ) ;
 
-			std::string toDecimal              ( bool fullPrecision = false ) ;
-			std::string toScientificNotation   ( bool fullPrecision = false ) ;
-			mpfr        roundSignificantFigures( unsigned long sf )           ;			
+			std::string toDecimal                ( bool allSigFig = false    ) ;
+			std::string toScientificNotation     ( bool allSigFig = false    ) ;
+			mpfr        roundToSignificantFigures( unsigned long theSigFig10 ) ; 
 
 			static std::string version()                ;
 			static std::string randomBytes( int bytes ) ; 
@@ -101,7 +101,7 @@ namespace alby::bigmath
 
 
 //ALBY TODO
-			mpfr roundDecimalPlaces     ( unsigned long dp ) ;
+			mpfr roundToDecimalPlaces     ( unsigned long theDecimalPlaces ) ;
 
 
 			void toFraction     (                       std::string numerator, std::string& denominator, bool reduce = true ) ;			

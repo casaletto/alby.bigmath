@@ -25,8 +25,8 @@
  
 namespace alby::bigmath 
 {
-	unsigned long mpfr::precision10global = mpfr::precision10default ;
-	bool          mpfr::debug             = false                    ;
+	unsigned long mpfr::sigFig10global = mpfr::sigFig10default ;
+	bool          mpfr::debug          = false                 ;
 
 	//----------------------------------------------------------------------------------------------------------------------
 
@@ -37,21 +37,21 @@ namespace alby::bigmath
 	}	
 
 	unsigned long 
-	mpfr::getPrecisionLocal()
+	mpfr::getSignificantFiguresLocal()
 	{
-		return precision10 ;	
+		return sigFig10 ;	
 	}
 
 	unsigned long 
-	mpfr::getPrecision()
+	mpfr::getSignificantFigures()
 	{
-		return precision10global ;	
+		return sigFig10global ;	
 	}
 
 	void 
-	mpfr::setPrecision( unsigned long prec10 )
+	mpfr::setSignificantFigures( unsigned long theSigFig10 )
 	{
-		precision10global = prec10 ;	
+		sigFig10global = theSigFig10 ;	
 	}
 
 	bool 
@@ -92,9 +92,9 @@ namespace alby::bigmath
 	{
 		init() ;
 
-		precision10 = precision10global ;
+		sigFig10 = sigFig10global ;
 
-		p = new mpfr_t_wrapper( precision10 ) ; // default 0
+		p = new mpfr_t_wrapper( sigFig10 ) ; // default 0
 	}
 
 	mpfr::mpfr( const mpfr& rhs ) // copy constr
@@ -104,15 +104,15 @@ namespace alby::bigmath
 		*this = rhs ;
 	}
 
-	mpfr::mpfr( const mpfr& rhs, unsigned long thePrecision10 ) // constr
+	mpfr::mpfr( const mpfr& rhs, unsigned long theSigFig10 ) // constr
 	{
 		init() ;
 
-		precision10 = thePrecision10 ;
+		sigFig10 = theSigFig10 ;
 
-		p = new mpfr_t_wrapper( precision10 ) ;
+		p = new mpfr_t_wrapper( sigFig10 ) ;
 
-		auto temp = const_cast<mpfr*>( &rhs )->roundSignificantFigures( precision10 ) ; // round to required sig figs, need to make this call const
+		auto temp = const_cast<mpfr*>( &rhs )->roundToSignificantFigures( sigFig10 ) ; // round to required sig figs, need to make this call const
 		auto str = temp.toScientificNotation() ;
 
 		mpfr_set_str( deref(*this), str.c_str(), 10, roundingDefault ) ; 	
@@ -126,9 +126,9 @@ namespace alby::bigmath
 			cleanup() ;
 			init()    ;
 
-			precision10 = rhs.precision10 ;
+			sigFig10 = rhs.sigFig10 ;
 
-			p = new mpfr_t_wrapper( precision10 ) ;
+			p = new mpfr_t_wrapper( sigFig10 ) ;
 
 			mpfr_set( deref(*this), deref(rhs), roundingDefault ) ; 
 		}
@@ -141,25 +141,25 @@ namespace alby::bigmath
 	{
 		init() ;
 
-		precision10 = precision10global ;
+		sigFig10 = sigFig10global ;
 
-		p = new mpfr_t_wrapper( precision10 ) ;
+		p = new mpfr_t_wrapper( sigFig10 ) ;
 
 		std::string strScientificNotation ;
-		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, precision10 ) ;
+		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
 
 		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
 		mpfr_set_str( deref(*this), strScientificNotation.c_str(), 10, roundingDefault ) ; 
 	}
 
-	mpfr::mpfr( const char* str, unsigned long thePrecision10, numberBase base ) // constr
+	mpfr::mpfr( const char* str, unsigned long theSigFig10, numberBase base ) // constr
 	{
 		init() ;
 
-		precision10 = thePrecision10 ;
+		sigFig10 = theSigFig10 ;
 
-		p = new mpfr_t_wrapper( precision10 ) ;
+		p = new mpfr_t_wrapper( sigFig10 ) ;
 
 		if ( base != numberBase::_10 )
 		{
@@ -168,7 +168,7 @@ namespace alby::bigmath
 		}
 
 		std::string strScientificNotation ;
-		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, precision10 ) ;
+		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
 
 		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
@@ -181,25 +181,25 @@ namespace alby::bigmath
 	{
 		init() ;
 
-		precision10 = precision10global ;
+		sigFig10 = sigFig10global ;
 
-		p = new mpfr_t_wrapper( precision10 ) ;
+		p = new mpfr_t_wrapper( sigFig10 ) ;
 
 		std::string strScientificNotation ;
-		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, precision10 ) ;
+		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
 
 		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
 		mpfr_set_str( deref(*this), strScientificNotation.c_str(), 10, roundingDefault ) ; 	
 	}
 
-	mpfr::mpfr( const std::string& str, unsigned long thePrecision10, alby::bigmath::numberBase base ) // constr
+	mpfr::mpfr( const std::string& str, unsigned long theSigFig10, numberBase base ) // constr
 	{
 		init() ;
 
-		precision10 = thePrecision10 ;
+		sigFig10 = theSigFig10 ;
 
-		p = new mpfr_t_wrapper( precision10 ) ;
+		p = new mpfr_t_wrapper( sigFig10 ) ;
 
 		if ( base != numberBase::_10 )
 		{
@@ -208,7 +208,7 @@ namespace alby::bigmath
 		}
 
 		std::string strScientificNotation ;
-		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, precision10 ) ;
+		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
 
 		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
@@ -218,9 +218,9 @@ namespace alby::bigmath
 	//----------------------------------------------------------------------------------------------------------------------
 
 	std::ostream& 
-	operator<<( std::ostream& os, const mpfr& mpfr1 )  
+	operator<<( std::ostream& os, const mpfr& rhs )  
 	{  
-		os << const_cast<mpfr*>( &mpfr1 )->toString() ;
+		os << const_cast<mpfr*>( &rhs )->toString() ;
 
 		return os ;   
 	}  
@@ -234,7 +234,7 @@ namespace alby::bigmath
 	mpfr::operator 
 	std::string() const
     {
-		return const_cast<mpfr*>(this)->toDecimal( false )  ;
+		return const_cast<mpfr*>( this )->toDecimal( false )  ;
     }
 
 	std::string 
@@ -249,14 +249,14 @@ namespace alby::bigmath
 	//----------------------------------------------------------------------------------------------------------------------
 
 	std::string 
-	mpfr::toDecimal( bool fullPrecision ) // default false, false means remove trailing zeros
+	mpfr::toDecimal( bool allSigFig ) // default false, false means remove trailing zeros
 	{
 		std::string result ;
 
 		auto str = p->toString() ;
 
-		if ( fullPrecision )
-			 numberhlp::toDecimal( str, result, precision10 ) ;
+		if ( allSigFig )
+			 numberhlp::toDecimal( str, result, sigFig10 ) ;
 		else
 			 numberhlp::toDecimal( str, result ) ;
 
@@ -264,14 +264,14 @@ namespace alby::bigmath
 	}
 
 	std::string 
-	mpfr::toScientificNotation( bool fullPrecision ) // default false, false means remove trailing zeros
+	mpfr::toScientificNotation( bool allSigFig ) // default false, false means remove trailing zeros
 	{
 		std::string result ;
 
 		auto str = p->toString() ;
 
-		if ( fullPrecision )
-			 numberhlp::toScientificNotation( str, result, precision10 ) ;
+		if ( allSigFig )
+			 numberhlp::toScientificNotation( str, result, sigFig10 ) ;
 		else
 			 numberhlp::toScientificNotation( str, result ) ;
 
@@ -279,21 +279,21 @@ namespace alby::bigmath
 	}
 
 	mpfr 
-	mpfr::roundSignificantFigures( unsigned long significantFigures ) 
+	mpfr::roundToSignificantFigures( unsigned long theSigFig10 ) 
 	{
 		auto str = p->toString() ;
 
 		std::string strResult ;
 
-		numberhlp::toScientificNotation( str, strResult, significantFigures ) ;
+		numberhlp::toScientificNotation( str, strResult, theSigFig10 ) ;
 
-		auto result = mpfr( strResult, precision10 ) ;
+		auto result = mpfr( strResult, sigFig10 ) ;
 
 		return result ;
 	}
 
 	mpfr 
-	mpfr::roundDecimalPlaces( unsigned long dp ) // return number rounded to x decimal places
+	mpfr::roundToDecimalPlaces( unsigned long theDecimalPlaces ) // return number rounded to x decimal places
 	{
 		return mpfr() ; //ALBY to do
 	}
@@ -303,21 +303,21 @@ namespace alby::bigmath
 	mpfr 
 	operator+( const mpfr& op1, const mpfr& op2 )  
 	{  
-		// same precision
-		if ( op1.precision10 == op2.precision10 )
+		// same sf
+		if ( op1.sigFig10 == op2.sigFig10 )
 		{
-			mpfr result( "0", op1.precision10 ) ;
+			mpfr result( "0", op1.sigFig10 ) ;
 
 			mpfr_add( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;			
 			return result ;   
 		}
 
-		// different precision, use max precision
-		auto maxprec = std::max( op1.precision10, op2.precision10 ) ;
+		// different sf, use max sf
+		auto maxsf = std::max( op1.sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0", maxprec ) ;
-		mpfr opA   ( op1, maxprec ) ; 
-		mpfr opB   ( op2, maxprec ) ; 
+		mpfr result( "0", maxsf ) ;
+		mpfr opA   ( op1, maxsf ) ; 
+		mpfr opB   ( op2, maxsf ) ; 
 
 		mpfr_add( mpfr::deref(result), mpfr::deref(opA), mpfr::deref(opB), mpfr::roundingDefault ) ;
 		return result ;   
@@ -326,19 +326,19 @@ namespace alby::bigmath
 	mpfr& 
 	mpfr::operator+=( const mpfr& op2 )  
 	{  
-		// same precision
-		if ( precision10 == op2.precision10 )
+		// same sf
+		if ( sigFig10 == op2.sigFig10 )
 		{
 			mpfr_add( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
 			return *this ;   
 		}
 
-		// different precision, use max precision
-		auto maxprec = std::max( precision10, op2.precision10 ) ;
+		// different sf, use max sf
+		auto maxsf = std::max( sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0",   maxprec ) ;
-		mpfr opA   ( *this, maxprec ) ; 
-		mpfr opB   ( op2,   maxprec ) ; 
+		mpfr result( "0",   maxsf ) ;
+		mpfr opA   ( *this, maxsf ) ; 
+		mpfr opB   ( op2,   maxsf ) ; 
 
 		mpfr_add( mpfr::deref(result), mpfr::deref(opA), mpfr::deref(opB), roundingDefault ) ;
 
@@ -349,7 +349,7 @@ namespace alby::bigmath
 	mpfr 
 	operator-( const mpfr& op1, const mpfr& op2 )  
 	{  
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 
 		mpfr result( op1 ) ; 
 		
@@ -361,7 +361,7 @@ namespace alby::bigmath
 	mpfr& 
 	mpfr::operator-=( const mpfr& op2 )  
 	{  
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 
 		mpfr_sub( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
 
@@ -371,7 +371,7 @@ namespace alby::bigmath
 	mpfr 
 	operator*( const mpfr& op1, const mpfr& op2 )  
 	{  
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 
 		mpfr result( op1 ) ; 
 		
@@ -383,7 +383,7 @@ namespace alby::bigmath
 	mpfr& 
 	mpfr::operator*=( const mpfr& op2 )  
 	{  
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 
 		mpfr_mul( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
 
@@ -393,7 +393,7 @@ namespace alby::bigmath
 	mpfr 
 	operator/( const mpfr& op1, const mpfr& op2 )  
 	{  
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 
 		mpfr result( op1 ) ; 
 		
@@ -405,7 +405,7 @@ namespace alby::bigmath
 	mpfr& 
 	mpfr::operator/=( const mpfr& op2 )  
 	{  
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 
 		mpfr_div( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
 
@@ -415,7 +415,7 @@ namespace alby::bigmath
 	mpfr 
 	operator^( const mpfr& op1, const mpfr& op2 )  
 	{  
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 
 		mpfr result( op1 ) ;
 		
@@ -427,7 +427,7 @@ namespace alby::bigmath
 	mpfr& 
 	mpfr::operator^=( const mpfr& op2 )  
 	{  
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr_pow( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
 
@@ -477,7 +477,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::sin()  
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
@@ -489,7 +489,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::cos()  
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 
 		mpfr result( *this ) ; 
 
@@ -501,7 +501,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::tan()  
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
@@ -515,7 +515,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::pi()  
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 
 		mpfr result( *this ) ; 
 
@@ -527,11 +527,11 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::e()  
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
-		mpfr one( "1", precision10 ) ; 
+		mpfr one( "1", sigFig10 ) ; 
 
 		mpfr_exp( deref(result), deref(one), roundingDefault ) ;
 
@@ -543,9 +543,9 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::neg()  
 	{ 
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
-		mpfr minusone( "-1", precision10 ) ; 
+		mpfr minusone( "-1", sigFig10 ) ; 
 
 		return *this * minusone ;  
 	}
@@ -553,9 +553,9 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::inv()  
 	{ 
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
-		mpfr one( "1", precision10 ) ; 
+		mpfr one( "1", sigFig10 ) ; 
 
 		return one / *this ;   
 	}
@@ -563,7 +563,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::abs()  
 	{ 
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
@@ -577,7 +577,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::exp() 
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
@@ -589,7 +589,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::log() 
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
@@ -601,7 +601,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::log2() 
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
@@ -613,7 +613,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::log10() 
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
@@ -627,11 +627,11 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::pow2() // 2 ^ this
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
-		mpfr two( "2", precision10 ) ; 
+		mpfr two( "2", sigFig10 ) ; 
 
 		mpfr_pow( deref(result), deref(two), deref(*this), roundingDefault ) ;
 
@@ -641,11 +641,11 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::pow10() // 10 ^ this
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
-		mpfr ten( "10", precision10 ) ; 
+		mpfr ten( "10", sigFig10 ) ; 
 
 		mpfr_pow( deref(result), deref(ten), deref(*this), roundingDefault ) ;
 
@@ -655,11 +655,11 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::root( const mpfr& op1 ) // the op1-th root of this
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
-		mpfr one( "1", precision10 ) ; 
+		mpfr one( "1", sigFig10 ) ; 
 
 		mpfr index = one / op1 ;
 
@@ -671,9 +671,9 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::sqrt() // square root
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
-		mpfr two( "2", precision10 ) ; 
+		mpfr two( "2", sigFig10 ) ; 
 
 		return root( two ) ;
 	}
@@ -681,7 +681,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::fact() // factorial n!
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
@@ -697,7 +697,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::ceil() 
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
@@ -709,7 +709,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::floor() 
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 		
 		mpfr result( *this ) ; 
 
@@ -721,7 +721,7 @@ namespace alby::bigmath
 	mpfr 
 	mpfr::trunc() 
 	{
-//ALBY FIX ME PRECISION
+//ALBY FIX ME sf
 
 		mpfr result( *this ) ; 
 

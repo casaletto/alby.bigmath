@@ -2,7 +2,7 @@
 backlog
 ---------------------------------------------------------------------
 
-change "precision" to "significantFigures"
+change "sf" to "significantFigures"
 
 
 -------------------------------------------------
@@ -13,12 +13,12 @@ change "precision" to "significantFigures"
 
 ------- ++++ FIX THIS all operators like operator+
 
-// PRECISION IS THE MAX PRECISION OF THE OPERANDS INVOLVED
+// sf IS THE MAX sf OF THE OPERANDS INVOLVED
 
 // fix 	operator+( const mpfr& op1, const mpfr& op2 )  et al 
 
-// when i add / mult / whatever numbers,  what precision do i use ?
-// test that precision comes from the lhs, maybe ???
+// when i add / mult / whatever numbers,  what sf do i use ?
+// test that sf comes from the lhs, maybe ???
 
 // eg, we cant have the situation where adding the same two numbers in different ways produces differnet results:
 
@@ -27,11 +27,11 @@ change "precision" to "significantFigures"
 
 // fix this test
 ERROR:
-a14               -12.345678900000000000000000000000000000000000 [prec 44(10) 180(2)]
-a15               -12.345                                        [prec 5(10) 50(2)]
+a14               -12.345678900000000000000000000000000000000000 [sf 44(10) 180(2)]
+a15               -12.345                                        [sf 5(10) 50(2)]
 
-a16 = a14 + a15 = -24.691357799999995792313711717724800109863281 [prec 44(10) 180(2)]
-a17 = a15 + a14 = -24.691                                        [prec 5(10) 50(2)]
+a16 = a14 + a15 = -24.691357799999995792313711717724800109863281 [sf 44(10) 180(2)]
+a17 = a15 + a14 = -24.691                                        [sf 5(10) 50(2)]
 
 
 ----------------------------------------------------------------------
@@ -196,10 +196,10 @@ void print_number(int* myInt) {
 ###########################################################################################
 
 
-done
+done//ALBY
 ---------------------------------------------------------------------
-
-// global precision
+sf
+// global sf
 // global rounding
 // test a base 16 number
 // test a base 2 number
@@ -223,7 +223,7 @@ done
 
 // handle mpfr( "1E10" ) if base 10
 
-// change name precison to sifnificantFigures ??? no, changed name to local and global
+// change name sf to sifnificantFigures ??? no, changed name to local and global
 
 
 ---------------------------------------------------------------
@@ -232,10 +232,10 @@ done
 
 ---------------------------------------------------
 
-// change precision  to # of significant decimal digits
+// change sf  to # of significant decimal digits
 . Add 10 or more bin digits to sig decimal digits for extra x decimal places
 
-binary precision = log2( power( 10, decimal sigdigs)) + 20
+binary sf = log2( power( 10, decimal sigdigs)) + 20
 
 * factorial
 * sqrt
@@ -275,9 +275,9 @@ change to vector  tostring
 		//os << str ;
 
 // cahnge to 
-static const mpfr_prec_t precisionDefault = (mpfr_prec_t) 100 
+static const mpfr_sf_t psfDefault = (mpfr_sf_t) 100 
 // to
-static const unsigned long precision10default = 100 ;
+static const unsigned long sfn10default = 100 ;
 
 // maths operations should throw an exextion if the number cant be represebted
 
@@ -292,7 +292,7 @@ BUG
 need to implement mpfr:roundSignificantFigures 
 fix in 
 
-	mpfr::mpfr( const mpfr& rhs, unsigned long thePrecision10 ) // constr
+	mpfr::mpfr( const mpfr& rhs, unsigned long theisf10 ) // constr
 
 
 
@@ -319,16 +319,16 @@ fix in
 	std::cout << "g = " << g << std::endl ;
 	std::cout << "h = " << h << std::endl ;
 
-c      = +2.0234000000000000000 [prec 20(10), 100(2), len 22 ]
-d      = +3.12340000000000000000000000000 [prec 30(10), 133(2), len 32 ]
-c + d  = +5.14680000000000000000000000000 [prec 30(10), 133(2), len 32 ]
-d + c  = +5.14680000000000000000000000000 [prec 30(10), 133(2), len 32 ]
-c = +7.17020000000000000000000000000 [prec 30(10), 133(2), len 32 ]
-d = +5.14680000000000000000000000000 [prec 30(10), 133(2), len 32 ]
-e = +7.17 [prec 3(10), 43(2), len 5 ]
-f = +5.15 [prec 3(10), 43(2), len 5 ]
-g = +7.2 [prec 2(10), 40(2), len 4 ]
-h = +5.2 [prec 2(10), 40(2), len 4 ]           <==== BUG !!!!
+c      = +2.0234000000000000000 [sf 20(10), 100(2), len 22 ]
+d      = +3.12340000000000000000000000000 [sf 30(10), 133(2), len 32 ]
+c + d  = +5.14680000000000000000000000000 [sf 30(10), 133(2), len 32 ]
+d + c  = +5.14680000000000000000000000000 [sf 30(10), 133(2), len 32 ]
+c = +7.17020000000000000000000000000 [sf 30(10), 133(2), len 32 ]
+d = +5.14680000000000000000000000000 [sf 30(10), 133(2), len 32 ]
+e = +7.17 [sf 3(10), 43(2), len 5 ]
+f = +5.15 [sf 3(10), 43(2), len 5 ]
+g = +7.2 [sf 2(10), 40(2), len 4 ]
+h = +5.2 [sf 2(10), 40(2), len 4 ]           <==== BUG !!!!
 
 
 get rid of baseX constructir - convert to enum

@@ -6,21 +6,21 @@ namespace alby::bigmath
 	{
 		protected:
 			mpfr_t        			   x           ;
-			unsigned long 			   precision10 ;
-			unsigned long  			   precision2  ;
+			unsigned long 			   sigFig10    ;
+			unsigned long  			   sigFig2     ;
 			static unsigned long 	   objectCount ;
 
-			static const unsigned long extraPrecision10 = 10 ; // ten extra decimal place to mitigate rounding errors
+			static const unsigned long extraSigFig10 = 10 ; // ten extra decimal place to mitigate rounding errors
 
 		public:
 			virtual ~mpfr_t_wrapper() ;
-			mpfr_t_wrapper( unsigned long precision10 ) ;
+			mpfr_t_wrapper( unsigned long theSigFig10 ) ;
 
-			mpfr_t* 				get()                           			   ;
-			unsigned long 			getPrecision10()               				   ;
-			unsigned long 			getPrecision2()                			  	   ;
-			static unsigned long 	getObjectCount()             				   ;
-			static unsigned long 	calcPrecision2( unsigned long thePrecision10 ) ;
+			mpfr_t* 				get()                     ;
+			unsigned long 			getSignificantFigures10() ;
+			unsigned long 			getSignificantFigures2()  ;
+			static unsigned long 	getObjectCount()          ;
+			static unsigned long 	calcSignificantFigures2( unsigned long theSigFig10 ) ;
 
 			mpfr_t_wrapper( const mpfr_t_wrapper& rhs )            = delete ; // do not copy these objects
 			mpfr_t_wrapper& operator=( const mpfr_t_wrapper& rhs ) = delete ;
