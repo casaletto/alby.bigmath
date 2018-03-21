@@ -263,6 +263,14 @@ namespace alby::bigmath
 	}
 
 	std::string
+	stringhlp::substr( const std::string& str, unsigned long startPos, unsigned long chars )
+	{
+		auto str1 = substr( str, startPos ) ;
+
+		return left( str1, chars ) ;
+	}
+
+	std::string
 	stringhlp::printf( unsigned long bytes, const std::string& format, ... )
 	{
   		va_list args ;

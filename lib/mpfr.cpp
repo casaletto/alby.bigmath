@@ -146,7 +146,7 @@ namespace alby::bigmath
 		p = new mpfr_t_wrapper( sigFig10 ) ;
 
 		std::string strScientificNotation ;
-		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
+		auto ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
 
 		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
@@ -168,7 +168,7 @@ namespace alby::bigmath
 		}
 
 		std::string strScientificNotation ;
-		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
+		auto ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
 
 		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
@@ -186,7 +186,7 @@ namespace alby::bigmath
 		p = new mpfr_t_wrapper( sigFig10 ) ;
 
 		std::string strScientificNotation ;
-		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
+		auto ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
 
 		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
@@ -208,7 +208,7 @@ namespace alby::bigmath
 		}
 
 		std::string strScientificNotation ;
-		bool ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
+		auto ok = numberhlp::toScientificNotation( str, strScientificNotation, sigFig10 ) ;
 
 		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
@@ -278,24 +278,57 @@ namespace alby::bigmath
 		return result ;
 	}
 
+	std::string 
+	mpfr::toSignificantFigures( unsigned long theSigFig10 ) 
+	{
+		auto t = roundToSignificantFigures( theSigFig10 ) ;
+
+		auto str = t.toScientificNotation() ;
+
+		std::string strResult ;
+		auto ok = numberhlp::scientificNotationExtend( str, strResult, theSigFig10 ) ;
+
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
+
+		return strResult ;
+	}
+
 	mpfr 
 	mpfr::roundToSignificantFigures( unsigned long theSigFig10 ) 
 	{
 		auto str = p->toString() ;
 
 		std::string strResult ;
+		auto ok = numberhlp::toScientificNotation( str, strResult, theSigFig10 ) ;
 
-		numberhlp::toScientificNotation( str, strResult, theSigFig10 ) ;
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
 		auto result = mpfr( strResult, sigFig10 ) ;
 
 		return result ;
 	}
 
-	mpfr 
-	mpfr::roundToDecimalPlaces( unsigned long theDecimalPlaces ) // return number rounded to x decimal places
+	std::string 
+	mpfr::toDecimalPlaces( unsigned long theDecimalPlaces ) 
 	{
-		return mpfr() ; //ALBY to do
+		auto str = p->toString() ;
+
+		std::string strResult ;
+		auto ok = numberhlp::decimalPlacesExtend( str, strResult, theDecimalPlaces ) ;
+
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
+
+		return strResult ;
+	}
+
+	mpfr 
+	mpfr::roundToDecimalPlaces( unsigned long theDecimalPlaces ) 
+	{
+		auto str = toDecimalPlaces( theDecimalPlaces ) ;
+
+		mpfr result( str, sigFig10 ) ;
+
+		return result ;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------

@@ -154,6 +154,111 @@ namespace alby::bigmath
 	}
 
 	bool
+	numberhlp::decimalPlacesExtend
+	( 
+		const std::string& strNumber, 
+		std::string&       strDecimal,
+		unsigned long 	   decimalPlaces	
+	) 
+	{
+		// add / remove decimal places as required
+		// assumption is that the number passed in is a decimal, not a scientific
+		// this function does approriate rounding
+
+		// split the number
+		// regex
+		std::string decimalSign  ; 
+		std::string decimal      ;      
+		std::string	fraction     ;      
+		std::string	exponentSign ; 
+		std::string exponent     ;     
+
+		auto ok = regex
+		( 
+			strNumber, 
+			decimalSign, 
+			decimal, 
+			fraction, 
+			exponentSign, 
+			exponent 
+		) ;
+
+		if ( ! ok ) return false ;
+
+		auto fraction1 = fraction + std::string( decimalPlaces + 1, '0' ) ;
+		auto fraction2 = stringhlp::left( fraction1, decimalPlaces ) ;
+
+		auto roundingDigit = stringhlp::substr( fraction1, fraction2.length(), 1 ) ;
+
+		// do the actual rounding
+		std::string rounded ;
+		bool        carry   ;
+
+		auto number  = decimal + fraction2 ;
+		roundNumber( number, roundingDigit, rounded, carry ) ;
+
+		auto fraction3 = stringhlp::substr( rounded, decimal.length() ) ;
+		fraction3      = stringhlp::left( fraction3, decimalPlaces ) ;
+
+		if ( fraction3.length() == 0 ) 
+		     fraction3 = "0" ;
+
+		auto decimal2 = stringhlp::left( rounded, decimal.length() ) ;
+		if ( carry )
+			 decimal2 = "1" + decimal2 ;
+
+		strDecimal = decimalSign + decimal2 + "." +  fraction3 ;
+		return true ; 
+	}
+
+	bool
+	numberhlp::scientificNotationExtend
+	( 
+		const std::string& strNumber, 
+		std::string&       strScientificNotation,
+		unsigned long 	   significantFigures	
+	) 
+	{
+		// add significant digits as required
+		// assumption is that the number passed in is a scientific , not a decimal
+		// this function does not do rounding
+
+		strScientificNotation = strNumber ;
+
+		if ( significantFigures < 1 ) return true ;
+
+		// split the number
+		// regex
+		std::string decimalSign  ; 
+		std::string decimal      ;      
+		std::string	fraction     ;      
+		std::string	exponentSign ; 
+		std::string exponent     ;     
+
+		auto ok = regex
+		( 
+			strNumber, 
+			decimalSign, 
+			decimal, 
+			fraction, 
+			exponentSign, 
+			exponent 
+		) ;
+
+		if ( ! ok ) return false ;
+
+		long sf     = 1 + fraction.length() ;
+		long sfReqd = significantFigures - sf ;
+
+		if ( sfReqd < 1 ) return true ;
+
+		auto fraction1 = fraction + std::string( sfReqd, '0' ) ;
+
+		strScientificNotation = decimalSign + decimal + "." + fraction1 + "E" + exponentSign + exponent ;	
+		return true ; 
+	}
+
+	bool
 	numberhlp::regex
 	( 
 		const std::string& 	strNumber, 

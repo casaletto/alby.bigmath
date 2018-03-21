@@ -2,7 +2,34 @@
 backlog
 ---------------------------------------------------------------------
 
-change "sf" to "significantFigures"
+
+std::string
+	mpfr::roundToDecimalPlaces( long theDecimalPlaces ) // return number rounded to x dp
+
+std::string
+	mpfr::roundToSignificantDigits( ulong sf ) // return number rounded to x sf
+
+
+
+
+
+mpfr roundDecimalPlaces     ( unsigned long dp ) ; 
+mpfr roundSignificantFigures( unsigned long sf ) ;
+
+
+
+
+
+
+
+NO - the below is a consequence of the above
+string mprf::toDecimalPlaces( x ) ;                  
+// round to n dp
+
+NO - the below is a consequence of the above
+string mprf::toSignificantFigures( x ) ;             
+. Round function to x dp
+// rounding to x dp 0.5 goes up
 
 
 -------------------------------------------------
@@ -35,21 +62,6 @@ a17 = a15 + a14 = -24.691                                        [sf 5(10) 50(2)
 
 
 ----------------------------------------------------------------------
-2.
-
-mpfr roundDecimalPlaces     ( unsigned long dp ) ; // can be -ne number  // 1.29456e23  1dp -->  1.3E23,    0 dp ==> 1.0E23
-mpfr roundSignificantFigures( unsigned long sf ) ;		// 2sf => 1.3e23	
-
-
-NO - the below is a consequence of the above
-string mprf::toDecimalPlaces( x ) ;                  
-// round to n dp
-
-NO - the below is a consequence of the above
-string mprf::toSignificantFigures( x ) ;             
-. Round function to x dp
-// rounding to x dp 0.5 goes up
-
 
 -----------------------------------------------------------------------
 3.
@@ -332,6 +344,8 @@ h = +5.2 [sf 2(10), 40(2), len 4 ]           <==== BUG !!!!
 
 
 get rid of baseX constructir - convert to enum
+
+change "sf" to "significantFigures"
 
 
 ################################################################################################

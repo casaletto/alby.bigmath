@@ -46,9 +46,14 @@ namespace alby::bigmath
 
 			friend std::ostream& operator<<( std::ostream& os, const mpfr& mpfr ) ;
 
-			std::string toDecimal                ( bool allSigFig = false    ) ;
-			std::string toScientificNotation     ( bool allSigFig = false    ) ;
-			mpfr        roundToSignificantFigures( unsigned long theSigFig10 ) ; 
+			std::string toDecimal                ( bool allSigFig = false         ) ;
+			std::string toScientificNotation     ( bool allSigFig = false         ) ;
+
+			mpfr        roundToDecimalPlaces     ( unsigned long theDecimalPlaces ) ;
+			std::string toDecimalPlaces          ( unsigned long theDecimalPlaces ) ;
+
+			mpfr        roundToSignificantFigures( unsigned long theSigFig10      ) ; 
+			std::string toSignificantFigures	 ( unsigned long theSigFig10      ) ;  
 
 			static std::string version()                ;
 			static std::string randomBytes( int bytes ) ; 
@@ -98,10 +103,6 @@ namespace alby::bigmath
 			mpfr floor() 					; // floor
 			mpfr trunc() 					; // trunc towards 0
 
-
-
-//ALBY TODO
-			mpfr roundToDecimalPlaces     ( unsigned long theDecimalPlaces ) ;
 
 
 			void toFraction     (                       std::string numerator, std::string& denominator, bool reduce = true ) ;			
