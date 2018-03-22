@@ -38,18 +38,16 @@ int main( void )
 	try
 	{
 		std::cout << abm::mpfr::version()   << std::endl ;		
-		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY fix me
+		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY random fix me
 
 		example1() ;
 		doMpfrMath0() ;
 		doMpfrMathRound() ;
-
-return 0; //ALBY
-
 		doMpfrMath1() ;
 		doMpfrMathtoCanonical() ;
 		doMpfrMathtoSigFig() ;
 		roundToSignificantDigits() ;
+
 	}
 	catch( const std::exception& ex )
 	{
@@ -119,40 +117,43 @@ void doMpfrMath0()
 	abm::mpfr a( "2.0234" ) ;
 	abm::mpfr b( "3.1234" ) ;
 
-	std::cout << a << std::endl ;
-	std::cout << b << std::endl ;
-	std::cout << a + b << std::endl ;
+	std::cout << a << ", " << a.toFraction() << std::endl ;
+	std::cout << b << ", " << b.toFraction() << std::endl ;
+	std::cout << a + b << ", " << (a+ b).toFraction() << std::endl ;
 	std::cout << b + a << std::endl ;
 
 	b += a  ; 
-	std::cout << b << std::endl ;
+	std::cout << b << ", " << b.toFraction() << std::endl ;
 
 	abm::mpfr c( "2.0234", 20 ) ;
 	abm::mpfr d( "3.1234", 30 ) ;
 
 	std::cout << "c      = " << c << std::endl ;
 	std::cout << "d      = " << d << std::endl ;
-	std::cout << "c + d  = " << (c + d) << std::endl ;
-	std::cout << "d + c  = " << (d + c) << std::endl ;
+	std::cout << "c + d  = " << (c + d) << ", " << (c + d).toFraction() <<  std::endl ;
+	std::cout << "d + c  = " << (d + c) << ", " << (d + c).toFraction() << std::endl ;
 
 	d += c  ; 
 	c += d  ; 
-	std::cout << "c = " << c << std::endl ;
-	std::cout << "d = " << d << std::endl ;
+	std::cout << "c = " << c << ", " << c.toFraction() << std::endl ;
+	std::cout << "d = " << d << ", " << d.toFraction() << std::endl ;
 
 	abm::mpfr e( c, 3 ) ;
 	abm::mpfr f( d, 3 ) ;
-	std::cout << "e = " << e << std::endl ;
-	std::cout << "f = " << f << std::endl ;
+	std::cout << "e = " << e << ", " << e.toFraction() << std::endl ;
+	std::cout << "f = " << f << ", " << f.toFraction() << std::endl ;
 
 	abm::mpfr g( c, 2 ) ;
 	abm::mpfr h( d, 2 ) ;
-	std::cout << "g = " << g << std::endl ;
-	std::cout << "h = " << h << std::endl ;
+	std::cout << "g = " << g << ", " << g.toFraction() <<  std::endl ;
+	std::cout << "h = " << h << ", " << h.toFraction() << std::endl ;
 }
 
 void doMpfrMathRound()
 {
+	std::string numer ;
+	std::string denom ;
+	
 	abm::mpfr::setDebug( false )   ; 
 	abm::mpfr::setSignificantFigures( 30 ) ; 
 
@@ -165,15 +166,17 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
+
+
 		}
 	}
-
-
-
-
-
 	{
 		abm::mpfr c( "-987654321.123456789", 30 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -183,8 +186,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+			
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -196,8 +204,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -209,8 +222,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -222,8 +240,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -235,8 +258,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -248,8 +276,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -261,8 +294,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -274,8 +312,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -287,8 +330,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -300,8 +348,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -313,8 +366,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -326,8 +384,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -339,8 +402,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -352,8 +420,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -365,8 +438,13 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 	{
@@ -378,8 +456,31 @@ void doMpfrMathRound()
 		{
 			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
 			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
 			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
-			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
+		}
+	}
+	{
+		abm::mpfr c( "-2.71828459045e-10", 15 ) ;
+		std::cout << "---------------------------------------------" << std::endl ;
+		std::cout << c << std::endl ;
+		std::cout << "---------------------------------------------" << std::endl ;
+		for ( long x = 20 ; x >= 0 ; x-- )
+		{
+			std::cout << abm::stringcat( "dp round ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     ( x ) ) << std::endl ;
+			std::cout << abm::stringcat( "dp tostr ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.toDecimalPlaces          ( x ) ) << std::endl ;			
+			std::cout << abm::stringcat( "dp fract ", abm::stringhlp::printf( 20, "%02d", x ), " dp --> ", c.roundToDecimalPlaces     (x).toFraction() ) << std::endl  << std::endl;
+			std::cout << abm::stringcat( "sf round ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures( x ) ) << std::endl ;
+			std::cout << abm::stringcat( "sf tostr ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.toSignificantFigures     ( x ) ) << std::endl  ;
+
+			c.roundToSignificantFigures(x).toFraction( numer, denom ) ; 
+			std::cout << "[" << numer << "] [" << denom << "]" << std::endl ;
+			std::cout << abm::stringcat( "sf fract ", abm::stringhlp::printf( 20, "%02d", x ), " sf --> ", c.roundToSignificantFigures(x).toFraction() ) << std::endl << std::endl ;
 		}
 	}
 }

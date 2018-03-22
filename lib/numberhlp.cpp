@@ -162,7 +162,7 @@ namespace alby::bigmath
 	) 
 	{
 		// add / remove decimal places as required
-		// assumption is that the number passed in is a decimal, not a scientific
+		// assumption is that the number passed in is a decimal, not a scientific, and is well formed
 		// this function does approriate rounding
 
 		// split the number
@@ -207,7 +207,13 @@ namespace alby::bigmath
 		if ( carry )
 			 decimal2 = "1" + decimal2 ;
 
+
+		auto isZero = ( decimal2 == "0" ) && ( stringhlp::positionOfNot( fraction3 , "0") < 0 ) ; // is the number all zero's ?
+		if ( isZero )
+			 decimalSign = "+" ;
+
 		strDecimal = decimalSign + decimal2 + "." +  fraction3 ;
+
 		return true ; 
 	}
 
@@ -220,7 +226,7 @@ namespace alby::bigmath
 	) 
 	{
 		// add significant digits as required
-		// assumption is that the number passed in is a scientific , not a decimal
+		// assumption is that the number passed in is a scientific , not a decimal, and is well formed 
 		// this function does not do rounding
 
 		strScientificNotation = strNumber ;
@@ -256,6 +262,57 @@ namespace alby::bigmath
 
 		strScientificNotation = decimalSign + decimal + "." + fraction1 + "E" + exponentSign + exponent ;	
 		return true ; 
+	}
+
+	bool
+	numberhlp::toNumeratorDenominator
+	( 
+		const std::string& 	strNumber, 
+		std::string& 		strNumerator, 
+		std::string& 		strDenominator 
+	) 
+	{
+		// assumption is that the number passed in is a decimal, not a scientific, and is well formed 
+		
+		strNumerator    = "" ;
+		strDenominator  = "" ;
+
+		// split the number
+		// regex
+		std::string decimalSign  ; 
+		std::string decimal      ;      
+		std::string	fraction     ;      
+		std::string	exponentSign ; 
+		std::string exponent     ;     
+
+		auto ok = regex
+		( 
+			strNumber, 
+			decimalSign, 
+			decimal, 
+			fraction, 
+			exponentSign, 
+			exponent 
+		) ;
+
+		if ( ! ok ) return false ;
+
+		if ( decimal + "." + fraction == "0.0" )
+		{
+			strNumerator   = "+0" ;
+			strDenominator = "+1"  ;
+			return true ;
+		}
+
+		strNumerator = decimal + fraction ;
+		strNumerator = stringhlp::ltrim( strNumerator, "0" ) ;
+		if ( strNumerator.length() == 0 )
+			 strNumerator = "0" ;
+
+		strNumerator   = decimalSign + strNumerator ;
+		strDenominator = "+1" + std::string( fraction.length(), '0' ) ;
+
+		return true ;
 	}
 
 	bool

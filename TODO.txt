@@ -2,35 +2,27 @@
 backlog
 ---------------------------------------------------------------------
 
+// function to convert to rational numertaor / denominator, reduced to lcm/gcf
 
-std::string
-	mpfr::roundToDecimalPlaces( long theDecimalPlaces ) // return number rounded to x dp
+void toFraction     (                       std::string numerator, std::string& denominator, bool reduce = true ) ;			
 
-std::string
-	mpfr::roundToSignificantDigits( ulong sf ) // return number rounded to x sf
+-314 / -100 
+-157 / -50
 
+Function: void mpz_gcd (mpz_t rop, const mpz_t op1, const mpz_t op2)
 
-
-
-
-mpfr roundDecimalPlaces     ( unsigned long dp ) ; 
-mpfr roundSignificantFigures( unsigned long sf ) ;
+    Set rop to the greatest common divisor of op1 and op2. 
 
 
+mpz_t integ;
+  mpz_init (integ);
+  …
+  mpz_add (integ, …);
+  …
+  mpz_sub (integ, …);
 
-
-
-
-
-NO - the below is a consequence of the above
-string mprf::toDecimalPlaces( x ) ;                  
-// round to n dp
-
-NO - the below is a consequence of the above
-string mprf::toSignificantFigures( x ) ;             
-. Round function to x dp
-// rounding to x dp 0.5 goes up
-
+  /* Unless the program is about to exit, do ... */
+  mpz_clear (integ);
 
 -------------------------------------------------
 
@@ -66,35 +58,6 @@ a17 = a15 + a14 = -24.691                                        [sf 5(10) 50(2)
 -----------------------------------------------------------------------
 3.
 
-
-// function to convert to rational numertaor / denominator, reduced to lcm/gcf
-
-void toFraction     (                       std::string numerator, std::string& denominator, bool reduce = true ) ;			
-void toMixedFraction(  ... ) 
-
-
-To proper / improper fraction ( bool reduce)
-
--3 +14/+100
--3 7/+50
-
--314 / -100 
--157 / -50
-
-Function: void mpz_gcd (mpz_t rop, const mpz_t op1, const mpz_t op2)
-
-    Set rop to the greatest common divisor of op1 and op2. 
-
-
-mpz_t integ;
-  mpz_init (integ);
-  …
-  mpz_add (integ, …);
-  …
-  mpz_sub (integ, …);
-
-  /* Unless the program is about to exit, do ... */
-  mpz_clear (integ);
 
 -----------------------------------------------------------------------
 4. 
@@ -208,7 +171,7 @@ void print_number(int* myInt) {
 ###########################################################################################
 
 
-done//ALBY
+done
 ---------------------------------------------------------------------
 sf
 // global sf
@@ -346,6 +309,25 @@ h = +5.2 [sf 2(10), 40(2), len 4 ]           <==== BUG !!!!
 get rid of baseX constructir - convert to enum
 
 change "sf" to "significantFigures"
+
+
+
+std::string
+	mpfr::roundToDecimalPlaces( long theDecimalPlaces ) // return number rounded to x dp
+
+std::string
+	mpfr::roundToSignificantDigits( ulong sf ) // return number rounded to x sf
+
+
+
+
+
+mpfr roundDecimalPlaces     ( unsigned long dp ) ; 
+mpfr roundSignificantFigures( unsigned long sf ) ;
+
+NOT DOING void toMixedFraction(  ... ) 
+-3 +14/+100
+-3 7/+50
 
 
 ################################################################################################

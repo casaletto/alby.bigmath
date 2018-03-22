@@ -55,6 +55,9 @@ namespace alby::bigmath
 			mpfr        roundToSignificantFigures( unsigned long theSigFig10      ) ; 
 			std::string toSignificantFigures	 ( unsigned long theSigFig10      ) ;  
 
+			std::string toFraction( bool reduce = true ) ;			
+			std::string toFraction( std::string& numerator, std::string& denominator, bool reduce = true ) ;			
+
 			static std::string version()                ;
 			static std::string randomBytes( int bytes ) ; 
 
@@ -103,10 +106,6 @@ namespace alby::bigmath
 			mpfr floor() 					; // floor
 			mpfr trunc() 					; // trunc towards 0
 
-
-
-			void toFraction     (                       std::string numerator, std::string& denominator, bool reduce = true ) ;			
-			void toMixedFraction( std::string& integer, std::string numerator, std::string& denominator, bool reduce = true ) ;			
 
 			// gmp toGmp() ;			
 	} ;

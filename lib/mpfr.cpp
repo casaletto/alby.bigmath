@@ -331,6 +331,32 @@ namespace alby::bigmath
 		return result ;
 	}
 
+
+	std::string 
+	mpfr::toFraction( bool reduce ) 
+	{
+		std::string numerator   ;
+		std::string denominator ;
+
+		return toFraction( numerator, denominator, reduce ) ;
+	}	
+
+//ALBY here
+	std::string 
+	mpfr::toFraction( std::string& numerator, std::string& denominator, bool reduce ) 
+	{
+		auto str = toDecimal() ;
+
+		auto ok = numberhlp::toNumeratorDenominator( str, numerator, denominator ) ;
+
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
+
+		auto result = numerator + " / " + denominator ;
+
+		return result ;
+
+	}			
+
 	//----------------------------------------------------------------------------------------------------------------------
 
 	mpfr 
@@ -799,7 +825,7 @@ namespace alby::bigmath
 		buffer.resize( bytes ) ;
 		std::fill( buffer.begin(), buffer.end(), 0 ) ;
 
-		auto f = "/dev/urandom" ; //ALBY TO DO what if on windows ???
+		auto f = "/dev/urandom" ; //ALBY random  TO DO what if on windows ???
 		std::ifstream mystream( f, std::ios::in | std::ios_base::binary ) ;
 
 		mystream.seekg( 0, std::ios_base::beg ) ;
