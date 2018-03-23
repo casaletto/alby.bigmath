@@ -2,12 +2,32 @@
 backlog
 ---------------------------------------------------------------------
 
+
+
+// class mpq_t_wrapper
+
+mpq_t_wrapper
+mpfr::toMpq( std::string& numerator, std::string& denominator, bool reduce ) 
+{
+}
+
+
+std::string 
+mpfr::toFraction( std::string& numerator, std::string& denominator, bool reduce ) 
+{
+	return toMpq()->toSTring() ;
+}
+
+
+
+
 // function to convert to rational numertaor / denominator, reduced to lcm/gcf
 
 void toFraction     (                       std::string numerator, std::string& denominator, bool reduce = true ) ;			
 
 -314 / -100 
 -157 / -50
+
 
 Function: void mpz_gcd (mpz_t rop, const mpz_t op1, const mpz_t op2)
 
@@ -27,6 +47,9 @@ mpz_t integ;
 -------------------------------------------------
 
 
+fix version
+
+-------------------------------------------------
 
 1.
 

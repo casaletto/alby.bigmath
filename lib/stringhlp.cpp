@@ -81,6 +81,28 @@ namespace alby::bigmath
 		return rtrim( ltrim( str ) ) ;
 	}
 
+	std::string 
+	stringhlp::replace( const std::string& str, const std::string& find, const std::string& replace ) 
+	{
+		if ( str.empty()  ) return str ;
+		if ( find.empty() ) return str ;
+
+		auto str2 = str ;
+
+		auto pos = str2.find( find ) ;
+ 
+		while( true )
+		{
+			if ( pos == std::string::npos ) break ;
+	
+			str2.replace( pos, find.length(), replace ) ;
+
+			pos = str2.find( find, pos + find.length() ) ;
+		}
+
+		return str2 ;
+	}
+
 	std::vector<std::string> 
 	stringhlp::split( const std::string& str, char delimiter )
 	{

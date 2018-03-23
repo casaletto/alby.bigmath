@@ -342,6 +342,9 @@ namespace alby::bigmath
 	}	
 
 //ALBY here
+//ALBY TO DO put all this in a class
+//return mpq
+
 	std::string 
 	mpfr::toFraction( std::string& numerator, std::string& denominator, bool reduce ) 
 	{
@@ -351,10 +354,24 @@ namespace alby::bigmath
 
 		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
-		auto result = numerator + " / " + denominator ;
+		auto sign = stringhlp::left( numerator, 1 ) ;
+		if ( sign == "+" ) sign = "" ;
+		auto rational = sign + stringhlp::substr( numerator, 1 )  + "/" + stringhlp::substr( denominator, 1 ) ;
+
+		if ( ! reduce ) return rational ;
+
+		// reduce
+
+		//ALBY TO DO put all this in a class
+		mpq_t x ;
+		mpq_init( x ) ;
+		mpq_set_str( x, rational.c_str(), 10 ) ;
+ 		mpq_canonicalize( x ) ;
+
+		std::string result = mpq_get_str( nullptr, 10, x ) ;
+		mpq_clear( x ) ;
 
 		return result ;
-
 	}			
 
 	//----------------------------------------------------------------------------------------------------------------------
@@ -790,7 +807,28 @@ namespace alby::bigmath
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------
+/*
+3.8 Useful Macros and Constants
 
+Global Constant: const int mp_bits_per_limb
+
+    The number of bits per limb. 
+
+Macro: __GNU_MP_VERSION
+Macro: __GNU_MP_VERSION_MINOR
+Macro: __GNU_MP_VERSION_PATCHLEVEL
+
+    The major and minor GMP version, and patch level, respectively, as integers. For GMP i.j, these numbers will be i, j, and 0, respectively. For GMP i.j.k, these numbers will be i, j, and k, respectively. 
+
+Global Constant: const char * const gmp_version
+
+    The GMP version number, as a null-terminated string, in the form “i.j.k”. This release is "6.1.2". Note that the format “i.j” was used, before version 4.3.0, when k was zero. 
+
+Macro: __GMP_CC
+Macro: __GMP_CFLAGS
+
+    The compiler and compiler flags, respectively, used when compiling GMP, as strings. 
+*/	
 	std::string 
 	mpfr::version() 
 	{
