@@ -331,7 +331,6 @@ namespace alby::bigmath
 		return result ;
 	}
 
-
 	std::string 
 	mpfr::toFraction( bool reduce ) 
 	{
@@ -341,38 +340,58 @@ namespace alby::bigmath
 		return toFraction( numerator, denominator, reduce ) ;
 	}	
 
-//ALBY here
-//ALBY TO DO put all this in a class
-//return mpq
-
 	std::string 
-	mpfr::toFraction( std::string& numerator, std::string& denominator, bool reduce ) 
+	mpfr::toFraction( std::string& numerator, std::string& denominator, bool bReduce ) 
 	{
+		// return gmp compatibile fraction as string
+
 		auto str = toDecimal() ;
 
 		auto ok = numberhlp::toNumeratorDenominator( str, numerator, denominator ) ;
 
 		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
-		auto sign = stringhlp::left( numerator, 1 ) ;
-		if ( sign == "+" ) sign = "" ;
-		auto rational = sign + stringhlp::substr( numerator, 1 )  + "/" + stringhlp::substr( denominator, 1 ) ;
+		auto rational = numerator + "/" + stringhlp::substr( denominator, 1 ) ;
 
-		if ( ! reduce ) return rational ;
+		if ( ! bReduce ) return rational ;
 
-		// reduce
+		if ( stringhlp::startsWith( rational, "+" ) )
+			 rational = stringhlp::substr( rational, 1 ) ;
 
-		//ALBY TO DO put all this in a class
-		mpq_t x ;
-		mpq_init( x ) ;
-		mpq_set_str( x, rational.c_str(), 10 ) ;
- 		mpq_canonicalize( x ) ;
+		return reduce( rational ) ; 
+	}			
 
-		std::string result = mpq_get_str( nullptr, 10, x ) ;
-		mpq_clear( x ) ;
+	std::string 
+	mpfr::reduce( const std::string& rational )
+	{
+		// initialise mpq rational
+		mpq_t r ;
+		mpq_init( r ) ;
+
+		// set the value from a xxx/yyyy string
+		mpq_set_str( r, rational.c_str(), 10 ) ;
+
+		// do the actual reduction
+ 		mpq_canonicalize( r ) ;
+
+		// read the reduced value
+		auto p = mpq_get_str( nullptr, 10, r ) ;
+		std::string result = p ;
+
+		// free memory
+		void (*free)( void *, size_t ) ;
+		mp_get_memory_functions( nullptr, nullptr, &free ) ;
+		free( p, std::strlen( p ) + 1 ) ;
+
+		mpq_clear( r ) ;
+
+		auto sign = stringhlp::left( result, 1 ) ;
+
+		if ( sign != "-" ) 
+		     result = "+" + result ;
 
 		return result ;
-	}			
+	}
 
 	//----------------------------------------------------------------------------------------------------------------------
 

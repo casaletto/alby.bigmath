@@ -17,8 +17,9 @@ namespace alby::bigmath
 			void init()    ;
 			void cleanup() ;
 
-			static mpfr_t& deref( const mpfr& mpfr ) ; // get the important part of the wrapper, the actual mpfr_t
-
+			static mpfr_t& deref ( const mpfr& mpfr ) ; // get the important part of the wrapper, the actual mpfr_t
+			std::string    reduce( const std::string& rational ) ;
+	
 		public:
 			virtual ~mpfr() ;
 

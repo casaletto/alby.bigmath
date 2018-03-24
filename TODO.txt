@@ -2,52 +2,27 @@
 backlog
 ---------------------------------------------------------------------
 
+-----------------------------------------------------------------------
+5.
+
+// < > == >= <=  !=
 
 
-// class mpq_t_wrapper
+Function: int mpq_cmp (const mpq_t op1, const mpq_t op2)
+Function: int mpq_cmp_z (const mpq_t op1, const mpz_t op2)
+    Compare op1 and op2. Return a positive value if op1 > op2, zero if op1 = op2, and a negative value if op1 < op2.
+    To determine if two rationals are equal, mpq_equal is faster than mpq_cmp. 
 
-mpq_t_wrapper
-mpfr::toMpq( std::string& numerator, std::string& denominator, bool reduce ) 
-{
-}
-
-
-std::string 
-mpfr::toFraction( std::string& numerator, std::string& denominator, bool reduce ) 
-{
-	return toMpq()->toSTring() ;
-}
-
+Function: int mpq_equal (const mpq_t op1, const mpq_t op2)
+    Return non-zero if op1 and op2 are equal, zero if they are non-equal. Although mpq_cmp can be used for the same purpose, this function is much faster. 
 
 
 
-// function to convert to rational numertaor / denominator, reduced to lcm/gcf
-
-void toFraction     (                       std::string numerator, std::string& denominator, bool reduce = true ) ;			
-
--314 / -100 
--157 / -50
+---> conclusion: comapare as gmp rational <<-----
 
 
-Function: void mpz_gcd (mpz_t rop, const mpz_t op1, const mpz_t op2)
-
-    Set rop to the greatest common divisor of op1 and op2. 
 
 
-mpz_t integ;
-  mpz_init (integ);
-  …
-  mpz_add (integ, …);
-  …
-  mpz_sub (integ, …);
-
-  /* Unless the program is about to exit, do ... */
-  mpz_clear (integ);
-
--------------------------------------------------
-
-
-fix version
 
 -------------------------------------------------
 
@@ -76,41 +51,10 @@ a16 = a14 + a15 = -24.691357799999995792313711717724800109863281 [sf 44(10) 180(
 a17 = a15 + a14 = -24.691                                        [sf 5(10) 50(2)]
 
 
-----------------------------------------------------------------------
-
 -----------------------------------------------------------------------
-3.
 
 
------------------------------------------------------------------------
-4. 
-
-gmp raw toRational() ; / return gmp rational
-
-... Convert to rational, fix numerator, convert back to mpfr ?????
-
-later, return class
-
------------------------------------------------------------------------
-5.
-
-// < > == >= <=  !=
-
-
-
----> conclusion: comapare as gmp rational <<-----
-
-. Comparison functions need string comparision
-// 1a. normalist the numbers (this should be standard stuff) as two strings
-// 1a. strcmp  +a.aaaa == +aaaaa.aa
-// 1b. strcmp  -a.aaaa == -aaaaa.aa
-// equal, !=, are easy 
-// check sign first
-// 0.00001  vs 0.000002
-// 31.001  vs 3.1
-//             3.14 vs 3.140001  (6 dp to the right)
-//-> becomes   3140000.     vs   3140001.           
-// convert the number to numerator denom with same pow10 base , can just shift decimal point, then compare as gmp rationals. ????
+0. fix version
 
 
 -----------------------------------------------------------------------
@@ -120,7 +64,6 @@ later, return class
 
 // create function to random [0.0, 1)
 // mpfr_urandomb ( seed ??? )
-
 
 
 
@@ -188,6 +131,71 @@ void print_number(int* myInt) {
  make my own c++ class for gmp
 . Repeat pattern for gmp
 . Conversion between mrfp and gmp
+
+
+
+// class mpq_t_wrapper
+
+mpq_t_wrapper
+mpfr::toMpq( std::string& numerator, std::string& denominator, bool reduce ) 
+{
+}
+
+
+std::string 
+mpfr::toFraction( std::string& numerator, std::string& denominator, bool reduce ) 
+{
+	return toMpq()->toSTring() ;
+}
+4. 
+
+gmp raw toRational() ; / return gmp rational
+
+... Convert to rational, fix numerator, convert back to mpfr ?????
+
+later, return class
+
+
+--------------------
+gmp c++ fucntions
+
++ 
+- 
+/ 
+* 
+.abs
+.inv
+.neg
+comparison functions
+.toMpfr()
+
+
+mpq()                             ;               
+mpq( const mpq& rhs )            ;
+mpq& operator=( const mpq& rhs ) ;
+mpq( const char* )                ;
+mpq( const std::string& )           ;
+
+std::string toString()          ;
+operator    std::string()       ;
+operator    std::string() const ;
+
+friend std::ostream& operator<<( std::ostream& os, const mpq& mpq ) ;
+
+
+
+mpq( const mpfr& rhs )            ;
+
+// do i need, for mpfr: ???????????
+	mpq& operator=( const mpfr& rhs ) ;
+	operator    abm::mpfr()       ;
+??????????????? 
+
+
+need class 			
+mpq_t_wrapper* p        = nullptr         ;
+
+--------------------
 
 
 
@@ -351,6 +359,19 @@ mpfr roundSignificantFigures( unsigned long sf ) ;
 NOT DOING void toMixedFraction(  ... ) 
 -3 +14/+100
 -3 7/+50
+
+
+// function to convert to rational numertaor / denominator, reduced to lcm/gcf
+
+void toFraction     (                       std::string numerator, std::string& denominator, bool reduce = true ) ;			
+
+return gmp compatible toFraction
+
+-314/100 
+-157/50
+
+
+
 
 
 ################################################################################################

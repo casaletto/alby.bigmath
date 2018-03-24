@@ -43,9 +43,6 @@ int main( void )
 		example1() ;
 		doMpfrMath0() ;
 		doMpfrMathRound() ;
-
-return 0 ; //ALBY
-		
 		doMpfrMath1() ;
 		doMpfrMathtoCanonical() ;
 		doMpfrMathtoSigFig() ;
