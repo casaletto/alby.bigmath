@@ -26,6 +26,7 @@
 namespace abm = alby::bigmath ; 
 
 void doMpfrMathRound() ;
+void doMpfrMathCompare() ;
 void doMpfrMath0() ;
 void doMpfrMath1() ;
 void doMpfrMathtoCanonical() ;
@@ -42,6 +43,7 @@ int main( void )
 
 		example1() ;
 		doMpfrMath0() ;
+		doMpfrMathCompare() ;
 		doMpfrMathRound() ;
 		doMpfrMath1() ;
 		doMpfrMathtoCanonical() ;
@@ -147,6 +149,99 @@ void doMpfrMath0()
 	abm::mpfr h( d, 2 ) ;
 	std::cout << "g = " << g << ", " << g.toFraction() <<  std::endl ;
 	std::cout << "h = " << h << ", " << h.toFraction() << std::endl ;
+}
+
+void doMpfrMathCompare()
+{
+	abm::mpfr::setDebug( true )   ; 
+	abm::mpfr::setSignificantFigures( 10 ) ; 
+
+	abm::mpfr a( "2.0234" ) ; 
+	abm::mpfr b( "3.1234" ) ;
+	abm::mpfr c( "3.1234" ) ;
+	abm::mpfr d( "2.0234" ) ;
+	abm::mpfr e( "-3.1234" ) ;
+	abm::mpfr f( "0.00000000000000000009123456787" ) ;
+	abm::mpfr g( "0.00000000000000000009123456789" ) ;
+
+	abm::mpfr h( "1.2345678E-34", 8 ) ;
+	abm::mpfr i( "1.2345679E-50", 10 ) ;
+
+	abm::mpfr j( "9.2345678E-200", 10 ) ;
+	abm::mpfr k( "1.2345679E-100", 10 ) ;
+
+	std::cout << "-----------------------------------------------------------------" << std::endl ;
+	std::cout << a << "\t==\t" << b << "\t[" << std::boolalpha << ( a == b ) <<  std::endl ;
+	std::cout << a << "\t!=\t" << b << "\t[" << std::boolalpha << ( a != b ) <<  std::endl ;
+	std::cout << a << "\t> \t" << b << "\t[" << std::boolalpha << ( a >  b ) <<  std::endl ;
+	std::cout << a << "\t>=\t" << b << "\t[" << std::boolalpha << ( a >= b ) <<  std::endl ;
+	std::cout << a << "\t< \t" << b << "\t[" << std::boolalpha << ( a <  b ) <<  std::endl ;
+	std::cout << a << "\t<=\t" << b << "\t[" << std::boolalpha << ( a <= b ) <<  std::endl ;
+
+	std::cout << "-----------------------------------------------------------------" << std::endl ;
+	std::cout << b << "\t==\t" << b << "\t[" << std::boolalpha << ( b == b ) <<  std::endl ;
+	std::cout << b << "\t!=\t" << b << "\t[" << std::boolalpha << ( b != b ) <<  std::endl ;
+	std::cout << b << "\t> \t" << b << "\t[" << std::boolalpha << ( b >  b ) <<  std::endl ;
+	std::cout << b << "\t>=\t" << b << "\t[" << std::boolalpha << ( b >= b ) <<  std::endl ;
+	std::cout << b << "\t< \t" << b << "\t[" << std::boolalpha << ( b <  b ) <<  std::endl ;
+	std::cout << b << "\t<=\t" << b << "\t[" << std::boolalpha << ( b <= b ) <<  std::endl ;
+
+	std::cout << "-----------------------------------------------------------------" << std::endl ;	
+	std::cout << h.toScientificNotation() << "\t==\t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h == i ) <<  std::endl ;
+	std::cout << h.toScientificNotation() << "\t!=\t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h != i ) <<  std::endl ;
+	std::cout << h.toScientificNotation() << "\t> \t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h >  i ) <<  std::endl ;
+	std::cout << h.toScientificNotation() << "\t>=\t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h >= i ) <<  std::endl ;
+	std::cout << h.toScientificNotation() << "\t< \t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h <  i ) <<  std::endl ;
+	std::cout << h.toScientificNotation() << "\t<=\t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h <= i ) <<  std::endl ;
+
+	std::cout << "-----------------------------------------------------------------" << std::endl ;
+	std::cout << b << "\t==\t" << c << "\t[" << std::boolalpha << ( b == c ) <<  std::endl ;
+	std::cout << b << "\t!=\t" << c << "\t[" << std::boolalpha << ( b != c ) <<  std::endl ;
+	std::cout << b << "\t> \t" << c << "\t[" << std::boolalpha << ( b >  c ) <<  std::endl ;
+	std::cout << b << "\t>=\t" << c << "\t[" << std::boolalpha << ( b >= c ) <<  std::endl ;
+	std::cout << b << "\t< \t" << c << "\t[" << std::boolalpha << ( b <  c ) <<  std::endl ;
+	std::cout << b << "\t<=\t" << c << "\t[" << std::boolalpha << ( b <= c ) <<  std::endl ;
+
+	std::cout << "-----------------------------------------------------------------" << std::endl ;
+	std::cout << d << "\t==\t" << e << "\t[" << std::boolalpha << ( d == e ) <<  std::endl ;
+	std::cout << d << "\t!=\t" << e << "\t[" << std::boolalpha << ( d != e ) <<  std::endl ;
+	std::cout << d << "\t> \t" << e << "\t[" << std::boolalpha << ( d >  e ) <<  std::endl ;
+	std::cout << d << "\t>=\t" << e << "\t[" << std::boolalpha << ( d >= e ) <<  std::endl ;
+	std::cout << d << "\t< \t" << e << "\t[" << std::boolalpha << ( d <  e ) <<  std::endl ;
+	std::cout << d << "\t<=\t" << e << "\t[" << std::boolalpha << ( d <= e ) <<  std::endl ;
+
+	std::cout << "-----------------------------------------------------------------" << std::endl ;
+	std::cout << e << "\t==\t" << d << "\t[" << std::boolalpha << ( e == d ) <<  std::endl ;
+	std::cout << e << "\t!=\t" << d << "\t[" << std::boolalpha << ( e != d ) <<  std::endl ;
+	std::cout << e << "\t> \t" << d << "\t[" << std::boolalpha << ( e >  d ) <<  std::endl ;
+	std::cout << e << "\t>=\t" << d << "\t[" << std::boolalpha << ( e >= d ) <<  std::endl ;
+	std::cout << e << "\t< \t" << d << "\t[" << std::boolalpha << ( e <  d ) <<  std::endl ;
+	std::cout << e << "\t<=\t" << d << "\t[" << std::boolalpha << ( e <= d ) <<  std::endl ;
+
+	std::cout << "-----------------------------------------------------------------" << std::endl ;
+	std::cout << f << "\t==\t" << g << "\t[" << std::boolalpha << ( f == g ) <<  std::endl ;
+	std::cout << f << "\t!=\t" << g << "\t[" << std::boolalpha << ( f != g ) <<  std::endl ;
+	std::cout << f << "\t> \t" << g << "\t[" << std::boolalpha << ( f >  g ) <<  std::endl ;
+	std::cout << f << "\t>=\t" << g << "\t[" << std::boolalpha << ( f >= g ) <<  std::endl ;
+	std::cout << f << "\t< \t" << g << "\t[" << std::boolalpha << ( f <  g ) <<  std::endl ;
+	std::cout << f << "\t<=\t" << g << "\t[" << std::boolalpha << ( f <= g ) <<  std::endl ;
+
+	std::cout << "-----------------------------------------------------------------" << std::endl ;
+	std::cout << h.toScientificNotation() << "\t==\t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h == i ) <<  std::endl ;
+	std::cout << h.toScientificNotation() << "\t!=\t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h != i ) <<  std::endl ;
+	std::cout << h.toScientificNotation() << "\t> \t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h >  i ) <<  std::endl ;
+	std::cout << h.toScientificNotation() << "\t>=\t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h >= i ) <<  std::endl ;
+	std::cout << h.toScientificNotation() << "\t< \t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h <  i ) <<  std::endl ;
+	std::cout << h.toScientificNotation() << "\t<=\t" << i.toScientificNotation() << "\t[" << std::boolalpha << ( h <= i ) <<  std::endl ;
+
+	std::cout << "-----------------------------------------------------------------" << std::endl ;
+	std::cout << j.toScientificNotation() << "\t==\t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( j == k ) <<  std::endl ;
+	std::cout << j.toScientificNotation() << "\t!=\t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( j != k ) <<  std::endl ;
+	std::cout << j.toScientificNotation() << "\t> \t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( j >  k ) <<  std::endl ;
+	std::cout << j.toScientificNotation() << "\t>=\t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( j >= k ) <<  std::endl ;
+	std::cout << j.toScientificNotation() << "\t< \t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( j <  k ) <<  std::endl ;
+	std::cout << j.toScientificNotation() << "\t<=\t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( j <= k ) <<  std::endl ;
+
 }
 
 void doMpfrMathRound()

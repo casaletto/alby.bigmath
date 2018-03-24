@@ -123,6 +123,28 @@ void print_number(int* myInt) {
 }
 
 * put thest code in /test folder
+----------------------------------------------------------------------
+
+CORE DUMP
+
+
+	std::string 
+	mpfr::toDecimal( bool allSigFig ) // default false, false means remove trailing zeros
+
+
+	abm::mpfr j( "9.2345678E-20000000", 10 ) ;
+	abm::mpfr k( "1.2345679E-100000", 10 ) ;
+
+
+	std::cout << "1 -----------------------------------------------------------------" << std::endl ;
+	bool bb = k <= j ;
+	std::cout << "2 -----------------------------------------------------------------" << std::endl ;
+	std::cout << "k\t<= j\t" << std::boolalpha << bb <<  std::endl ;
+	std::cout << "3 -----------------------------------------------------------------" << std::endl ;
+
+
+
+
 
 -----------------------------------------------------------------------
 11.

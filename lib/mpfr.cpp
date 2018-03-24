@@ -334,6 +334,8 @@ namespace alby::bigmath
 	std::string 
 	mpfr::toFraction( bool reduce ) 
 	{
+		// return gmp compatibile fraction as string
+
 		std::string numerator   ;
 		std::string denominator ;
 
@@ -444,22 +446,46 @@ namespace alby::bigmath
 	mpfr 
 	operator-( const mpfr& op1, const mpfr& op2 )  
 	{  
-//ALBY FIX ME sf
+		// same sf
+		if ( op1.sigFig10 == op2.sigFig10 )
+		{
+			mpfr result( "0", op1.sigFig10 ) ;
 
-		mpfr result( op1 ) ; 
-		
+			mpfr_sub( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;
+			return result ;   
+		}
+
+		// different sf, use max sf
+		auto maxsf = std::max( op1.sigFig10, op2.sigFig10 ) ;
+
+		mpfr result( "0", maxsf ) ;
+		mpfr opA   ( op1, maxsf ) ; 
+		mpfr opB   ( op2, maxsf ) ; 
+
 		mpfr_sub( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;
-
 		return result ;   
 	}  
 
 	mpfr& 
 	mpfr::operator-=( const mpfr& op2 )  
 	{  
-//ALBY FIX ME sf
+		// same sf
+		if ( sigFig10 == op2.sigFig10 )
+		{
+			mpfr_sub( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
+			return *this ;   
+		}
+
+		// different sf, use max sf
+		auto maxsf = std::max( sigFig10, op2.sigFig10 ) ;
+
+		mpfr result( "0",   maxsf ) ;
+		mpfr opA   ( *this, maxsf ) ; 
+		mpfr opB   ( op2,   maxsf ) ; 
 
 		mpfr_sub( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
 
+		*this = result ;
 		return *this ;   
 	}  
 
@@ -531,40 +557,90 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
+	void
+	mpfr::compare( const mpfr& op1, const mpfr& op2, bool& equal, bool& moreThan, bool& lessThan ) 
+	{
+		equal    = false ;
+		moreThan = false ;
+		lessThan = false ;
+
+		auto result = op1 - op2 ;
+
+		equal    = result.toDecimal() == "+0.0"  ;
+		lessThan = stringhlp::left( result.toDecimal(), 1 ) == "-" ; 
+		moreThan = (! lessThan) && (! equal) ;
+	}
+
 	bool 
 	operator>( const mpfr& op1, const mpfr& op2 )  
 	{  
-		return true ;
+		auto equal    = false ;
+		auto moreThan = false ;
+		auto lessThan = false ;
+
+		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+
+		return moreThan ;
 	}
 
 	bool 
 	operator<( const mpfr& op1, const mpfr& op2 )  
 	{  
-		return true ;
+		auto equal    = false ;
+		auto moreThan = false ;
+		auto lessThan = false ;
+
+		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+
+		return lessThan ;
 	}
 
 	bool 
 	operator>=( const mpfr& op1, const mpfr& op2 )  
 	{  
-		return true ;
+		auto equal    = false ;
+		auto moreThan = false ;
+		auto lessThan = false ;
+
+		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+
+		return moreThan || equal ;
 	}
 
 	bool 
 	operator<=( const mpfr& op1, const mpfr& op2 )  
 	{  
-		return true ;
+		auto equal    = false ;
+		auto moreThan = false ;
+		auto lessThan = false ;
+
+		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+
+		return lessThan || equal ;
 	}
 
 	bool 
 	operator==( const mpfr& op1, const mpfr& op2 )  
 	{  
-		return true ;
+		auto equal    = false ;
+		auto moreThan = false ;
+		auto lessThan = false ;
+
+		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+
+		return equal ;
 	}
 
 	bool 
 	operator!=( const mpfr& op1, const mpfr& op2 )  
 	{  
-		return true ;
+		auto equal    = false ;
+		auto moreThan = false ;
+		auto lessThan = false ;
+
+		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+
+		return ! equal ;
 	}
 	
 	//----------------------------------------------------------------------------------------------------------------------
