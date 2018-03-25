@@ -43,6 +43,7 @@ int main( void )
 		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY random fix me
 
 		example1() ;
+		doMpfrNumberParse() ;
 		doMpfrMath0() ;
 		doMpfrMathCompare() ;
 		doMpfrMathRound() ;
@@ -50,7 +51,6 @@ int main( void )
 		doMpfrMathtoCanonical() ;
 		doMpfrMathtoSigFig() ;
 		roundToSignificantDigits() ;
-		doMpfrNumberParse() ;
 	}
 	catch( const std::exception& ex )
 	{
@@ -207,39 +207,179 @@ void doMpfrMath0()
 	abm::mpfr::setDebug( true )   ; 
 	abm::mpfr::setSignificantFigures( 10 ) ; 
 
-	abm::mpfr a( "2.0234" ) ;
-	abm::mpfr b( "3.1234" ) ;
+	{
+		std::cout << "-----------------------------------------------------------------" << std::endl ;
+		abm::mpfr a( "2.0234" , 20 ) ;
+		abm::mpfr b( "3.12345", 20 ) ;
 
-	std::cout << a << ", " << a.toFraction() << std::endl ;
-	std::cout << b << ", " << b.toFraction() << std::endl ;
-	std::cout << a + b << ", " << (a+ b).toFraction() << std::endl ;
-	std::cout << b + a << std::endl ;
+		std::cout << a << ", " << a.toFraction() << std::endl ;
+		std::cout << b << ", " << b.toFraction() << std::endl ;
+		std::cout << a + b << ", " << (a+ b).toFraction() << std::endl ;
+		std::cout << b + a << std::endl ;
 
-	b += a  ; 
-	std::cout << b << ", " << b.toFraction() << std::endl ;
+		b += a  ; 
+		std::cout << b << ", " << b.toFraction() << std::endl ;
 
-	abm::mpfr c( "2.0234", 20 ) ;
-	abm::mpfr d( "3.1234", 30 ) ;
+		std::cout << "-----------------------------------------------------------------" << std::endl ;
+		abm::mpfr c( "2.0234" , 20 ) ;
+		abm::mpfr d( "3.12345", 30 ) ;
 
-	std::cout << "c      = " << c << std::endl ;
-	std::cout << "d      = " << d << std::endl ;
-	std::cout << "c + d  = " << (c + d) << ", " << (c + d).toFraction() <<  std::endl ;
-	std::cout << "d + c  = " << (d + c) << ", " << (d + c).toFraction() << std::endl ;
+		std::cout << "c      = " << c << std::endl ;
+		std::cout << "d      = " << d << std::endl ;
+		std::cout << "c + d  = " << (c + d) << ", " << (c + d).toFraction() <<  std::endl ;
+		std::cout << "d + c  = " << (d + c) << ", " << (d + c).toFraction() << std::endl ;
 
-	d += c  ; 
-	c += d  ; 
-	std::cout << "c = " << c << ", " << c.toFraction() << std::endl ;
-	std::cout << "d = " << d << ", " << d.toFraction() << std::endl ;
+		d += c  ; 
+		c += d  ; 
+		std::cout << "c      = " << c << ", " << c.toFraction() << std::endl ;
+		std::cout << "d      = " << d << ", " << d.toFraction() << std::endl ;
 
-	abm::mpfr e( c, 3 ) ;
-	abm::mpfr f( d, 3 ) ;
-	std::cout << "e = " << e << ", " << e.toFraction() << std::endl ;
-	std::cout << "f = " << f << ", " << f.toFraction() << std::endl ;
+		abm::mpfr e( c, 3 ) ;
+		abm::mpfr f( d, 3 ) ;
+		std::cout << "e      = " << e << ", " << e.toFraction() << std::endl ;
+		std::cout << "f      = " << f << ", " << f.toFraction() << std::endl ;
 
-	abm::mpfr g( c, 2 ) ;
-	abm::mpfr h( d, 2 ) ;
-	std::cout << "g = " << g << ", " << g.toFraction() <<  std::endl ;
-	std::cout << "h = " << h << ", " << h.toFraction() << std::endl ;
+		abm::mpfr g( c, 2 ) ;
+		abm::mpfr h( d, 2 ) ;
+		std::cout << "g      = " << g << ", " << g.toFraction() <<  std::endl ;
+		std::cout << "h      = " << h << ", " << h.toFraction() << std::endl ;
+		std::cout << "==================================================================" << std::endl ;
+	}
+
+	{
+		abm::mpfr i( "2.0234",  20 ) ;
+		abm::mpfr j( "3.12345", 20 ) ;
+
+		std::cout << "i      = " << i << std::endl ;
+		std::cout << "j      = " << j << std::endl ;
+		std::cout << "i - j  = " << (i - j) << ", " << (i - j).toFraction() << std::endl ;
+		std::cout << "j - i  = " << (j - i) << ", " << (j - i).toFraction() << std::endl ;
+
+		j -= i  ; 
+		std::cout << "j      = " << j << ", " << j.toFraction() << std::endl ;
+
+		i -= j  ; 
+		std::cout << "i      = " << i << ", " << i.toFraction() << std::endl ;
+		std::cout << "-----------------------------------------------------------------" << std::endl ;
+
+		i = abm::mpfr( "2.0234",  20 ) ;
+		j = abm::mpfr( "3.12345", 30 ) ;
+
+		std::cout << "i      = " << i << std::endl ;
+		std::cout << "j      = " << j << std::endl ;
+		std::cout << "i - j  = " << (i - j) << ", " << (i - j).toFraction() << std::endl ;
+		std::cout << "j - i  = " << (j - i) << ", " << (j - i).toFraction() << std::endl ;
+
+		j -= i  ; 
+		std::cout << "j      = " << j << ", " << j.toFraction() << std::endl ;
+
+		i -= j  ; 
+		std::cout << "i      = " << i << ", " << i.toFraction() << std::endl ;
+		std::cout << "==================================================================" << std::endl ;
+	}
+
+	{
+		abm::mpfr k( "2.0234" , 20 ) ;
+		abm::mpfr l( "3.12345", 20 ) ;
+
+		std::cout << "k      = " << k << std::endl ;
+		std::cout << "l      = " << l << std::endl ;
+		std::cout << "k * l  = " << (k * l) << ", " << (k * l).toFraction() << std::endl ;
+		std::cout << "l * k  = " << (l * k) << ", " << (l * k).toFraction() << std::endl ;
+
+		k *= l  ; 
+		std::cout << "k      = " << k << ", " << k.toFraction() << std::endl ;
+
+		l *= k  ; 
+		std::cout << "l      = " << l << ", " << l.toFraction() << std::endl ;
+		std::cout << "-----------------------------------------------------------------" << std::endl ;
+
+		k = abm::mpfr( "2.0234",  20 ) ;
+		l = abm::mpfr( "3.12345", 30 ) ;
+
+		std::cout << "k      = " << k << std::endl ;
+		std::cout << "l      = " << l << std::endl ;
+		std::cout << "k * l  = " << (k * l) << ", " << (k * l).toFraction() << std::endl ;
+		std::cout << "l * k  = " << (l * k) << ", " << (l * k).toFraction() << std::endl ;
+
+		k *= l  ; 
+		std::cout << "k      = " << k << ", " << k.toFraction() << std::endl ;
+
+		l *= k  ; 
+		std::cout << "l      = " << l << ", " << l.toFraction() << std::endl ;
+		std::cout << "==================================================================" << std::endl ;
+	}
+
+	{
+		abm::mpfr k( "2.0234" , 20 ) ;
+		abm::mpfr l( "3.12345", 20 ) ;
+
+		std::cout << "k      = " << k << std::endl ;
+		std::cout << "l      = " << l << std::endl ;
+		std::cout << "k / l  = " << (k / l) << ", " << (k / l).toFraction() << std::endl ;
+		std::cout << "l / k  = " << (l / k) << ", " << (l / k).toFraction() << std::endl ;
+
+		k /= l  ; 
+		std::cout << "k      = " << k << ", " << k.toFraction() << std::endl ;
+
+		l /= k  ; 
+		std::cout << "l      = " << l << ", " << l.toFraction() << std::endl ;
+		std::cout << "-----------------------------------------------------------------" << std::endl ;
+
+		k = abm::mpfr( "2.0234",  20 ) ;
+		l = abm::mpfr( "3.12345", 30 ) ;
+
+		std::cout << "k      = " << k << std::endl ;
+		std::cout << "l      = " << l << std::endl ;
+		std::cout << "k / l  = " << (k / l) << ", " << (k / l).toFraction() << std::endl ;
+		std::cout << "l / k  = " << (l / k) << ", " << (l / k).toFraction() << std::endl ;
+
+		k /= l  ; 
+		std::cout << "k      = " << k << ", " << k.toFraction() << std::endl ;
+
+		l /= k  ; 
+		std::cout << "l      = " << l << ", " << l.toFraction() << std::endl ;
+
+		std::cout << "==================================================================" << std::endl ;
+	}
+
+	{
+		abm::mpfr k( "2.0234" , 20 ) ;
+		abm::mpfr l( "3.12345", 20 ) ;
+
+		std::cout << "k      = " << k << std::endl ;
+		std::cout << "l      = " << l << std::endl ;
+		std::cout << "k ^ l  = " << (k ^ l) << ", " << (k ^ l).toFraction() << std::endl ;
+		std::cout << "l ^ k  = " << (l ^ k) << ", " << (l ^ k).toFraction() << std::endl ;
+
+		k ^= l  ; 
+		std::cout << "k      = " << k << ", " << k.toFraction() << std::endl ;
+
+		l ^= k  ; 
+		std::cout << "l      = " << l << ", " << l.toFraction() << std::endl ;
+		std::cout << "-----------------------------------------------------------------" << std::endl ;
+
+		k = abm::mpfr( "2.0234",  20 ) ;
+		l = abm::mpfr( "3.12345", 30 ) ;
+
+		std::cout << "k      = " << k << std::endl ;
+		std::cout << "l      = " << l << std::endl ;
+		std::cout << "k ^ l  = " << (k ^ l) << ", " << (k ^ l).toFraction() << std::endl ;
+		std::cout << "l ^ k  = " << (l ^ k) << ", " << (l ^ k).toFraction() << std::endl ;
+
+		k ^= l  ; 
+		std::cout << "k      = " << k << ", " << k.toFraction() << std::endl ;
+
+		l ^= k  ; 
+		std::cout << "l      = " << l << ", " << l.toFraction() << std::endl ;
+
+		std::cout << "==================================================================" << std::endl ;
+	}
+
+
+//ALBY
+
+
 }
 
 void doMpfrMathCompare() 

@@ -483,7 +483,7 @@ namespace alby::bigmath
 		mpfr opA   ( *this, maxsf ) ; 
 		mpfr opB   ( op2,   maxsf ) ; 
 
-		mpfr_sub( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
+		mpfr_sub( mpfr::deref(result), mpfr::deref(opA), mpfr::deref(opB), roundingDefault ) ;
 
 		*this = result ;
 		return *this ;   
@@ -492,66 +492,138 @@ namespace alby::bigmath
 	mpfr 
 	operator*( const mpfr& op1, const mpfr& op2 )  
 	{  
-//ALBY FIX ME sf
+		// same sf
+		if ( op1.sigFig10 == op2.sigFig10 )
+		{
+			mpfr result( "0", op1.sigFig10 ) ;
 
-		mpfr result( op1 ) ; 
+			mpfr_mul( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;
+			return result ;   
+		}
+
+		// different sf, use max sf
+		auto maxsf = std::max( op1.sigFig10, op2.sigFig10 ) ;
+
+		mpfr result( "0", maxsf ) ;
+		mpfr opA   ( op1, maxsf ) ; 
+		mpfr opB   ( op2, maxsf ) ; 
 		
 		mpfr_mul( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;
-
 		return result ;   
 	}  
 
 	mpfr& 
 	mpfr::operator*=( const mpfr& op2 )  
 	{  
-//ALBY FIX ME sf
+		// same sf
+		if ( sigFig10 == op2.sigFig10 )
+		{
+			mpfr_mul( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
+			return *this ;   
+		}
 
-		mpfr_mul( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
+		// different sf, use max sf
+		auto maxsf = std::max( sigFig10, op2.sigFig10 ) ;
 
+		mpfr result( "0",   maxsf ) ;
+		mpfr opA   ( *this, maxsf ) ; 
+		mpfr opB   ( op2,   maxsf ) ; 
+
+		mpfr_mul( mpfr::deref(result), mpfr::deref(opA), mpfr::deref(opB), roundingDefault ) ;
+
+		*this = result ;
 		return *this ;   
 	}  
 
 	mpfr 
 	operator/( const mpfr& op1, const mpfr& op2 )  
 	{  
-//ALBY FIX ME sf
+		// same sf
+		if ( op1.sigFig10 == op2.sigFig10 )
+		{
+			mpfr result( "0", op1.sigFig10 ) ;
 
-		mpfr result( op1 ) ; 
+			mpfr_div( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;
+			return result ;   
+		}
+
+		// different sf, use max sf
+		auto maxsf = std::max( op1.sigFig10, op2.sigFig10 ) ;
+
+		mpfr result( "0", maxsf ) ;
+		mpfr opA   ( op1, maxsf ) ; 
+		mpfr opB   ( op2, maxsf ) ; 
 		
 		mpfr_div( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;
-
 		return result ;   
 	}  
 
 	mpfr& 
 	mpfr::operator/=( const mpfr& op2 )  
 	{  
-//ALBY FIX ME sf
+		// same sf
+		if ( sigFig10 == op2.sigFig10 )
+		{
+			mpfr_div( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
+			return *this ;   
+		}
 
-		mpfr_div( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
+		// different sf, use max sf
+		auto maxsf = std::max( sigFig10, op2.sigFig10 ) ;
 
+		mpfr result( "0",   maxsf ) ;
+		mpfr opA   ( *this, maxsf ) ; 
+		mpfr opB   ( op2,   maxsf ) ; 
+
+		mpfr_div( mpfr::deref(result), mpfr::deref(opA), mpfr::deref(opB), roundingDefault ) ;
+
+		*this = result ;
 		return *this ;   
 	}  
 
 	mpfr 
 	operator^( const mpfr& op1, const mpfr& op2 )  
 	{  
-//ALBY FIX ME sf
+		// same sf
+		if ( op1.sigFig10 == op2.sigFig10 )
+		{
+			mpfr result( "0", op1.sigFig10 ) ;
 
-		mpfr result( op1 ) ;
+			mpfr_pow( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;
+			return result ;   
+		}
+
+		// different sf, use max sf
+		auto maxsf = std::max( op1.sigFig10, op2.sigFig10 ) ;
+
+		mpfr result( "0", maxsf ) ;
+		mpfr opA   ( op1, maxsf ) ; 
+		mpfr opB   ( op2, maxsf ) ; 
 		
 		mpfr_pow( mpfr::deref(result), mpfr::deref(op1), mpfr::deref(op2), mpfr::roundingDefault ) ;
-
 		return result ;   
 	}  
 
 	mpfr& 
 	mpfr::operator^=( const mpfr& op2 )  
 	{  
-//ALBY FIX ME sf
-		
-		mpfr_pow( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
+		// same sf
+		if ( sigFig10 == op2.sigFig10 )
+		{
+			mpfr_pow( mpfr::deref(*this), mpfr::deref(*this), mpfr::deref(op2), roundingDefault ) ;
+			return *this ;   
+		}
 
+		// different sf, use max sf
+		auto maxsf = std::max( sigFig10, op2.sigFig10 ) ;
+
+		mpfr result( "0",   maxsf ) ;
+		mpfr opA   ( *this, maxsf ) ; 
+		mpfr opB   ( op2,   maxsf ) ; 
+
+		mpfr_pow( mpfr::deref(result), mpfr::deref(opA), mpfr::deref(opB), roundingDefault ) ;
+
+		*this = result ;
 		return *this ;   
 	}  
 
