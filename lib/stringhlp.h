@@ -31,10 +31,10 @@ namespace alby::bigmath
 			static std::string toUpper( const std::string& str ) ;
 			static std::string toLower( const std::string& str ) ;
 
-			static std::string left   ( const std::string& str, unsigned long chars    ) ;
-			static std::string right  ( const std::string& str, unsigned long chars    ) ;
-			static std::string substr ( const std::string& str, unsigned long startPos ) ;
-			static std::string substr ( const std::string& str, unsigned long startPos, unsigned long chars ) ;
+			static std::string left   ( const std::string& str, long chars    ) ;
+			static std::string right  ( const std::string& str, long chars    ) ;
+			static std::string substr ( const std::string& str, long startPos ) ;
+			static std::string substr ( const std::string& str, long startPos, long chars ) ;
 			static std::string reverse( const std::string& str ) ;
 
 			static std::string printf( unsigned long bytes, const std::string& format, ... ) ;

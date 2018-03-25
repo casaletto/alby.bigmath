@@ -245,11 +245,11 @@ namespace alby::bigmath
 	}
 
 	std::string
-	stringhlp::left( const std::string& str, unsigned long chars )
+	stringhlp::left( const std::string& str, long chars )
 	{
 		if ( str.empty() ) return str ;
 
-		if ( chars == 0 ) return "" ;
+		if ( chars <= 0 ) return "" ;
 
 		if ( chars >= str.length() ) return str ;
 
@@ -257,11 +257,11 @@ namespace alby::bigmath
 	}
 
 	std::string
-	stringhlp::right( const std::string& str, unsigned long chars )
+	stringhlp::right( const std::string& str, long chars )
 	{
 		if ( str.empty() ) return str ;
 
-		if ( chars == 0 ) return "" ;
+		if ( chars <= 0 ) return "" ;
 
 		if ( chars >= str.length() ) return str ;
 
@@ -269,7 +269,7 @@ namespace alby::bigmath
 	}
 
 	std::string
-	stringhlp::substr( const std::string& str, unsigned long startPos )
+	stringhlp::substr( const std::string& str, long startPos )
 	{
 		if ( str.empty() ) return str ;
 
@@ -285,7 +285,7 @@ namespace alby::bigmath
 	}
 
 	std::string
-	stringhlp::substr( const std::string& str, unsigned long startPos, unsigned long chars )
+	stringhlp::substr( const std::string& str, long startPos, long chars )
 	{
 		auto str1 = substr( str, startPos ) ;
 

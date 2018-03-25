@@ -15,9 +15,10 @@ namespace alby::bigmath
 			static bool scientificNotationExtend( const std::string& strNumber, std::string& strScientificNotation, unsigned long significantFigures     ) ; 
 			static bool decimalPlacesExtend     ( const std::string& strNumber, std::string& strDecimal,            unsigned long decimalPlaces          ) ; 
 			static bool	toNumeratorDenominator  ( const std::string& strNumber, std::string& strNumerator, std::string& strDenominator ) ;
+			static bool regex2					( const std::string& strNumber, std::string& decimalSign, std::string& decimal, std::string& fraction, std::string& exponentSign, std::string& exponent ) ;
 
 		protected:
-			static bool regex                   ( const std::string& strNumber, std::string& decimalSign, std::string& decimal, std::string& fraction, std::string& exponentSign, std::string& exponent ) ;
+			static bool regexOld                ( const std::string& strNumber, std::string& decimalSign, std::string& decimal, std::string& fraction, std::string& exponentSign, std::string& exponent ) ;
 			static void adjustScientificNotation( std::string& decimalSign, std::string& decimal, std::string& fraction, std::string& exponentSign, std::string& exponent ) ;
 			static bool	toScientificNotation    ( const std::string& strNumber, std::string& decimalSign, std::string& decimal, std::string& fraction, std::string& exponentSign, std::string& exponent, unsigned long significantFigures ) ;
 			static void toSignificantFigures    ( std::string& decimal, std::string& fraction, unsigned long significantFigures ) ;

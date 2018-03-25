@@ -25,6 +25,7 @@
 
 namespace abm = alby::bigmath ; 
 
+void doMpfrNumberParse() ;
 void doMpfrMathRound() ;
 void doMpfrMathCompare() ;
 void doMpfrMath0() ;
@@ -49,7 +50,7 @@ int main( void )
 		doMpfrMathtoCanonical() ;
 		doMpfrMathtoSigFig() ;
 		roundToSignificantDigits() ;
-
+		doMpfrNumberParse() ;
 	}
 	catch( const std::exception& ex )
 	{
@@ -60,7 +61,97 @@ int main( void )
 		std::cout << "EXCEPTION: ..." << std::endl ;
 	}
 	
-	return 0 ;
+	return 0 ;	
+}
+
+void doMpfrNumberParse()
+{
+	std::string decimalSign  ;
+	std::string decimal      ; 
+	std::string fraction     ; 
+	std::string exponentSign ;
+	std::string exponent     ;
+
+	std::vector<std::string> rng =
+	{
+		"3.14e34",
+		"-3.14e34",
+		"+3.14e34",
+		"3.14e+34",
+		"-3.14e+34",
+		"+3.14e+34",
+		"3.14e-34",
+		"-3.14e-34",
+		"+3.14e-34",
+		"3.14e0",
+		"-3.14e0",
+		"+3.14e0",
+		"3.14e+0",
+		"-3.14e+0",
+		"+3.14e+0",
+		"3.14e-0",
+		"-3.14e-0",
+		"+3.14e-0",
+		"3.14",
+		"-3.14",
+		"+3.14",
+		"3",
+		"-3",
+		"+3",
+		"0",
+		"-0",
+		"+0"
+		"0000000000.0000000000000",
+		"-000000000000.0000000",
+		"+0000000000.0000000000",
+		"0000000000.0000000000000e0000000",
+		"-000000000000.0000000e000000000000",
+		"+0000000000.0000000000e00000000000",
+		
+		"00000000001234560000000.000000000076543200000000e0000000000089765000000",
+		"+00000000001234560000000.000000000076543200000000e-0000000000089765000000",
+		"-00000000001234560000000.000000000076543200000000e+0000000000089765000000",
+
+		"00000000001234560000000.000000000076543200000000",
+		"+00000000001234560000000.000000000076543200000000",
+		"-00000000001234560000000.000000000076543200000000",
+
+		"0",
+		"000",
+		"00000000",
+		"00000e000000000000",
+	} ;
+
+	for ( auto& str : rng )
+	{
+		auto b = abm::numberhlp::regex2( str, decimalSign, decimal, fraction, exponentSign, exponent ) ;
+		std::cout << abm::stringcat( "[", str, "]\t\t\t\t--> ", (bool) b, " -->     {", decimalSign , "}  [", decimal, "].[", fraction, "]  E  {", exponentSign, "}  [", exponent, "]" ) <<  std::endl ;
+	} ;
+
+	rng =
+	{
+		"",
+		"fred",
+		"12345.678.",
+		"12345.678.1",
+		"12345....678.",
+		"12345....678....",
+		".0",
+		".",
+		"34e45.44",
+		"34e45.....44",
+		"   232356wq ",
+		"+3.14ee-0",
+		".1232",
+		".1232e232.22222",
+	} ;
+
+	for ( auto& str : rng )
+	{
+		auto b = abm::numberhlp::regex2( str, decimalSign, decimal, fraction, exponentSign, exponent ) ;
+		std::cout << abm::stringcat( "[", str, "]\t\t\t\t--> ", (bool) b, " -->     {", decimalSign , "}  [", decimal, "].[", fraction, "]  E  {", exponentSign, "}  [", exponent, "]" ) <<  std::endl ;
+	} ;
+
 }
 
 void example1()
@@ -151,7 +242,7 @@ void doMpfrMath0()
 	std::cout << "h = " << h << ", " << h.toFraction() << std::endl ;
 }
 
-void doMpfrMathCompare()
+void doMpfrMathCompare() 
 {
 	abm::mpfr::setDebug( true )   ; 
 	abm::mpfr::setSignificantFigures( 10 ) ; 
@@ -167,8 +258,8 @@ void doMpfrMathCompare()
 	abm::mpfr h( "1.2345678E-34", 8 ) ;
 	abm::mpfr i( "1.2345679E-50", 10 ) ;
 
-	abm::mpfr j( "9.2345678E-200", 10 ) ;
-	abm::mpfr k( "1.2345679E-100", 10 ) ;
+	abm::mpfr j( "9.2345678E-200001", 10 ) ; // smaller
+	abm::mpfr k( "1.2345679E-200000", 10 ) ; // bigger
 
 	std::cout << "-----------------------------------------------------------------" << std::endl ;
 	std::cout << a << "\t==\t" << b << "\t[" << std::boolalpha << ( a == b ) <<  std::endl ;
@@ -241,6 +332,22 @@ void doMpfrMathCompare()
 	std::cout << j.toScientificNotation() << "\t>=\t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( j >= k ) <<  std::endl ;
 	std::cout << j.toScientificNotation() << "\t< \t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( j <  k ) <<  std::endl ;
 	std::cout << j.toScientificNotation() << "\t<=\t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( j <= k ) <<  std::endl ;
+
+	std::cout << "-----------------------------------------------------------------" << std::endl ;
+	std::cout << k.toScientificNotation() << "\t==\t" << j.toScientificNotation() << "\t[" << std::boolalpha << ( k == j ) <<  std::endl ;
+	std::cout << k.toScientificNotation() << "\t!=\t" << j.toScientificNotation() << "\t[" << std::boolalpha << ( k != j ) <<  std::endl ;
+	std::cout << k.toScientificNotation() << "\t> \t" << j.toScientificNotation() << "\t[" << std::boolalpha << ( k >  j ) <<  std::endl ;
+	std::cout << k.toScientificNotation() << "\t>=\t" << j.toScientificNotation() << "\t[" << std::boolalpha << ( k >= j ) <<  std::endl ;
+	std::cout << k.toScientificNotation() << "\t< \t" << j.toScientificNotation() << "\t[" << std::boolalpha << ( k <  j ) <<  std::endl ;
+	std::cout << k.toScientificNotation() << "\t<=\t" << j.toScientificNotation() << "\t[" << std::boolalpha << ( k <= j ) <<  std::endl ;
+
+	std::cout << "-----------------------------------------------------------------" << std::endl ;
+	std::cout << k.toScientificNotation() << "\t==\t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( k == k ) <<  std::endl ;
+	std::cout << k.toScientificNotation() << "\t!=\t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( k != k ) <<  std::endl ;
+	std::cout << k.toScientificNotation() << "\t> \t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( k >  k ) <<  std::endl ;
+	std::cout << k.toScientificNotation() << "\t>=\t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( k >= k ) <<  std::endl ;
+	std::cout << k.toScientificNotation() << "\t< \t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( k <  k ) <<  std::endl ;
+	std::cout << k.toScientificNotation() << "\t<=\t" << k.toScientificNotation() << "\t[" << std::boolalpha << ( k <= k ) <<  std::endl ;
 
 }
 

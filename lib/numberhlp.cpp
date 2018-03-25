@@ -150,6 +150,7 @@ namespace alby::bigmath
 		) ;	
 
 		strDecimal = decimalSign + decimal + "." + fraction ;	
+
 		return true ;
 	}
 
@@ -173,7 +174,7 @@ namespace alby::bigmath
 		std::string	exponentSign ; 
 		std::string exponent     ;     
 
-		auto ok = regex
+		auto ok = regex2
 		( 
 			strNumber, 
 			decimalSign, 
@@ -241,7 +242,7 @@ namespace alby::bigmath
 		std::string	exponentSign ; 
 		std::string exponent     ;     
 
-		auto ok = regex
+		auto ok = regex2
 		( 
 			strNumber, 
 			decimalSign, 
@@ -285,7 +286,7 @@ namespace alby::bigmath
 		std::string	exponentSign ; 
 		std::string exponent     ;     
 
-		auto ok = regex
+		auto ok = regex2
 		( 
 			strNumber, 
 			decimalSign, 
@@ -313,70 +314,6 @@ namespace alby::bigmath
 		strDenominator = "+1" + std::string( fraction.length(), '0' ) ;
 
 		return true ;
-	}
-
-	bool
-	numberhlp::regex
-	( 
-		const std::string& 	strNumber, 
-		std::string& 		decimalSign, 
-		std::string& 		decimal, 
-		std::string& 		fraction, 
-		std::string& 		exponentSign,	 
-		std::string& 		exponent 
-	)
-	{
-		// return true if valid 
-		
-		decimalSign 	= "" ; 
-		decimal 		= "" ;
-		fraction 		= "" ; 
-		exponentSign	= "" ;	 
-		exponent 		= "" ; 
-
-		auto str = stringhlp::trim( strNumber ) ;
-		str = stringhlp::toUpper( str ) ;
-
-		static const char* expr = R"(^([+\-])?(\d+)(\.(\d+))?([eE]([+\-])?(\d+))?$)" ; // regex pattern for a number, eg 6.02e23
-
-		std::regex  regex( expr ) ;
-		std::smatch sm ;
-
-		// do the regex, return if no match, up to caller to throw an exception if required
-		auto matched = std::regex_match( str, sm, regex ) ; 
-
-		if ( ! matched ) return false ;
-
-		// 0 regex [-123456.12345678901234567890E+9876]
-		// 1 regex [-]
-		// 2 regex [123456]
-		// 3 regex [.12345678901234567890]
-		// 4 regex [12345678901234567890]
-		// 5 regex [E+9876]
-		// 6 regex [+]
-		// 7 regex [9876]
-
-		/// extract bits of the regex
-		decimalSign		= sm[1] ;
-		decimal			= sm[2] ;
-		fraction		= sm[4] ;
-		exponentSign	= sm[6] ;
-		exponent		= sm[7] ;
-
-		// remove leading zeros from decimal and exponent
-		// remove trailing zeros from fraction
-		decimal  = stringhlp::ltrim( decimal,  "0" ) ;
-		fraction = stringhlp::rtrim( fraction, "0" ) ;
-		exponent = stringhlp::ltrim( exponent, "0" ) ;
-
-		// defaults 
-		if ( decimalSign.empty()  ) decimalSign  = "+" ;
-		if ( decimal.empty()      ) decimal      = "0" ;
-		if ( fraction.empty()     )	fraction     = "0" ;
-		if ( exponentSign.empty() ) exponentSign = "+" ;
-		if ( exponent.empty()     ) exponent     = "0" ;
-		
-		return matched ;
 	}
 
 	void
@@ -487,7 +424,7 @@ namespace alby::bigmath
 		// return true if valid 
 
 		// convert the number to standard form 
-		auto ok = regex
+		auto ok = regex2
 		( 
 			strNumber, 
 			decimalSign, 
@@ -716,6 +653,201 @@ namespace alby::bigmath
 		strResult = stringhlp::reverse( strReverse ) ;
 		return true ; // rounding done 
 	}
+
+	// deprecated
+	// std::regex is buggy !!!
+	bool
+	numberhlp::regexOld
+	( 
+		const std::string& 	strNumber, 
+		std::string& 		decimalSign, 
+		std::string& 		decimal, 
+		std::string& 		fraction, 
+		std::string& 		exponentSign,	 
+		std::string& 		exponent 
+	)
+	{
+		// return true if valid 
+		
+		decimalSign 	= "" ; 
+		decimal 		= "" ;
+		fraction 		= "" ; 
+		exponentSign	= "" ;	 
+		exponent 		= "" ; 
+
+		auto str = stringhlp::trim( strNumber ) ;
+		str = stringhlp::toUpper( str ) ;
+
+		static const char* expr = R"(^([+\-])?(\d+)(\.(\d+))?([eE]([+\-])?(\d+))?$)" ; // regex pattern for a number, eg 6.02e23
+
+		std::regex  regex( expr ) ;
+		std::smatch sm ;
+
+		// do the regex, return if no match, up to caller to throw an exception if required
+		auto matched = std::regex_match( str, sm, regex ) ; 
+
+		if ( ! matched ) return false ;
+
+		// 0 regex [-123456.12345678901234567890E+9876]
+		// 1 regex [-]
+		// 2 regex [123456]
+		// 3 regex [.12345678901234567890]
+		// 4 regex [12345678901234567890]
+		// 5 regex [E+9876]
+		// 6 regex [+]
+		// 7 regex [9876]
+
+		/// extract bits of the regex
+		decimalSign		= sm[1] ;
+		decimal			= sm[2] ;
+		fraction		= sm[4] ;
+		exponentSign	= sm[6] ;
+		exponent		= sm[7] ;
+
+		// remove leading zeros from decimal and exponent
+		// remove trailing zeros from fraction
+		decimal  = stringhlp::ltrim( decimal,  "0" ) ;
+		fraction = stringhlp::rtrim( fraction, "0" ) ;
+		exponent = stringhlp::ltrim( exponent, "0" ) ;
+
+		// defaults 
+		if ( decimalSign.empty()  ) decimalSign  = "+" ;
+		if ( decimal.empty()      ) decimal      = "0" ;
+		if ( fraction.empty()     )	fraction     = "0" ;
+		if ( exponentSign.empty() ) exponentSign = "+" ;
+		if ( exponent.empty()     ) exponent     = "0" ;
+	
+		return matched ;
+	}
+
+	bool
+	numberhlp::regex2
+	( 
+		const std::string& 	strNumber, 
+		std::string& 		decimalSign, 
+		std::string& 		decimal, 
+		std::string& 		fraction, 
+		std::string& 		exponentSign,	 
+		std::string& 		exponent 
+	)
+	{
+		// return true if valid 
+		
+		decimalSign 	= "+" ; 
+		decimal 		= "0" ;
+		fraction 		= "0" ; 
+		exponentSign	= "+" ;	 
+		exponent 		= "0" ; 
+
+		auto str = stringhlp::trim( strNumber ) ;
+		str = stringhlp::toUpper( str ) ;
+
+		if ( str.empty() ) return false ;
+
+		std::string partAB ;
+		std::string partA ;
+		std::string partB ;
+		std::string partC ;
+
+		auto hasDecimalPoint = false ;
+		auto hasExponent     = false ;
+
+		// find the exponent
+		if ( stringhlp::endsWith( str, "E" ) ) return false ;
+
+		auto rng = stringhlp::split( str, 'E' ) ;
+
+		if ( rng.size() == 0 ) return false ; // no good
+		if ( rng.size() >  2 ) return false ; 
+
+		if ( rng.size() >= 1 ) 
+			 partAB = rng[0] ;	
+
+		if ( rng.size() == 2 ) 
+		{
+			partC = rng[1] ;
+			hasExponent = true ;
+		}
+
+		// find the decimal
+		if ( stringhlp::endsWith( partAB, "." ) ) return false ;
+
+		rng = stringhlp::split( partAB, '.' ) ;
+
+		if ( rng.size() == 0 ) return false ; // no good
+		if ( rng.size() >  2 ) return false ; 
+
+		if ( rng.size() >= 1 ) 
+			 partA = rng[0] ;	
+
+		if ( rng.size() == 2 ) 
+		{
+			partB = rng[1] ;
+			hasDecimalPoint = true ;
+		}
+
+		// find the decimal sign
+		auto sign = stringhlp::left( partA, 1 ) ;
+		if ( sign == "-" || sign == "+" )
+		{
+			decimalSign = sign ;
+			decimal     = stringhlp::substr( partA, 1 ) ;
+		}
+		else
+		{
+			decimal = partA ;
+		}
+
+		// find the exponent sign
+		sign = stringhlp::left( partC, 1 ) ;
+		if ( sign == "-" || sign == "+" )
+		{
+			exponentSign = sign ;
+			exponent     = stringhlp::substr( partC, 1 ) ;
+		}
+		else
+		{
+			exponent = partC ;
+		}
+
+		// the fraction
+		fraction = partB ;
+
+		// minimums
+		if ( decimal.length() == 0                     ) return false ;
+		if ( hasDecimalPoint && fraction.length() == 0 ) return false ;
+		if ( hasExponent && exponent.length() == 0     ) return false ;
+
+		// remove leading zeros from decimal and exponent
+		// remove trailing zeros from fraction
+		decimal  = stringhlp::ltrim( decimal,  "0" ) ;
+		fraction = stringhlp::rtrim( fraction, "0" ) ;
+		exponent = stringhlp::ltrim( exponent, "0" ) ;
+
+		// defaults 
+		if ( decimalSign.empty()  ) decimalSign  = "+" ;
+		if ( decimal.empty()      ) decimal      = "0" ;
+		if ( fraction.empty()     )	fraction     = "0" ;
+		if ( exponentSign.empty() ) exponentSign = "+" ;
+		if ( exponent.empty()     ) exponent     = "0" ;
+		if ( exponent == "0"      ) exponentSign = "+" ;
+
+		if ( decimal == "0" && fraction == "0" && exponent == "0" )
+		     decimalSign = "+" ;
+
+		// each integer must only consist of the digit '0' to '9'
+		auto pos = decimal.find_first_not_of( "0123456789" ) ; 
+		if ( pos != std::string::npos ) return false ;
+
+		pos = fraction.find_first_not_of( "0123456789" ) ; 
+		if ( pos != std::string::npos ) return false ;
+
+		pos = exponent.find_first_not_of( "0123456789" ) ; 
+		if ( pos != std::string::npos ) return false ;
+
+		return true ;
+	}
+
 
 } // end ns
 

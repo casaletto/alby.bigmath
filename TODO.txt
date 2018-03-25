@@ -2,31 +2,6 @@
 backlog
 ---------------------------------------------------------------------
 
------------------------------------------------------------------------
-5.
-
-// < > == >= <=  !=
-
-
-Function: int mpq_cmp (const mpq_t op1, const mpq_t op2)
-Function: int mpq_cmp_z (const mpq_t op1, const mpz_t op2)
-    Compare op1 and op2. Return a positive value if op1 > op2, zero if op1 = op2, and a negative value if op1 < op2.
-    To determine if two rationals are equal, mpq_equal is faster than mpq_cmp. 
-
-Function: int mpq_equal (const mpq_t op1, const mpq_t op2)
-    Return non-zero if op1 and op2 are equal, zero if they are non-equal. Although mpq_cmp can be used for the same purpose, this function is much faster. 
-
-
-
----> conclusion: comapare as gmp rational <<-----
-
-
-
-
-
--------------------------------------------------
-
-1.
 
 ------- ++++ FIX THIS all operators like operator+
 
@@ -67,6 +42,8 @@ a17 = a15 + a14 = -24.691                                        [sf 5(10) 50(2)
 
 
 
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
 -----------------------------------------------------------------------
 7.
 
@@ -393,6 +370,11 @@ return gmp compatible toFraction
 -157/50
 
 
+
+REGEX rewrite
+
+
+// < > == >= <=  !=
 
 
 
