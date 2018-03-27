@@ -10,7 +10,8 @@ namespace alby::bigmath
 			unsigned long  			   sigFig2     ;
 			static unsigned long 	   objectCount ;
 
-			static const unsigned long extraSigFig10 = 100 ; // 100 extra decimal place to mitigate rounding errors
+			static const unsigned long extraSigFig10 =  20 ; // 20 extra decimal places to mitigate rounding errors
+			static const unsigned long minSigFig2    = 500 ; // minumum number of base 2 significant digits
 
 		public:
 			virtual ~mpfr_t_wrapper() ;

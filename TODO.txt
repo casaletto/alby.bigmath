@@ -3,43 +3,27 @@ backlog
 ---------------------------------------------------------------------
 
 
-------- ++++ FIX THIS all operators like operator+
-
-// sf IS THE MAX sf OF THE OPERANDS INVOLVED
-
-// fix 	operator+( const mpfr& op1, const mpfr& op2 )  et al 
-
-// when i add / mult / whatever numbers,  what sf do i use ?
-// test that sf comes from the lhs, maybe ???
-
-// eg, we cant have the situation where adding the same two numbers in different ways produces differnet results:
-
-
-// should be able to add / multiply two numbers in ether direction and get same result
-
-// fix this test
-ERROR:
-a14               -12.345678900000000000000000000000000000000000 [sf 44(10) 180(2)]
-a15               -12.345                                        [sf 5(10) 50(2)]
-
-a16 = a14 + a15 = -24.691357799999995792313711717724800109863281 [sf 44(10) 180(2)]
-a17 = a15 + a14 = -24.691                                        [sf 5(10) 50(2)]
-
-
------------------------------------------------------------------------
-
-
-0. fix version
-
-
------------------------------------------------------------------------
 6.
 
-// fix 	mpfr::randomBytes( int bytes ) // hex string of random bytes
+
+
+// string mpfr::randomHexInteger( unsigned long hexDigits ) 
+
+
+
+// string mpfr::randomDecimalInteger( unsigned long decimalDigits  )  /  +-xxxxxxxx
+
+
+
+// mpfr   mpfr::randomFloat( unsigned long digits  ) // between 0 and 1
+// 0.xxxxxx
+
+
+
 
 // create function to random [0.0, 1)
 // mpfr_urandomb ( seed ??? )
-
+// what do to under windows ????
 
 
 -----------------------------------------------------------------------
@@ -376,6 +360,30 @@ REGEX rewrite
 
 // < > == >= <=  !=
 
+
+------- ++++ FIX THIS all operators like operator+
+
+// sf IS THE MAX sf OF THE OPERANDS INVOLVED
+
+// fix 	operator+( const mpfr& op1, const mpfr& op2 )  et al 
+
+// when i add / mult / whatever numbers,  what sf do i use ?
+// test that sf comes from the lhs, maybe ???
+
+// eg, we cant have the situation where adding the same two numbers in different ways produces differnet results:
+
+
+// should be able to add / multiply two numbers in ether direction and get same result
+
+// fix this test
+ERROR:
+a14               -12.345678900000000000000000000000000000000000 [sf 44(10) 180(2)]
+a15               -12.345                                        [sf 5(10) 50(2)]
+
+a16 = a14 + a15 = -24.691357799999995792313711717724800109863281 [sf 44(10) 180(2)]
+a17 = a15 + a14 = -24.691                                        [sf 5(10) 50(2)]
+
+0. fix version
 
 
 ################################################################################################

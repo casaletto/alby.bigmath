@@ -86,6 +86,8 @@ namespace alby::bigmath
 		mpfr_clear( i ) ; 
 
 		sf2++ ;
+
+		if ( sf2 < minSigFig2 ) sf2 = minSigFig2 ; // minimum number of base 2 significant figures
 		return sf2 ;
 	}
 
