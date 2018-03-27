@@ -3,8 +3,8 @@ backlog
 ---------------------------------------------------------------------
 
 abm::random class
-	constructor( sig figures )
-	destructor
+	constructor( sig figures, string seed, number base  )
+	destructor()
 
 	abm::mpfr get()  // get next random number
 
