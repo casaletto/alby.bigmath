@@ -2,9 +2,165 @@
 backlog
 ---------------------------------------------------------------------
 
+abm::random class
+	constructor( sig figures )
+	destructor
+
+	abm::mpfr get()  // get next random number
+
+	static std::string randomHexBytes( int bytes ) ; 
+
+	seed()
+
+
+
+----------------
 
 6.
 
+
+ mpfr_t x;
+
+  gmp_randstate_t s;
+
+  gmp_randinit_default (s);
+  gmp_randseed_ui (s, 42);
+  mpfr_init2 (x, 17);
+  mpfr_urandomb (x, s);
+
+  mpfr_urandomb (x, s);
+
+
+
+  mpfr_clear (x);
+gmp_randclear (s);
+
+
+
+-----------------
+
+void gmp_randseed (gmp_randstate_t state, const mpz_t seed)
+
+
+
+------------------
+
+
+    mpz_t modulus
+    mpz_init(modulus);
+    mpz_init_set_str(modulus,
+                     "830BD41A71825C6AEAF89AC06FEA5B51E65601E6E"
+                     "1273AC30BE6644F3F80F766B94BC3C2888452C019"
+                     "2B2562E1EC386A7C9B22F92BF597A6694CFB65146"
+                     "A6180BF567357707CBB4F222057266A1891AF416A"
+                     "F4814AEC2F495A4A16D7173857C64BE0FD530D80D"
+                     "98730D7CB5574ACB2FCFA41215A93C1675D17E11EA7743E913B",
+                     16);
+
+
+    mpz_t exponent_256;
+    mpz_init(exponent_256);
+
+
+    gmp_randstate_t exponent_seed;
+    gmp_randinit_default(exponent_seed);
+
+
+    gmp_randseed(exponent_seed, modulus);
+
+
+    for(n = 0; n < 5; n++) {
+        mpz_urandomb(exponent_256, exponent_seed, 256);
+        mpz_out_str(stdout, 10, exponent_256);
+        printf("\n");
+
+======================================
+
+constructor
+==========
+mpz_t seed
+mpz_init (seed)
+mpz_init_set_str (seed, const char *str, 16)
+
+gmp_randstate_t state;
+gmp_randinit_default(state);
+gmp_randseed(state, seed);
+
+
+-------------------
+mpfr_t x;
+mpfr_init2 (x, 17);
+mpfr_urandomb (x, s);
+mpfr_clear (x);
+----------------------
+
+
+destrt
+========================
+gmp_randclear (state)
+mpz_clear (seed);
+
+
+
+
+============================
+--------------------------------------------
+
+Function: int mpfr_urandomb (mpfr_t rop, gmp_randstate_t state)
+
+    Generate a uniformly distributed random float in the interval 0 <= rop < 1. More precisely, 
+	the number can be seen as a float with a random non-normalized significand and exponent 0, 
+	which is then normalized (thus if e denotes the exponent after normalization, then the least -e significant bits of the significand are always 0).
+
+    Return 0, unless the exponent is not in the current exponent range, 
+	in which case rop is set to NaN and a non-zero value is returned (this should never happen in practice, except in very specific cases). 
+	The second argument is a gmp_randstate_t structure which should be created using the GMP gmp_randinit function (see the GMP manual).
+
+    Note: for a given version of MPFR, the returned value of rop and the new value of state 
+	(which controls further random values) do not depend on the machine word size
+
+
+
+------------------------------
+C++ 11 randoms
+
+
+
+#include <iostream>
+#include <limits>
+#include <random>
+
+int main()
+{
+    std::default_random_engine eng((std::random_device())());
+
+    std::uniform_real_distribution<float> fdis(0, 1.0);
+
+    for (int i = 0; i < 10; ++i)
+    {
+        float v = fdis(eng);
+        std::cout << v << std::endl;
+    }
+
+    return 0;
+}
+
+include <random>  
+#include <iostream>  
+  
+using namespace std;  
+  
+int main()  
+{  
+    random_device rd;   // non-deterministic generator  
+    mt19937 gen(rd());  // to seed mersenne twister.  
+    uniform_int_distribution<> dist(1,6); // distribute results between 1 and 6 inclusive.  
+  
+    for (int i = 0; i < 5; ++i) {  
+        cout << dist(gen) << " "; // pass the generator to the distribution.  
+    }  
+    cout << endl;  
+}  
 
 
 // string mpfr::randomHexInteger( unsigned long hexDigits ) 
@@ -25,6 +181,7 @@ backlog
 // mpfr_urandomb ( seed ??? )
 // what do to under windows ????
 
+=======================================================================================================================================================================
 
 -----------------------------------------------------------------------
 -----------------------------------------------------------------------

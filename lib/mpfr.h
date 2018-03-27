@@ -61,6 +61,8 @@ namespace alby::bigmath
 			std::string toFraction( std::string& numerator, std::string& denominator, bool reduce = true ) ;			
 
 			static std::string version()                ;
+
+//ALBY move to new class			
 			static std::string randomBytes( int bytes ) ; 
 
 			mpfr& operator-=( const mpfr& op2 ) ;
