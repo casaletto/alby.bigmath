@@ -15,12 +15,16 @@ obj/stringhlp.o: lib/stringhlp.cpp lib/*.h
 obj/numberhlp.o: lib/numberhlp.cpp lib/*.h 
 	g++ -c -Os lib/numberhlp.cpp -o obj/numberhlp.o
 
-bin/libalbybigmath.a: obj/mpfr.o obj/mpfr_t_wrapper.o obj/stringhlp.o obj/numberhlp.o
+obj/random.o: lib/random.cpp lib/*.h 
+	g++ -c -Os lib/random.cpp -o obj/random.o
+
+bin/libalbybigmath.a: obj/mpfr.o obj/mpfr_t_wrapper.o obj/stringhlp.o obj/numberhlp.o obj/random.o
 	ar rvs bin/libalbybigmath.a \
 		obj/mpfr.o \
 		obj/mpfr_t_wrapper.o \
 		obj/stringhlp.o \
 		obj/numberhlp.o \
+		obj/random.o \
 
 # ------------------------------------------------------------------------------------------
 

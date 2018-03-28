@@ -22,9 +22,11 @@
 #include "../lib/numberhlp.h"
 #include "../lib/mpfr_t_wrapper.h"
 #include "../lib/mpfr.h"
+#include "../lib/random.h"
 
 namespace abm = alby::bigmath ; 
 
+void doMpfrRandom() ;
 void doMpfrNumberParse() ;
 void doMpfrMathRound() ;
 void doMpfrMathCompare() ;
@@ -39,8 +41,11 @@ int main( void )
 {
 	try
 	{
-		std::cout << abm::mpfr::version()   << std::endl ;		
-		std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY random fix me
+		std::cout << abm::mpfr::version() << std::endl ;		
+
+		//std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY random fix me
+		doMpfrRandom() ;
+return 0 ; //ALBY
 
 		example1() ;
 		doMpfrMath0() ;
@@ -62,6 +67,31 @@ int main( void )
 	}
 	
 	return 0 ;	
+}
+
+void doMpfrRandom()
+{
+	abm::mpfr::setSignificantFigures( 100 ) ;
+	abm::mpfr::setDebug( true ) ;
+
+	// abm::random rnd( seed, abm::numberBase::_16 ) ;
+//ALBY
+
+	abm::random rnd ;
+	std::cout << "seed = " << rnd.getSeed() << std::endl ;
+
+	for ( auto i = 1 ; i <= 30 ; i++ )
+	{
+		auto x = rnd.next() ;
+		std::cout << x << std::endl ;
+	}
+
+	for ( auto i = 1 ; i <= 10 ; i++ )
+	{
+		auto str = rnd.hexBytes( i ) ;
+		std::cout << str << std::endl ;
+	}	
+	
 }
 
 void doMpfrNumberParse()

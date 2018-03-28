@@ -17,7 +17,6 @@ namespace alby::bigmath
 			void init()    ;
 			void cleanup() ;
 
-			static mpfr_t& deref  ( const mpfr& mpfr ) ; // get the important part of the wrapper, the actual mpfr_t
 			std::string    reduce ( const std::string& rational ) ;
 			static void    compare( const mpfr& op1, const mpfr& op2, bool& equal, bool& moreThan, bool& lessThan ) ;
 	
@@ -35,6 +34,8 @@ namespace alby::bigmath
 
 			mpfr( const std::string& )           ;
 			mpfr( const std::string&, unsigned long theSigFig10, numberBase base = numberBase::_10 ) ;
+
+			static mpfr_t&       deref( const mpfr& mpfr ) ; // get the important part of the wrapper, the actual mpfr_t
 
 			unsigned long        getSignificantFiguresLocal() ;
 			static unsigned long getSignificantFigures()      ;

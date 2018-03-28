@@ -26,6 +26,7 @@ abm::random class
   gmp_randinit_default (s);
   gmp_randseed_ui (s, 42);
   mpfr_init2 (x, 17);
+
   mpfr_urandomb (x, s);
 
   mpfr_urandomb (x, s);
@@ -181,6 +182,14 @@ int main()
 // mpfr_urandomb ( seed ??? )
 // what do to under windows ????
 
+
+std::random_device rd;
+ std::mt19937 e{rd()}; // or std::default_random_engine e{rd()};
+ std::uniform_int_distribution<int> dist{1, 5};
+
+
+
+ 
 =======================================================================================================================================================================
 
 -----------------------------------------------------------------------
