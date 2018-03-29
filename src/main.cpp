@@ -12,6 +12,9 @@
 #include <assert.h>    
 #include <algorithm>
 #include <regex>
+#include <random>
+#include <chrono>
+#include <thread>
 
 #include <gmp.h>
 #include <mpfr.h>
@@ -43,10 +46,7 @@ int main( void )
 	{
 		std::cout << abm::mpfr::version() << std::endl ;		
 
-		//std::cout << abm::mpfr::randomBytes(256) << std::endl ; //ALBY random fix me
 		doMpfrRandom() ;
-return 0 ; //ALBY
-
 		example1() ;
 		doMpfrMath0() ;
 		doMpfrMath1() ;
@@ -71,26 +71,62 @@ return 0 ; //ALBY
 
 void doMpfrRandom()
 {
-	abm::mpfr::setSignificantFigures( 100 ) ;
+	abm::mpfr::setSignificantFigures( 55 ) ;
 	abm::mpfr::setDebug( true ) ;
 
-	// abm::random rnd( seed, abm::numberBase::_16 ) ;
-//ALBY
-
-	abm::random rnd ;
-	std::cout << "seed = " << rnd.getSeed() << std::endl ;
-
-	for ( auto i = 1 ; i <= 30 ; i++ )
 	{
-		auto x = rnd.next() ;
-		std::cout << x << std::endl ;
+		abm::random rnd ;
+		std::cout << "\nseed1 = " << rnd.getSeed() << std::endl ;
+		
+		for ( auto i = 1 ; i <= 10 ; i++ )
+		{
+			auto x = rnd.next() ;
+			std::cout << x << std::endl ;
+		}
+		for ( auto i = 1 ; i <= 10 ; i++ )
+		{
+			auto str = rnd.hexBytes( i ) ;
+			std::cout << str << std::endl ;
+		}	
+		for ( auto i = 1 ; i <= 10 ; i++ )
+		{
+			auto str = rnd.nanosecondsSinceEpoch() ;
+			std::cout << str << std::endl ;
+		}	
 	}
 
-	for ( auto i = 1 ; i <= 10 ; i++ )
 	{
-		auto str = rnd.hexBytes( i ) ;
-		std::cout << str << std::endl ;
-	}	
+		abm::random rnd ;
+		std::cout << "\nseed2 = " << rnd.getSeed() << std::endl ;
+
+		std::map<unsigned long, unsigned long> map ;
+
+		for ( auto i = 1 ; i <= 60000 ; i++ )
+		{
+			//std::this_thread::sleep_for( std::chrono::milliseconds(1) ) ; // sleep
+
+			auto x = rnd.nextInteger( 6 ) ;
+		
+			if ( x < 1 ) exit( 1 ) ;
+			if ( x > 6 ) exit( 1 ) ;			
+		
+			map[x]++ ;
+		}	
+	
+		for ( auto const &i : map )
+			  std::cout << i.first << " = " << i.second <<std::endl ;
+	}
+
+	{
+		abm::random rnd( 10, abm::random::hexBytes( 3 ), abm::numberBase::_16 ) ;
+		std::cout << "\nseed3 = " << rnd.getSeed() << std::endl ;
+
+		for ( auto i = 1 ; i <= 10 ; i++ )
+		{
+			auto x = rnd.next() ;
+			std::cout << x << std::endl ;
+		}
+	}
 	
 }
 

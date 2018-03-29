@@ -12,6 +12,9 @@
 #include <assert.h>    
 #include <algorithm>
 #include <regex>
+#include <random>
+#include <chrono>
+#include <thread>
 
 #include "./stringhlp.h"
 #include "./stringcat.h"

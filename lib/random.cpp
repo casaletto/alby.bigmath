@@ -14,6 +14,7 @@
 #include <regex>
 #include <random>
 #include <chrono>
+#include <thread>
   
 #include <gmp.h>
 #include <mpfr.h>
@@ -29,7 +30,7 @@
 namespace alby::bigmath 
 {
     const std::string   random::devUrandomFile = "/dev/urandom" ; 
-    const unsigned long random::seedBytes      = 128 ; 
+    const unsigned long random::seedBytes      = 256 ; 
     
 	random::~random() // destr
 	{
@@ -39,21 +40,23 @@ namespace alby::bigmath
 
 	random::random() // constr
 	{
-        mpz_init( seed ) ;
+        theSignificantFigures = 0 ;
 
-        // try to get the seed from ransom, otherwise use the tick count
-       	theSeed = hexBytes( seedBytes ) ;            
+        // try to get the seed from /dev/urandom, otherwise use the ns tick count
+        theSeed = hexBytes( seedBytes ) ;            
         if ( theSeed.length() == 0 )
              theSeed = nanosecondsSinceEpoch() ;
 
+        mpz_init( seed ) ;
         mpz_init_set_str( seed, theSeed.c_str(), 16 ) ; // treat as hex number
 
         gmp_randinit_default( state ) ;
         gmp_randseed( state, seed ) ;
 	}
 
-	random::random( const std::string& aSeed, numberBase theBase )  
+	random::random( unsigned long significantFigures, const std::string& aSeed, numberBase theBase )  
     {
+        theSignificantFigures = significantFigures ;
         theSeed = aSeed ;
 
         mpz_init( seed ) ;
@@ -65,12 +68,14 @@ namespace alby::bigmath
 
 	random::random( const random& rhs ) // copy constr
 	{
+        // not implemented
 		*this = rhs ;
 	}
 
 	random&
 	random::operator=( const random& rhs ) // =
 	{
+        // not implemented
 		if ( this != &rhs )
 		{
 		}
@@ -82,20 +87,31 @@ namespace alby::bigmath
         return theSeed ;
     }
 
-    mpfr 
-    random::next() // next float [0.0, 1)
+    unsigned long random::getSignificantFigures()
     {
-        return next( mpfr::getSignificantFigures() ) ;
+        return theSignificantFigures ;
     }
 
     mpfr 
-    random::next( unsigned long significantDigits )
+    random::next() // next float [0.0, 1)
     {
-        mpfr num( "0", significantDigits ) ;
+        auto sf = theSignificantFigures == 0 ? mpfr::getSignificantFigures() : theSignificantFigures ;
+
+        mpfr num( "0", sf ) ;
 
         mpfr_urandomb( mpfr::deref( num ), state ) ;
 
         return num ;
+    }
+
+    unsigned long		
+    random::nextInteger( unsigned long max ) // next integer [1, .max]
+    {
+        auto rnd = next() * mpfr( std::to_string( max ) ) ;
+
+        rnd = rnd.floor() ;
+
+        return std::stoul( rnd ) + 1 ;
     }
 
 	std::string 
@@ -130,6 +146,5 @@ namespace alby::bigmath
         return str ;
     }
 
-
-
 } // ns
+

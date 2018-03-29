@@ -63,9 +63,6 @@ namespace alby::bigmath
 
 			static std::string version()                ;
 
-//ALBY move to new class			
-			static std::string randomBytes( int bytes ) ; 
-
 			mpfr& operator-=( const mpfr& op2 ) ;
 			mpfr& operator+=( const mpfr& op2 ) ;
 			mpfr& operator*=( const mpfr& op2 ) ;
@@ -110,9 +107,6 @@ namespace alby::bigmath
 			mpfr ceil()  					; // ceiling
 			mpfr floor() 					; // floor
 			mpfr trunc() 					; // trunc towards 0
-
-
-			// gmp toGmp() ;			
 	} ;
 } 
 

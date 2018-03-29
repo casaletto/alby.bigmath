@@ -12,6 +12,9 @@
 #include <assert.h>    
 #include <algorithm>
 #include <regex>
+#include <random>
+#include <chrono>
+#include <thread>
   
 #include <gmp.h>
 #include <mpfr.h>
@@ -885,29 +888,6 @@ namespace alby::bigmath
 			"\nMPFR max exponent ",			mpfr_get_emax(), 			
 			"\nbits per limb     ",			mp_bits_per_limb 			
 		) ;
-	}
-
-	//----------------------------------------------------------------------------------------------------------------------
-
-	std::string 
-	mpfr::randomBytes( int bytes ) // hex string of random bytes
-	{
-		std::vector<char> buffer ;
-		buffer.resize( bytes ) ;
-		std::fill( buffer.begin(), buffer.end(), 0 ) ;
-
-		auto f = "/dev/urandom" ; //ALBY random  TO DO what if on windows ???
-		std::ifstream mystream( f, std::ios::in | std::ios_base::binary ) ;
-
-		mystream.seekg( 0, std::ios_base::beg ) ;
-		mystream.read ( buffer.data(), bytes ) ;
-
-		std::string str ;
-
-		for ( auto c : buffer )
-			  str += stringhlp::printf( 100, "%02X", (unsigned int) (unsigned char) c ) 	;
-
-		return str ;
 	}
 
 } // end ns
