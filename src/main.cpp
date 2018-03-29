@@ -30,6 +30,7 @@
 namespace abm = alby::bigmath ; 
 
 void doMpfrRandom() ;
+void doMpfrRandom2() ;
 void doMpfrNumberParse() ;
 void doMpfrMathRound() ;
 void doMpfrMathCompare() ;
@@ -46,6 +47,7 @@ int main( void )
 	{
 		std::cout << abm::mpfr::version() << std::endl ;		
 
+		doMpfrRandom2() ;
 		doMpfrRandom() ;
 		example1() ;
 		doMpfrMath0() ;
@@ -67,6 +69,35 @@ int main( void )
 	}
 	
 	return 0 ;	
+}
+
+void doMpfrRandom2()
+{
+	abm::mpfr::setSignificantFigures( 14 ) ;
+	abm::mpfr::setDebug( false ) ;
+
+	abm::random rnd ;
+
+	for ( auto i = 1 ; i <= 10000 ; i++ )
+	{
+		if ( i % 1000 == 0 )
+			 std::this_thread::sleep_for( std::chrono::milliseconds(1) ) ; // sleep
+		
+		auto r = rnd.next().roundToDecimalPlaces( 1 ) ;
+
+		auto d1 = r * abm::mpfr( "2147483647" ) ;
+		d1 = d1.roundToDecimalPlaces( 1 ) ;
+		std::string str1 = d1 ;
+
+		auto d2 = std::stod( r ) * 2147483647.0 ;
+		auto str2 = abm::stringhlp::printf( 100, "+%.1f", d2 ) ;
+
+		if ( str1 != str2 ) 
+		{
+			std::cout << r << "\t\t\t\t===> " << str1 << " === " << str2 << std::endl ;
+		    exit( 1 ) ;
+		}
+	}
 }
 
 void doMpfrRandom()
@@ -101,7 +132,7 @@ void doMpfrRandom()
 
 		std::map<unsigned long, unsigned long> map ;
 
-		for ( auto i = 1 ; i <= 60000 ; i++ )
+		for ( auto i = 1 ; i <= 6000 ; i++ )
 		{
 			//std::this_thread::sleep_for( std::chrono::milliseconds(1) ) ; // sleep
 
