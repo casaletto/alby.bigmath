@@ -1,20 +1,21 @@
 # alby.bigmath
 
+
 a c++ wrapper around mpfr and gmp to make extreme maths more pleasant.
 
 move seamlessly between exact rational number arithmetic (gmp)\
 and almost unlimited precision floating point aritmetic (mpfr).
 
 
-
 # base projects
+
 
 * http://www.mpfr.org
 * https://gmplib.org
 
 
-
 # packages required
+
 
 * gcc + standard linux toolchain
 * libgmp-dev
@@ -23,24 +24,30 @@ and almost unlimited precision floating point aritmetic (mpfr).
 * libmpfr4
 
 
-
 # how do I build it?
+
 
 ```
 $ make 
 ```
 
 
-
 # how do you use it in your project?
+
 
 *.cpp
 
 ```
-#include ".../lib/stringhlp.h"
-#include ".../lib/stringcat.h"
-#include ".../lib/mpfr_t_wrapper.h"
-#include ".../lib/mpfr.h"
+#include <gmp.h>
+#include <mpfr.h>
+
+#include "../lib/numberBase.h"
+#include "../lib/stringhlp.h"
+#include "../lib/stringcat.h"
+#include "../lib/numberhlp.h"
+#include "../lib/mpfr_t_wrapper.h"
+#include "../lib/mpfr.h"
+#include "../lib/random.h"
 ```
 
 in your makefile
@@ -53,8 +60,8 @@ $ g++ -s -o exefile *.o -static -static-libgcc -static-libstdc++ -l:libmpfr.a -l
 I hate dll hell. I do static linking as much as possible.
 
 
-
 # developed and tested on
+
 
 ```
 $ gcc --version
@@ -69,20 +76,14 @@ Linux xxxxxxx 4.10.0-28-generic #32-Ubuntu SMP Fri Jun 30 05:32:18 UTC 2017 x86_
 I had a bad dream that I partly developed and tested this on windoze 10 mingw64/msys64, but yeh, probably just a dream.
 
 
-
 # here's an example
+
 
 1.2e+10 + 3.4 + 5.6e-10\
 and\
 1.2e+1000 + 3.4 + 5.6e-1000
 
 ```
-
-#include ".../lib/stringhlp.h"
-#include ".../lib/stringcat.h"
-#include ".../lib/mpfr_t_wrapper.h"
-#include ".../lib/mpfr.h"
-
 namespace abm = alby::bigmath ; 
 
 void example1()
@@ -160,26 +161,22 @@ and
 ```
 
 
-# calculate π  
+# calculate π method #1
 
 
-Inline-style: 
 ![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20nilakantha.png "pi")
+
+
+500 000 iterations yield 17 dp\ 
++3.14159265358979323...\ 
+\
+5 000 000 iterations yeild 20 dp\
++3.14159265358979323846... 
 
 
 ```
 void pi_nilakantha()
 {
-	//
-	// 500 000 iterations yield 17 dp 
-	//
-	// +3.14159265358979323... 
-	//
-	// 5 000 000 iterations yeild 20 dp
-	//
-    // +3.14159265358979323846... 
-	//
-
 	abm::mpfr::setSignificantFigures( 1000 ) ;
 	abm::mpfr::setDebug( false ) ;
 
