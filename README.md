@@ -167,11 +167,12 @@ and
 ![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20nilakantha.png "pi")
 
 
-500 000 iterations yield 17 dp\ 
-+3.14159265358979323...\ 
+500 000 iterations yield 17 dp\
++3.14159265358979323...\
+\
 \
 5 000 000 iterations yeild 20 dp\
-+3.14159265358979323846... 
++3.14159265358979323846...
 
 
 ```
