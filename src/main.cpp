@@ -42,7 +42,8 @@ void roundToSignificantDigits() ;
 void example1() ;
 void pi_nilakantha() ;
 abm::mpfr pi_nilakantha_term( unsigned long i ) ;
-void pi2() ;
+void pi_ramanujan() ;
+
 
 int main( void )
 {
@@ -50,8 +51,8 @@ int main( void )
 	{
 		std::cout << abm::mpfr::version() << std::endl ;		
 
+		pi_ramanujan() ;
 		pi_nilakantha() ;
-//		pi2() ;
 return 0 ; //ALBY
 
 		doMpfrRandom2() ;
@@ -95,7 +96,7 @@ void pi_nilakantha()
 	abm::mpfr::setSignificantFigures( 1000 ) ;
 	abm::mpfr::setDebug( false ) ;
 
-	abm::mpfr pi( "0" ) ;
+	abm::mpfr pi ;
 
 	auto plus = true ;
 
@@ -123,7 +124,7 @@ abm::mpfr pi_nilakantha_term( unsigned long i )
 	return _4 / ( abm::mpfr(i) * abm::mpfr(i+1) * abm::mpfr(i+2) ) ;
 }
 
-void pi2()
+void pi_ramanujan()
 {
 
 }

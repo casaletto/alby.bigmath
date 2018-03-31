@@ -164,14 +164,13 @@ and
 # calculate π method #1
 
 
-![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20nilakantha.png "pi")
+![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20nilakantha.png "pi #1")
 
 
 500 000 iterations yield 17 dp\
 +3.14159265358979323...\
 \
-\
-5 000 000 iterations yeild 20 dp\
+5 000 000 iterations yield 20 dp\
 +3.14159265358979323846...
 
 
@@ -181,7 +180,7 @@ void pi_nilakantha()
 	abm::mpfr::setSignificantFigures( 1000 ) ;
 	abm::mpfr::setDebug( false ) ;
 
-	abm::mpfr pi( "0" ) ;
+	abm::mpfr pi ;
 
 	auto plus = true ;
 
@@ -190,9 +189,6 @@ void pi_nilakantha()
 		auto term = pi_nilakantha_term(i) ; 
 
 		pi = plus ? pi + term : pi - term ;
-
-		if ( i >= 5000 * 2 - 20 )
-		std::cout << "#" << i << " " << pi.toDecimalPlaces( 90 ) << std::endl ;
 
 		plus = ! plus ;	 
 	}
@@ -211,14 +207,20 @@ abm::mpfr pi_nilakantha_term( unsigned long i )
 ```
 
 
-# calculate π #2
+# calculate π method #2
 
 
+![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%201989%2025%20digits%20per%20term.png "pi #2")
 
 
+```
+void pi_nilakantha()
+{
+}
+```
 
 
-# calculate π #3
+# calculate π method #3
 
 
 
