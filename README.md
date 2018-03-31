@@ -160,32 +160,70 @@ and
 ```
 
 
+# calculate π  
 
-# here's another example, calculate π to 1XXXXX decimal places 
 
+Inline-style: 
+![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20nilakantha.png "pi")
 
-TO DO
-
-```
-Nilakantha’s accelerated series for π
-
-	π = 3 + 4/(2*3*4) - 4/(4*5*6) + 4/(6*7*8) - 4/(8*9*10) + 4/(10*11*12) - 4/(12*13*14) ...
-```
 
 ```
-the class two 1989 Ramanujan–Sato series, 25 digits per term
+void pi_nilakantha()
+{
+	//
+	// 500 000 iterations yield 17 dp 
+	//
+	// +3.14159265358979323... 
+	//
+	// 5 000 000 iterations yeild 20 dp
+	//
+    // +3.14159265358979323846... 
+	//
 
-	1 / 12π = sum( n = 0, n = ∞ ) ( num / den )
+	abm::mpfr::setSignificantFigures( 1000 ) ;
+	abm::mpfr::setDebug( false ) ;
 
-where 
+	abm::mpfr pi( "0" ) ;
 
-	num = pow( -1, n ) * (6n)! * ( A + nB )
-	den = pow( n!, 3 ) * (3n)! * pow( C, n + 0.5 )
+	auto plus = true ;
 
-	A = 212 175 710 912 sqrt(61) + 1 657 145 277 365,
-	B = 13 773 980 892 672 sqrt(61) + 107 578 229 802 750,
-	C = ( 5280 ( 236 674 + 30 303 sqrt(61) ) )  pow 3.
+	for ( unsigned long i = 2 ; i <= 5000 * 2 ; i += 2 )
+	{
+		auto term = pi_nilakantha_term(i) ; 
+
+		pi = plus ? pi + term : pi - term ;
+
+		if ( i >= 5000 * 2 - 20 )
+		std::cout << "#" << i << " " << pi.toDecimalPlaces( 90 ) << std::endl ;
+
+		plus = ! plus ;	 
+	}
+
+	pi += abm::mpfr( "3" ) ;
+
+	std::cout << pi << std::endl ;
+}
+
+abm::mpfr pi_nilakantha_term( unsigned long i )
+{
+	static abm::mpfr _4( "4" ) ;
+
+	return _4 / ( abm::mpfr(i) * abm::mpfr(i+1) * abm::mpfr(i+2) ) ;
+}
 ```
+
+
+# calculate π #2
+
+
+
+
+
+
+# calculate π #3
+
+
+
 
 
 
@@ -203,6 +241,9 @@ $ make test
 * https://gmplib.org
 * https://regexr.com/3m16c
 * https://en.wikipedia.org/wiki/Borwein%27s_algorithm
+* https://helloacm.com/two-simple-equations-to-compute-pi/
+* http://www.pi314.net/eng/borwein.php
+* https://ipfs.io/ipfs/QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco/wiki/Borwein%27s_algorithm.html
 * https://helloacm.com/two-simple-equations-to-compute-pi/
 
 

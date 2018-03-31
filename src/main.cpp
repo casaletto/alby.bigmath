@@ -40,8 +40,8 @@ void doMpfrMathtoCanonical() ;
 void doMpfrMathtoSigFig() ;
 void roundToSignificantDigits() ;
 void example1() ;
-void pi1() ;
-abm::mpfr pi1_term( unsigned long i ) ;
+void pi_nilakantha() ;
+abm::mpfr pi_nilakantha_term( unsigned long i ) ;
 void pi2() ;
 
 int main( void )
@@ -50,8 +50,9 @@ int main( void )
 	{
 		std::cout << abm::mpfr::version() << std::endl ;		
 
-//		pi1() ;
+		pi_nilakantha() ;
 //		pi2() ;
+return 0 ; //ALBY
 
 		doMpfrRandom2() ;
 		doMpfrRandom() ;
@@ -77,14 +78,19 @@ int main( void )
 	return 0 ;	
 }
 
-void pi1()
+void pi_nilakantha()
 {
-	//+3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384...
-	//+3.1415926535897932364626553832
-	//	28 dp 
-	//	500 000 iterations
-
 	// π = 3 + 4/(2*3*4) - 4/(4*5*6) + 4/(6*7*8) - 4/(8*9*10) + 4/(10*11*12) - 4/(12*13*14) ...
+
+	// +3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384...
+	// +3.14159265358979323 64626553832
+	// 17 dp 
+	// 500 000 iterations
+
+	//+3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384...
+    //+3.14159265358979323846 064338447950250419722939937490582349494131430791840727618900271949345354228126667
+	// 20 dp 
+	// 5 000 000 iterations
 
 	abm::mpfr::setSignificantFigures( 1000 ) ;
 	abm::mpfr::setDebug( false ) ;
@@ -93,13 +99,13 @@ void pi1()
 
 	auto plus = true ;
 
-	for ( unsigned long i = 2 ; i <= 500000 * 2 ; i += 2 )
+	for ( unsigned long i = 2 ; i <= 5000 * 2 ; i += 2 )
 	{
-		auto term = pi1_term(i) ; 
+		auto term = pi_nilakantha_term(i) ; 
 
 		pi = plus ? pi + term : pi - term ;
 
-		if ( i >= 500000 * 2 - 20 )
+		if ( i >= 5000 * 2 - 20 )
 		std::cout << "#" << i << " " << pi.toDecimalPlaces( 90 ) << std::endl ;
 
 		plus = ! plus ;	 
@@ -110,7 +116,7 @@ void pi1()
 	std::cout << pi << std::endl ;
 }
 
-abm::mpfr pi1_term( unsigned long i )
+abm::mpfr pi_nilakantha_term( unsigned long i )
 {
 	static abm::mpfr _4( "4" ) ;
 
