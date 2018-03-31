@@ -43,6 +43,7 @@ void example1() ;
 void pi_nilakantha() ;
 abm::mpfr pi_nilakantha_term( unsigned long i ) ;
 void pi_ramanujan() ;
+abm::mpfr pi_ramanujan_term( unsigned long n ) ;
 
 
 int main( void )
@@ -52,7 +53,7 @@ int main( void )
 		std::cout << abm::mpfr::version() << std::endl ;		
 
 		pi_ramanujan() ;
-		pi_nilakantha() ;
+		//pi_nilakantha() ;
 return 0 ; //ALBY
 
 		doMpfrRandom2() ;
@@ -112,21 +113,64 @@ void pi_nilakantha()
 		plus = ! plus ;	 
 	}
 
-	pi += abm::mpfr( "3" ) ;
+	pi += abm::mpfr( 3 ) ;
 
 	std::cout << pi << std::endl ;
 }
 
 abm::mpfr pi_nilakantha_term( unsigned long i )
 {
-	static abm::mpfr _4( "4" ) ;
+	static abm::mpfr _4( 4 ) ;
 
 	return _4 / ( abm::mpfr(i) * abm::mpfr(i+1) * abm::mpfr(i+2) ) ;
 }
 
 void pi_ramanujan()
 {
+	abm::mpfr::setSignificantFigures( 1000 ) ;
+	abm::mpfr::setDebug( false ) ;
 
+	abm::mpfr pi ;
+
+	auto plus = true ;
+
+	for ( unsigned long n = 0 ; n <= 10 ; n++ )
+	{
+		auto term = pi_ramanujan_term( n ) ; 
+
+		pi = plus ? pi + term : pi - term ;
+	}
+
+	pi *= abm::mpfr( 12 ) ;
+	pi  = pi.inv() ;
+
+	std::cout << "pi = " << pi << std::endl ;
+}
+
+abm::mpfr pi_ramanujan_term( unsigned long n )
+{
+	//A = 212 175 710 912 sqrt(61) + 1 657 145 277 365,
+	//B = 13 773 980 892 672 sqrt(61) + 107 578 229 802 750,
+	//C = [ 5280 (236 674 + 30 303 sqrt(61) ) ]  pow 3.
+
+	static abm::mpfr _3( 3 ) ;
+	static abm::mpfr _6( 6 ) ;
+	static abm::mpfr half( "0.5" ) ;
+
+	static auto sqrt61 = abm::mpfr( 61 ).sqrt() ;
+	static auto a      = abm::mpfr( "212175710912"   ) * sqrt61 + abm::mpfr( "1657145277365"   ) ;
+	static auto b      = abm::mpfr( "13773980892672" ) * sqrt61 + abm::mpfr( "107578229802750" ) ;
+	static auto c      = abm::mpfr( 5280 ) * ( abm::mpfr( 236674 ) + abm::mpfr( 30303 ) * sqrt61 ) ;
+	c = c ^ abm::mpfr( 3 ) ;
+
+	//std::cout << "a = " << a << std::endl ;
+	//std::cout << "b = " << b << std::endl ;
+	//std::cout << "c = " << c << std::endl ;
+
+	abm::mpfr num( 1 ) ;
+	abm::mpfr den( 1 ) ;
+	
+	return num / den ;
 }
 
 void doMpfrRandom2()

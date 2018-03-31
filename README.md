@@ -193,14 +193,14 @@ void pi_nilakantha()
 		plus = ! plus ;	 
 	}
 
-	pi += abm::mpfr( "3" ) ;
+	pi += abm::mpfr( 3 ) ;
 
 	std::cout << pi << std::endl ;
 }
 
 abm::mpfr pi_nilakantha_term( unsigned long i )
 {
-	static abm::mpfr _4( "4" ) ;
+	static abm::mpfr _4( 4 ) ;
 
 	return _4 / ( abm::mpfr(i) * abm::mpfr(i+1) * abm::mpfr(i+2) ) ;
 }
@@ -229,13 +229,14 @@ void pi_nilakantha()
 
 # how do I run the unit tests?
 
+
 ```
 $ make test
 ```
 
 
-
 # useful links
+
 
 * http://www.mpfr.org
 * https://gmplib.org
@@ -244,6 +245,4 @@ $ make test
 * https://helloacm.com/two-simple-equations-to-compute-pi/
 * http://www.pi314.net/eng/borwein.php
 * https://ipfs.io/ipfs/QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco/wiki/Borwein%27s_algorithm.html
-* https://helloacm.com/two-simple-equations-to-compute-pi/
-
 
