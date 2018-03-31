@@ -26,6 +26,7 @@ namespace alby::bigmath
 			mpfr()                             ;               
 			mpfr( const mpfr& rhs )            ;
 			mpfr( const mpfr& rhs, unsigned long theSigFig10 ) ;
+			mpfr( long l ) ;
 			
 			mpfr& operator=( const mpfr& rhs ) ;
 

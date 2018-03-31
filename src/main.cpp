@@ -40,12 +40,18 @@ void doMpfrMathtoCanonical() ;
 void doMpfrMathtoSigFig() ;
 void roundToSignificantDigits() ;
 void example1() ;
+void pi1() ;
+abm::mpfr pi1_term( unsigned long i ) ;
+void pi2() ;
 
 int main( void )
 {
 	try
 	{
 		std::cout << abm::mpfr::version() << std::endl ;		
+
+//		pi1() ;
+//		pi2() ;
 
 		doMpfrRandom2() ;
 		doMpfrRandom() ;
@@ -69,6 +75,51 @@ int main( void )
 	}
 	
 	return 0 ;	
+}
+
+void pi1()
+{
+	//+3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384...
+	//+3.1415926535897932364626553832
+	//	28 dp 
+	//	500 000 iterations
+
+	// π = 3 + 4/(2*3*4) - 4/(4*5*6) + 4/(6*7*8) - 4/(8*9*10) + 4/(10*11*12) - 4/(12*13*14) ...
+
+	abm::mpfr::setSignificantFigures( 1000 ) ;
+	abm::mpfr::setDebug( false ) ;
+
+	abm::mpfr pi( "0" ) ;
+
+	auto plus = true ;
+
+	for ( unsigned long i = 2 ; i <= 500000 * 2 ; i += 2 )
+	{
+		auto term = pi1_term(i) ; 
+
+		pi = plus ? pi + term : pi - term ;
+
+		if ( i >= 500000 * 2 - 20 )
+		std::cout << "#" << i << " " << pi.toDecimalPlaces( 90 ) << std::endl ;
+
+		plus = ! plus ;	 
+	}
+
+	pi += abm::mpfr( "3" ) ;
+
+	std::cout << pi << std::endl ;
+}
+
+abm::mpfr pi1_term( unsigned long i )
+{
+	static abm::mpfr _4( "4" ) ;
+
+	return _4 / ( abm::mpfr(i) * abm::mpfr(i+1) * abm::mpfr(i+2) ) ;
+}
+
+void pi2()
+{
+
 }
 
 void doMpfrRandom2()

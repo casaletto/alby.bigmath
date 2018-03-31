@@ -135,6 +135,19 @@ namespace alby::bigmath
 		return *this ;
 	}
 
+	mpfr::mpfr( long l ) // constr
+	{
+		init() ;
+
+		sigFig10 = sigFig10global ;
+
+		p = new mpfr_t_wrapper( sigFig10 ) ;
+
+		auto str = std::to_string( l ) ;
+
+		mpfr_set_str( deref(*this), str.c_str(), 10, roundingDefault ) ; 
+	}
+
 	//----------------------------------------------------------------------------------------------------------------------
 
 	mpfr::mpfr( const char* str ) // constr
