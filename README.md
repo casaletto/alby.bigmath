@@ -193,16 +193,18 @@ void pi_nilakantha()
 		plus = ! plus ;	 
 	}
 
-	pi += abm::mpfr( 3 ) ;
+	pi += 3 ; 
 
 	std::cout << pi << std::endl ;
 }
 
-abm::mpfr pi_nilakantha_term( unsigned long i )
+abm::mpfr pi_nilakantha_term( unsigned long _i )
 {
-	static abm::mpfr _4( 4 ) ;
+	static abm::mpfr _4 = 4 ;
 
-	return _4 / ( abm::mpfr(i) * abm::mpfr(i+1) * abm::mpfr(i+2) ) ;
+	abm::mpfr i = _i ;
+
+	return _4 / ( i * (i+1) * (i+2) ) ;
 }
 ```
 
@@ -214,7 +216,7 @@ abm::mpfr pi_nilakantha_term( unsigned long i )
 
 
 ```
-void pi_nilakantha()
+void pi_ramanujan()
 {
 }
 ```

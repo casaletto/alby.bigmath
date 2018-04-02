@@ -113,17 +113,33 @@ void pi_nilakantha()
 		plus = ! plus ;	 
 	}
 
-	pi += abm::mpfr( 3 ) ;
+	pi += 3 ; 
 
 	std::cout << pi << std::endl ;
 }
 
-abm::mpfr pi_nilakantha_term( unsigned long i )
+abm::mpfr pi_nilakantha_term( unsigned long _i )
 {
-	static abm::mpfr _4( 4 ) ;
+	static abm::mpfr _4 = 4 ;
 
-	return _4 / ( abm::mpfr(i) * abm::mpfr(i+1) * abm::mpfr(i+2) ) ;
+	abm::mpfr i = _i ;
+
+	return _4 / ( i * (i+1) * (i+2) ) ;
 }
+
+
+
+//
+//  n = 0, 23dp
+// pi = +3.14159265358979323846264     1791472380047025609548270985879608911293
+//      +3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384...
+//
+//  n = 1
+//
+//
+//
+
+
 
 void pi_ramanujan()
 {
@@ -134,7 +150,7 @@ void pi_ramanujan()
 
 	auto plus = true ;
 
-	for ( unsigned long n = 0 ; n <= 10 ; n++ )
+	for ( unsigned long n = 0 ; n <= 00 ; n++ )
 	{
 		auto term = pi_ramanujan_term( n ) ; 
 
@@ -153,23 +169,27 @@ abm::mpfr pi_ramanujan_term( unsigned long n )
 	//B = 13 773 980 892 672 sqrt(61) + 107 578 229 802 750,
 	//C = [ 5280 (236 674 + 30 303 sqrt(61) ) ]  pow 3.
 
-	static abm::mpfr _3( 3 ) ;
-	static abm::mpfr _6( 6 ) ;
-	static abm::mpfr half( "0.5" ) ;
+	static abm::mpfr _3   = 3     ;
+	static abm::mpfr _6   = 6     ;
+	static abm::mpfr half = "0.5" ;
 
 	static auto sqrt61 = abm::mpfr( 61 ).sqrt() ;
 	static auto a      = abm::mpfr( "212175710912"   ) * sqrt61 + abm::mpfr( "1657145277365"   ) ;
 	static auto b      = abm::mpfr( "13773980892672" ) * sqrt61 + abm::mpfr( "107578229802750" ) ;
-	static auto c      = abm::mpfr( 5280 ) * ( abm::mpfr( 236674 ) + abm::mpfr( 30303 ) * sqrt61 ) ;
-	c = c ^ abm::mpfr( 3 ) ;
+	static auto c      = abm::mpfr( 5280 ) * ( 236674 + 30303 * sqrt61 ) ;
+	c = c ^ 3 ;
 
-	//std::cout << "a = " << a << std::endl ;
-	//std::cout << "b = " << b << std::endl ;
-	//std::cout << "c = " << c << std::endl ;
+//std::cout << "a = " << a << std::endl ;
+//std::cout << "b = " << b << std::endl ;
+//std::cout << "c = " << c << std::endl ;
 
-	abm::mpfr num( 1 ) ;
-	abm::mpfr den( 1 ) ;
+
+	abm::mpfr num, den ;
 	
+	num = a ;
+
+	den = c ^ half ;
+
 	return num / den ;
 }
 
