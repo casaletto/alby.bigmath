@@ -32,7 +32,7 @@ $ make
 ```
 
 
-# how do you I it in my project?
+# how do I use it in my project?
 
 
 *.cpp
