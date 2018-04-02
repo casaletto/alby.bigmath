@@ -34,6 +34,13 @@ void print_number(int* myInt) {
 11.
 fix up readme
 
+A Ramanujan-type formula due to the Chudnovsky brothers used to break a world record for computing the most digits of pi:
+1π=153360640320−−−−−−√∑n=0∞(−1)n(6n)!n!3(3n)!×13591409+545140134n6403203n
+
+https://crypto.stanford.edu/pbc/notes/pi/ramanujan.html
+
+
+For implementations, it may help to use 6403203=8⋅100100025⋅327843840
 
 
 =======================================================================================================================================================================

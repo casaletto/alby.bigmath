@@ -127,68 +127,65 @@ abm::mpfr pi_nilakantha_term( unsigned long _i )
 	return _4 / ( i * (i+1) * (i+2) ) ;
 }
 
-
-
-//
-//  n = 0, 23dp
-// pi = +3.14159265358979323846264     1791472380047025609548270985879608911293
-//      +3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384...
-//
-//  n = 1
-//
-//
-//
-
-
-
 void pi_ramanujan()
 {
-	abm::mpfr::setSignificantFigures( 1000 ) ;
+	// n = 0, 23 dp
+	// pi = +3.14159265358979323846264
+
+	// n = 5, 84 dp
+	// pi = +3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628
+
+	// n = 10, 155 dp
+	// pi = +3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111
+
+	// n = 100, 1239 dp
+	// pi = +3.1415926535897932384626433..............63707660104710181942955596198 
+
+	// n = 1000 dp = ????
+	// pi = +3.1415926535897932384626433...
+
+	abm::mpfr::setSignificantFigures( 20000 ) ;
 	abm::mpfr::setDebug( false ) ;
 
 	abm::mpfr pi ;
 
 	auto plus = true ;
 
-	for ( unsigned long n = 0 ; n <= 00 ; n++ )
+	for ( unsigned long n = 0 ; n <= 100 ; n++ )
 	{
 		auto term = pi_ramanujan_term( n ) ; 
 
 		pi = plus ? pi + term : pi - term ;
+
+		plus = ! plus ;
 	}
 
-	pi *= abm::mpfr( 12 ) ;
+	pi *= 12 ;
 	pi  = pi.inv() ;
 
 	std::cout << "pi = " << pi << std::endl ;
 }
 
-abm::mpfr pi_ramanujan_term( unsigned long n )
+abm::mpfr pi_ramanujan_term( unsigned long _n )
 {
-	//A = 212 175 710 912 sqrt(61) + 1 657 145 277 365,
-	//B = 13 773 980 892 672 sqrt(61) + 107 578 229 802 750,
-	//C = [ 5280 (236 674 + 30 303 sqrt(61) ) ]  pow 3.
 
 	static abm::mpfr _3   = 3     ;
 	static abm::mpfr _6   = 6     ;
-	static abm::mpfr half = "0.5" ;
+	static abm::mpfr _1_5 = "1.5" ;
 
-	static auto sqrt61 = abm::mpfr( 61 ).sqrt() ;
-	static auto a      = abm::mpfr( "212175710912"   ) * sqrt61 + abm::mpfr( "1657145277365"   ) ;
-	static auto b      = abm::mpfr( "13773980892672" ) * sqrt61 + abm::mpfr( "107578229802750" ) ;
-	static auto c      = abm::mpfr( 5280 ) * ( 236674 + 30303 * sqrt61 ) ;
-	c = c ^ 3 ;
+	static abm::mpfr a = 13591409  ;
+	static abm::mpfr b = 545140134 ;
+	static abm::mpfr c = 640320    ;
 
-//std::cout << "a = " << a << std::endl ;
-//std::cout << "b = " << b << std::endl ;
-//std::cout << "c = " << c << std::endl ;
-
-
+	abm::mpfr n = _n   ;
 	abm::mpfr num, den ;
-	
-	num = a ;
 
-	den = c ^ half ;
+	num  = (_6*n).fact()  ;
+	num *= a + n*b        ;
+
+	den  = n.fact() ^ _3    ; 
+	den *= (_3*n).fact()    ;
+	den *= c ^ (n*3 + _1_5) ;
 
 	return num / den ;
 }

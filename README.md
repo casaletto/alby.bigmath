@@ -161,7 +161,7 @@ and
 ```
 
 
-# calculate π method #1
+# calculate π, method #1
 
 
 ![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20nilakantha.png "pi #1")
@@ -209,10 +209,10 @@ abm::mpfr pi_nilakantha_term( unsigned long _i )
 ```
 
 
-# calculate π method #2
+# calculate π, method #2
 
 
-![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%201989%2025%20digits%20per%20term.png "pi #2")
+![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20ramujan.png "pi #2")
 
 
 ```
@@ -222,7 +222,7 @@ void pi_ramanujan()
 ```
 
 
-# calculate π method #3
+# calculate π, method #3
 
 
 
@@ -244,7 +244,10 @@ $ make test
 * https://gmplib.org
 * https://regexr.com/3m16c
 * https://en.wikipedia.org/wiki/Borwein%27s_algorithm
-* https://helloacm.com/two-simple-equations-to-compute-pi/
+* https://helloacm.com/two-simple-equations-to-compute-pi
 * http://www.pi314.net/eng/borwein.php
 * https://ipfs.io/ipfs/QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco/wiki/Borwein%27s_algorithm.html
+* https://www.carma.newcastle.edu.au/jon/RAMA125f.pdf
+* https://crypto.stanford.edu/pbc/notes/pi/ramanujan.html
+
 
