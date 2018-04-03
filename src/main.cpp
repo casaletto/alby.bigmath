@@ -50,7 +50,7 @@ int main( void )
 {
 	try
 	{
-		std::cout << abm::mpfr::version() << std::endl ;		
+		//std::cout << abm::mpfr::version() << std::endl ;		
 
 		pi_ramanujan() ;
 		//pi_nilakantha() ;
@@ -138,20 +138,28 @@ void pi_ramanujan()
 	// n = 10, 155 dp
 	// pi = +3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111
 
-	// n = 100, 1239 dp
-	// pi = +3.1415926535897932384626433..............63707660104710181942955596198 
 
-	// n = 1000 dp = ????
-	// pi = +3.1415926535897932384626433...
+	// n = 100, 1432 dp
+	// pi = +3.1415926535897932384626433..............42699227967823547816360093417216412199245 
 
-	abm::mpfr::setSignificantFigures( 20000 ) ;
+
+	// n = 1000, dp = 14195
+	// pi = +3.1415926535897932384626433.....228435988341003583854238973542439564755568409522484455413
+
+//ALBY
+	// n = 10000, dp = 
+	// pi = +3.1415926535897932384626433.....
+
+
+
+	abm::mpfr::setSignificantFigures( 200000 ) ;
 	abm::mpfr::setDebug( false ) ;
 
 	abm::mpfr pi ;
 
 	auto plus = true ;
 
-	for ( unsigned long n = 0 ; n <= 100 ; n++ )
+	for ( unsigned long n = 0 ; n <= 10000 ; n++ )
 	{
 		auto term = pi_ramanujan_term( n ) ; 
 
@@ -163,7 +171,7 @@ void pi_ramanujan()
 	pi *= 12 ;
 	pi  = pi.inv() ;
 
-	std::cout << "pi = " << pi << std::endl ;
+	std::cout << pi << std::endl ;
 }
 
 abm::mpfr pi_ramanujan_term( unsigned long _n )
@@ -187,7 +195,12 @@ abm::mpfr pi_ramanujan_term( unsigned long _n )
 	den *= (_3*n).fact()    ;
 	den *= c ^ (n*3 + _1_5) ;
 
-	return num / den ;
+	auto result = num / den ;
+
+//ALBY
+//std::cout << "#" << _n << ": "  << result.toDecimalPlaces( 2000 ) << std::endl << std::endl ;
+
+	return result  ;
 }
 
 void doMpfrRandom2()

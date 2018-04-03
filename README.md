@@ -249,5 +249,8 @@ $ make test
 * https://ipfs.io/ipfs/QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco/wiki/Borwein%27s_algorithm.html
 * https://www.carma.newcastle.edu.au/jon/RAMA125f.pdf
 * https://crypto.stanford.edu/pbc/notes/pi/ramanujan.html
+* http://www.piday.org/million/
+* http://webdocs.cs.ualberta.ca/~smillie/Pi10000.html
+* http://www.eveandersson.com/pi/digits/1000000
 
 
