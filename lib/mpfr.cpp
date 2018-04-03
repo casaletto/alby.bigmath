@@ -888,6 +888,23 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
+	std::map<unsigned long, mpfr> 
+	mpfr::factorialMap( unsigned long n )
+	{
+		std::map<unsigned long, mpfr> map ;
+
+		map[0] = 1 ;
+
+		for ( unsigned long i = 1 ; i <= n ; i++ )
+		{
+			map[i] = map[i-1] * i ;
+		}
+
+		return map ;
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
+
 	std::string 
 	mpfr::version() 
 	{

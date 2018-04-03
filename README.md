@@ -167,10 +167,10 @@ and
 ![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20nilakantha.png "pi #1")
 
 
-500 000 iterations yield 17 dp\
+500 000 iterations yield 17 decimal points\
 +3.14159265358979323...\
 \
-5 000 000 iterations yield 20 dp\
+5 000 000 iterations yield 20 decimal points\
 +3.14159265358979323846...
 
 

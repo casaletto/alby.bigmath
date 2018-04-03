@@ -108,6 +108,8 @@ namespace alby::bigmath
 			mpfr ceil()  					; // ceiling
 			mpfr floor() 					; // floor
 			mpfr trunc() 					; // trunc towards 0
+
+			static std::map<unsigned long, mpfr> factorialMap( unsigned long n ) ; // create a map of factorials, range [0..n]
 	} ;
 } 
 

@@ -43,7 +43,8 @@ void example1() ;
 void pi_nilakantha() ;
 abm::mpfr pi_nilakantha_term( unsigned long i ) ;
 void pi_ramanujan() ;
-abm::mpfr pi_ramanujan_term( unsigned long n ) ;
+abm::mpfr pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::mpfr>& factorial ) ;
+
 
 
 int main( void )
@@ -150,18 +151,26 @@ void pi_ramanujan()
 	// n = 10000, dp = 
 	// pi = +3.1415926535897932384626433.....
 
+	unsigned long N = 10000 ;
+	
 
-
-	abm::mpfr::setSignificantFigures( 200000 ) ;
+	abm::mpfr::setSignificantFigures( 150000 ) ;
 	abm::mpfr::setDebug( false ) ;
+
+	auto factorial = abm::mpfr::factorialMap( N * 6 ) ;
 
 	abm::mpfr pi ;
 
 	auto plus = true ;
 
-	for ( unsigned long n = 0 ; n <= 10000 ; n++ )
+
+//ALBY
+std::cout << factorial.size() << std::endl ;
+
+
+	for ( unsigned long n = 0 ; n <= N ; n++ )
 	{
-		auto term = pi_ramanujan_term( n ) ; 
+		auto term = pi_ramanujan_term( n, factorial ) ; 
 
 		pi = plus ? pi + term : pi - term ;
 
@@ -174,7 +183,7 @@ void pi_ramanujan()
 	std::cout << pi << std::endl ;
 }
 
-abm::mpfr pi_ramanujan_term( unsigned long _n )
+abm::mpfr pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::mpfr>& factorial )
 {
 
 	static abm::mpfr _3   = 3     ;
@@ -188,17 +197,30 @@ abm::mpfr pi_ramanujan_term( unsigned long _n )
 	abm::mpfr n = _n   ;
 	abm::mpfr num, den ;
 
-	num  = (_6*n).fact()  ;
-	num *= a + n*b        ;
+	//num  = (_6*n).fact()  ;
+	num  = factorial[ 6*_n ] ;
+	num *= a + n*b           ;
 
-	den  = n.fact() ^ _3    ; 
-	den *= (_3*n).fact()    ;
-	den *= c ^ (n*3 + _1_5) ;
+	//den  = n.fact() ^ _3    ; 
+	den = factorial[ _n ] ^ 3 ;
+	//den *= (_3*n).fact() ; 
+	den *= factorial[ 3*_n ]  ; 
+	  
+	den *= c ^ (n*3 + _1_5)   ;
 
 	auto result = num / den ;
 
+
 //ALBY
-//std::cout << "#" << _n << ": "  << result.toDecimalPlaces( 2000 ) << std::endl << std::endl ;
+if ( _n % 100 == 0 )
+{
+	auto now = std::chrono::system_clock::now();
+	auto now_c = std::chrono::system_clock::to_time_t(now);
+	std::cout << std::put_time(std::localtime(&now_c), "%c") << std::endl ; //"%d-%m-%Y %I:%M:%S"
+
+	std::cout << "#" << _n << "\t\t\t"  << result.toDecimalPlaces( 100 ) << std::endl << std::endl ;
+}
+
 
 	return result  ;
 }
