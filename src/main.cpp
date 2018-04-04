@@ -44,22 +44,14 @@ void pi_nilakantha() ;
 abm::mpfr pi_nilakantha_term( unsigned long i ) ;
 void pi_ramanujan() ;
 abm::mpfr pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::mpfr>& factorial ) ;
-
-
+void pi_nonic() ;
 
 int main( void )
 {
 	try
 	{
-		//std::cout << abm::mpfr::version() << std::endl ;		
+		std::cout << abm::mpfr::version() << std::endl ;		
 
-		pi_ramanujan() ;
-		//pi_nilakantha() ;
-return 0 ; //ALBY
-
-		doMpfrRandom2() ;
-		doMpfrRandom() ;
-		example1() ;
 		doMpfrMath0() ;
 		doMpfrMath1() ;
 		doMpfrNumberParse() ;
@@ -68,6 +60,12 @@ return 0 ; //ALBY
 		doMpfrMathtoCanonical() ;
 		doMpfrMathtoSigFig() ;
 		roundToSignificantDigits() ;
+		doMpfrRandom() ;
+		doMpfrRandom2() ;
+		example1() ;
+		pi_nilakantha() ;
+		pi_ramanujan() ;
+		pi_nonic() ;
 	}
 	catch( const std::exception& ex )
 	{
@@ -95,7 +93,7 @@ void pi_nilakantha()
 	// 20 dp 
 	// 5 000 000 iterations
 
-	abm::mpfr::setSignificantFigures( 1000 ) ;
+	abm::mpfr::setSignificantFigures( 15 ) ;
 	abm::mpfr::setDebug( false ) ;
 
 	abm::mpfr pi ;
@@ -107,9 +105,6 @@ void pi_nilakantha()
 		auto term = pi_nilakantha_term(i) ; 
 
 		pi = plus ? pi + term : pi - term ;
-
-		if ( i >= 5000 * 2 - 20 )
-		std::cout << "#" << i << " " << pi.toDecimalPlaces( 90 ) << std::endl ;
 
 		plus = ! plus ;	 
 	}
@@ -139,22 +134,18 @@ void pi_ramanujan()
 	// n = 10, 155 dp
 	// pi = +3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111
 
-
 	// n = 100, 1432 dp
 	// pi = +3.1415926535897932384626433..............42699227967823547816360093417216412199245 
-
 
 	// n = 1000, dp = 14195
 	// pi = +3.1415926535897932384626433.....228435988341003583854238973542439564755568409522484455413
 
-//ALBY
-	// n = 10000, dp = 
-	// pi = +3.1415926535897932384626433.....
+	// n = 10000, dp = 141830
+	// pi = +3.1415926535897932384626433.....9605721400330661597939815697061366098396405520287669991722547240
 
-	unsigned long N = 10000 ;
+	unsigned long N = 100 ;
 	
-
-	abm::mpfr::setSignificantFigures( 150000 ) ;
+	abm::mpfr::setSignificantFigures( 1500 ) ;
 	abm::mpfr::setDebug( false ) ;
 
 	auto factorial = abm::mpfr::factorialMap( N * 6 ) ;
@@ -162,11 +153,6 @@ void pi_ramanujan()
 	abm::mpfr pi ;
 
 	auto plus = true ;
-
-
-//ALBY
-std::cout << factorial.size() << std::endl ;
-
 
 	for ( unsigned long n = 0 ; n <= N ; n++ )
 	{
@@ -185,7 +171,6 @@ std::cout << factorial.size() << std::endl ;
 
 abm::mpfr pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::mpfr>& factorial )
 {
-
 	static abm::mpfr _3   = 3     ;
 	static abm::mpfr _6   = 6     ;
 	static abm::mpfr _1_5 = "1.5" ;
@@ -197,32 +182,24 @@ abm::mpfr pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::mpfr
 	abm::mpfr n = _n   ;
 	abm::mpfr num, den ;
 
-	//num  = (_6*n).fact()  ;
 	num  = factorial[ 6*_n ] ;
 	num *= a + n*b           ;
 
-	//den  = n.fact() ^ _3    ; 
-	den = factorial[ _n ] ^ 3 ;
-	//den *= (_3*n).fact() ; 
-	den *= factorial[ 3*_n ]  ; 
-	  
-	den *= c ^ (n*3 + _1_5)   ;
+	den  = factorial[ _n ] ^ 3 ;
+	den *= factorial[ 3*_n ]   ; 
+	den *= c ^ (n*3 + _1_5)    ;
 
 	auto result = num / den ;
 
-
-//ALBY
-if ( _n % 100 == 0 )
-{
-	auto now = std::chrono::system_clock::now();
-	auto now_c = std::chrono::system_clock::to_time_t(now);
-	std::cout << std::put_time(std::localtime(&now_c), "%c") << std::endl ; //"%d-%m-%Y %I:%M:%S"
-
-	std::cout << "#" << _n << "\t\t\t"  << result.toDecimalPlaces( 100 ) << std::endl << std::endl ;
+	return result  ;
 }
 
-
-	return result  ;
+void pi_nonic()
+{
+	unsigned long N = 2 ;
+	
+	abm::mpfr::setSignificantFigures( 1000100 ) ;
+	abm::mpfr::setDebug( false ) ;
 }
 
 void doMpfrRandom2()
@@ -408,9 +385,10 @@ void doMpfrNumberParse()
 void example1()
 {
 	abm::mpfr::setSignificantFigures( 22 ) ;
+	abm::mpfr::setDebug( false ) ; 
 
-	auto a = abm::mpfr( "1.2e10" ) ;
-	auto b = abm::mpfr( "3.4" ) ;
+	auto a = abm::mpfr( "1.2e10"  ) ;
+	auto b = abm::mpfr( "3.4"     ) ;
 	auto c = abm::mpfr( "5.6e-10" ) ;	
 
 	auto sum = a + b + c ;
@@ -418,22 +396,14 @@ void example1()
 	std::cout 
 		<< a << " + " 
 		<< b << " + " 
-		<< c 
-		<< std::endl 
-		<< std::endl 
-		<< "= " 
-		<< sum 
-		<< std::endl 
-		<< std::endl 
-		<< "= " 
-		<< sum.toScientificNotation()
-		<< std::endl 
-		<< std::endl ;
+		<< c << std::endl << std::endl 
+		<< "= " << sum << std::endl << std::endl 
+		<< "= " << sum.toScientificNotation() << std::endl << std::endl ;
 
 	abm::mpfr::setSignificantFigures( 2002 ) ;
 
-	a = abm::mpfr( "1.2e1000" ) ;
-	b = abm::mpfr( "3.4" ) ;
+	a = abm::mpfr( "1.2e1000"  ) ;
+	b = abm::mpfr( "3.4"       ) ;
 	c = abm::mpfr( "5.6e-1000" ) ;	
 
 	sum = a + b + c ;
@@ -441,16 +411,9 @@ void example1()
 	std::cout 
 		<< a.toScientificNotation() << " + " 
 		<< b << " + " 
-		<< c.toScientificNotation() 
-		<< std::endl 
-		<< std::endl 
-		<< "= " 
-		<< sum 
-		<< std::endl 
-		<< std::endl  
-		<< "= " 
-		<< sum.toScientificNotation()  
-		<< std::endl ;
+		<< c.toScientificNotation() << std::endl << std::endl 
+		<< "= " << sum << std::endl << std::endl  
+		<< "= " << sum.toScientificNotation()  << std::endl ;
 }
 
 void doMpfrMath0()
@@ -3429,9 +3392,5 @@ void roundToSignificantDigits()
 
 
 }
-
-
-
-
 
 
