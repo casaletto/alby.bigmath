@@ -26,6 +26,7 @@
 #include "../lib/mpfr_t_wrapper.h"
 #include "../lib/mpfr.h"
 #include "../lib/random.h"
+#include "../lib/pi.h"
 
 namespace abm = alby::bigmath ; 
 
@@ -41,9 +42,7 @@ void doMpfrMathtoSigFig() ;
 void roundToSignificantDigits() ;
 void example1() ;
 void pi_nilakantha() ;
-abm::mpfr pi_nilakantha_term( unsigned long i ) ;
 void pi_ramanujan() ;
-abm::mpfr pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::mpfr>& factorial ) ;
 void pi_nonic() ;
 
 int main( void )
@@ -96,31 +95,9 @@ void pi_nilakantha()
 	abm::mpfr::setSignificantFigures( 15 ) ;
 	abm::mpfr::setDebug( false ) ;
 
-	abm::mpfr pi ;
-
-	auto plus = true ;
-
-	for ( unsigned long i = 2 ; i <= 5000 * 2 ; i += 2 )
-	{
-		auto term = pi_nilakantha_term(i) ; 
-
-		pi = plus ? pi + term : pi - term ;
-
-		plus = ! plus ;	 
-	}
-
-	pi += 3 ; 
+	auto pi = abm::pi::nilakantha( 5000 ) ;
 
 	std::cout << pi << std::endl ;
-}
-
-abm::mpfr pi_nilakantha_term( unsigned long _i )
-{
-	static abm::mpfr _4 = 4 ;
-
-	abm::mpfr i = _i ;
-
-	return _4 / ( i * (i+1) * (i+2) ) ;
 }
 
 void pi_ramanujan()
@@ -143,63 +120,46 @@ void pi_ramanujan()
 	// n = 10000, dp = 141830
 	// pi = +3.1415926535897932384626433.....9605721400330661597939815697061366098396405520287669991722547240
 
-	unsigned long N = 100 ;
-	
 	abm::mpfr::setSignificantFigures( 1500 ) ;
 	abm::mpfr::setDebug( false ) ;
 
-	auto factorial = abm::mpfr::factorialMap( N * 6 ) ;
-
-	abm::mpfr pi ;
-
-	auto plus = true ;
-
-	for ( unsigned long n = 0 ; n <= N ; n++ )
-	{
-		auto term = pi_ramanujan_term( n, factorial ) ; 
-
-		pi = plus ? pi + term : pi - term ;
-
-		plus = ! plus ;
-	}
-
-	pi *= 12 ;
-	pi  = pi.inv() ;
+	auto pi = abm::pi::ramanujan( 100 ) ;
 
 	std::cout << pi << std::endl ;
 }
 
-abm::mpfr pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::mpfr>& factorial )
-{
-	static abm::mpfr _3   = 3     ;
-	static abm::mpfr _6   = 6     ;
-	static abm::mpfr _1_5 = "1.5" ;
-
-	static abm::mpfr a = 13591409  ;
-	static abm::mpfr b = 545140134 ;
-	static abm::mpfr c = 640320    ;
-
-	abm::mpfr n = _n   ;
-	abm::mpfr num, den ;
-
-	num  = factorial[ 6*_n ] ;
-	num *= a + n*b           ;
-
-	den  = factorial[ _n ] ^ 3 ;
-	den *= factorial[ 3*_n ]   ; 
-	den *= c ^ (n*3 + _1_5)    ;
-
-	auto result = num / den ;
-
-	return result  ;
-}
-
 void pi_nonic()
 {
-	unsigned long N = 2 ;
-	
-	abm::mpfr::setSignificantFigures( 1000100 ) ;
+	// n = 0, dp = 0
+	// pi = +3.0
+
+	// n = 1, dp = 0
+	// pi = +3.0
+
+	// n = 2, dp = 21
+	// pi = +3.141592653589793238462
+
+	// n = 3, dp = 216
+	// pi = +3.141592653589793238462...81117450284102701938521105559644622948954930381964428810975665933
+
+	// n = 4, dp = 1984
+	// pi = +3.141592653589793238462...50471237137869609563643719172874677646575739624138908658326459958
+
+	// n = 5, dp = 17896
+	// pi = +3.141592653589793238462...560011250184335607361222765949278393
+
+	// n = 6, dp = 161 123
+	// pi = +3.141592653589793238462...0712427360675833767835191012510994437030462
+
+	// n = 7, dp > 1 000 000
+	// pi = +3.141592653589793238462...696552087542450598956787961303311646283996346460422090106105779458151
+
+	abm::mpfr::setSignificantFigures( 1985 ) ;
 	abm::mpfr::setDebug( false ) ;
+
+	auto pi = abm::pi::nonic( 4 ) ;
+
+	std::cout << pi << std::endl ;
 }
 
 void doMpfrRandom2()

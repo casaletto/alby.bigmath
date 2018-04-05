@@ -12,7 +12,7 @@ and almost unlimited precision floating point aritmetic (mpfr).
 
 # packages required
 
-* build-essential or equivalent gnu compiler toolchain 
+* build-essential (or equivalent gnu compiler toolchain)
 * libgmp-dev
 * libgmp10
 * libmpfr-dev
@@ -44,6 +44,7 @@ cpp files
 #include "../lib/mpfr_t_wrapper.h"
 #include "../lib/mpfr.h"
 #include "../lib/random.h"
+#include "../lib/pi.h"
 ```
 
 makefile
@@ -87,7 +88,7 @@ $ uname -a
 MINGW64_NT-6.3 xxxxxxx 2.5.2(0.297/5/3) 2016-07-15 08:31 x86_64 Msys
 ```
 
-# here's an example
+# some examples
 
 (1)
 ```
@@ -288,9 +289,70 @@ abm::mpfr pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::mpfr
 
 # calculate π, method #3
 
+calculate π to 1 000 000 decimal places with only 7 iterations
 ```
++3.141592653589793238462...696552087542450598956787961303311646283996346460422090106105779458151
+```
+
+```
+namespace abm = alby::bigmath ; 
+
 void pi_nonic()
 {
+	abm::mpfr::setSignificantFigures( 1000001 ) ;
+	abm::mpfr::setDebug( false ) ;
+
+	auto pi = abm::pi::nonic( 7 ) ;
+
+	std::cout << pi << std::endl ;
+}
+
+mpfr pi::nonic( unsigned long N ) 
+{
+	nonic_term_t t0 ; 
+
+	t0.a = mpfr(1) / 3 ;
+	t0.r = ( mpfr(3).sqrt() - 1 ) / 2 ;
+
+	t0.s  = 1 - ( t0.r ^ 3 ) ;
+	t0.s ^= mpfr(1) / 3 ;
+
+	auto prev = t0 ;
+	auto t    = t0 ;
+
+	for ( unsigned long n = 1 ; n <= N ; n++ )
+	{
+		t = nonic_term( n, prev ) ; 
+		prev = t ;
+	}
+
+	return t.a.inv() ;
+}
+	 
+pi::nonic_term_t pi::nonic_term( unsigned long n, nonic_term_t& prev ) // calculate term n
+{
+	nonic_term_t t ; 
+
+	t.t = 1 + 2 * prev.r ;
+	
+	t.u  = 9 * prev.r * ( 1 + prev.r + ( prev.r ^ 2 ) ) ;
+	t.u ^= mpfr(1) / 3 ; 
+
+	t.v = ( t.t ^ 2 ) + t.t * t.u + ( t.u ^ 2 ) ;
+
+	t.w  = 1 + prev.s + ( prev.s ^ 2 ) ;
+	t.w *= 27 / t.v ;
+
+	t.a  = t.w * prev.a ;
+	t.a += ( 3 ^ mpfr( 2 * (n-1) - 1 ) ) * ( 1 - t.w ) ;
+
+	t.s  = ( 1 - prev.r ) ^ 3;
+	t.s /= ( t.t + 2 * t.u ) * t.v ;
+
+	t.r  = 1 - ( t.s ^ 3 ) ;
+	t.r ^= mpfr(1) / 3 ; 
+
+	return t ;
 }
 ```
 

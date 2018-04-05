@@ -18,13 +18,17 @@ obj/numberhlp.o: lib/numberhlp.cpp lib/*.h
 obj/random.o: lib/random.cpp lib/*.h 
 	g++ -c -Os lib/random.cpp -o obj/random.o
 
-bin/libalbybigmath.a: obj/mpfr.o obj/mpfr_t_wrapper.o obj/stringhlp.o obj/numberhlp.o obj/random.o
+obj/pi.o: lib/pi.cpp lib/*.h 
+	g++ -c -Os lib/pi.cpp -o obj/pi.o
+
+bin/libalbybigmath.a: obj/mpfr.o obj/mpfr_t_wrapper.o obj/stringhlp.o obj/numberhlp.o obj/random.o obj/pi.o
 	ar rvs bin/libalbybigmath.a \
 		obj/mpfr.o \
 		obj/mpfr_t_wrapper.o \
 		obj/stringhlp.o \
 		obj/numberhlp.o \
 		obj/random.o \
+		obj/pi.o \
 
 # ------------------------------------------------------------------------------------------
 
