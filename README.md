@@ -289,6 +289,8 @@ abm::mpfr pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::mpfr
 
 # calculate π, method #3
 
+![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20nonoc%20convergence.png "pi #2")
+
 calculate π to 1 000 000 decimal places with only 7 iterations
 ```
 +3.141592653589793238462...696552087542450598956787961303311646283996346460422090106105779458151
