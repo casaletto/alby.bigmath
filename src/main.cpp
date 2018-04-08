@@ -25,8 +25,11 @@
 #include "../lib/numberhlp.h"
 #include "../lib/mpfr_t_wrapper.h"
 #include "../lib/mpfr.h"
+#include "../lib/mpq_t_wrapper.h"
+#include "../lib/mpq.h"
 #include "../lib/random.h"
 #include "../lib/pi.h"
+#include "../lib/version.h"
 
 namespace abm = alby::bigmath ; 
 
@@ -44,12 +47,13 @@ void example1() ;
 void pi_nilakantha() ;
 void pi_ramanujan() ;
 void pi_nonic() ;
+void doMpqMath0() ;
 
 int main( void )
 {
 	try
 	{
-		std::cout << abm::mpfr::version() << std::endl ;		
+		std::cout << abm::version::getVersion() << std::endl ;		
 
 		doMpfrMath0() ;
 		doMpfrMath1() ;
@@ -65,6 +69,8 @@ int main( void )
 		pi_nilakantha() ;
 		pi_ramanujan() ;
 		pi_nonic() ;
+
+		doMpqMath0() ;
 	}
 	catch( const std::exception& ex )
 	{
@@ -76,6 +82,185 @@ int main( void )
 	}
 	
 	return 0 ;	
+}
+
+void doMpqMath0()
+{
+	{
+		abm::mpq_t_wrapper a, b, c ;
+
+		std::cout << a.toString() << std::endl ;
+		std::cout << b.toString() << std::endl ;
+		std::cout << c.toString() << std::endl ;
+		std::cout << a.toString() << std::endl ;
+		std::cout << b.toString() << std::endl ;
+		std::cout << c.toString() << std::endl ;
+	}
+
+	{
+		std::cout << "---------------------" << std::endl ;
+		
+		abm::mpq a = "1/4" ;
+		abm::mpq b = "-2 / 3" ;
+
+		auto c = a + b ;
+		auto d = a - b ;
+		auto e = a * b ;
+		auto f = a / b ;
+
+		std::cout << "a = " << a << std::endl ;
+		std::cout << "b = " << b << std::endl ;
+		std::cout << "c = " << c << std::endl ;
+		std::cout << "d = " << d << std::endl ;
+		std::cout << "e = " << e << std::endl ;
+		std::cout << "f = " << f << std::endl ;
+	}
+
+	{
+		std::cout << "---------------------" << std::endl ;
+		
+		abm::mpq a = "+1/4" ;
+		abm::mpq b = "-2 / 3" ;
+
+		auto c = a + b ;
+		auto d = a - b ;
+		auto e = a * b ;
+		auto f = a / b ;
+
+		std::cout << "a = " << a << std::endl ;
+		std::cout << "b = " << b << std::endl ;
+		std::cout << "c = " << c << std::endl ;
+		std::cout << "d = " << d << std::endl ;
+		std::cout << "e = " << e << std::endl ;
+		std::cout << "f = " << f << std::endl ;
+	}
+
+	{
+		std::cout << "---------------------" << std::endl ;
+		
+		abm::mpq a = "  2 / 8   " ;
+		abm::mpq b = " -  2 0 / 3    0 " ;
+
+		auto c = a + b ;
+		auto d = a - b ;
+		auto e = a * b ;
+		auto f = a / b ;
+
+		std::cout << "a = " << a << std::endl ;
+		std::cout << "b = " << b << std::endl ;
+		std::cout << "c = " << c << std::endl ;
+		std::cout << "d = " << d << std::endl ;
+		std::cout << "e = " << e << std::endl ;
+		std::cout << "f = " << f << std::endl ;
+		std::cout << "a + a = " << a + a << std::endl ;
+	}
+
+	{
+		std::cout << "---------------------" << std::endl ;
+
+		abm::mpq a = std::string( "  2 / 8   " ) ;
+		abm::mpq b = std::string( "      -  2    0   /    3    0     " ) ;
+
+		std::cout << "a = " << a << std::endl ;
+		std::cout << "b = " << b << std::endl ;
+
+		a += b ;
+		b -= a ;
+
+		std::cout << "a = " << a << std::endl ;
+		std::cout << "b = " << b << std::endl ;
+
+		a *= b ;
+		b /= a ;
+
+		std::cout << "a = " << a << std::endl ;
+		std::cout << "b = " << b << std::endl ;
+
+		auto f = a / b ;
+		std::cout << "f     = " << f << std::endl ;
+		std::cout << "f inv = " << f.inv() << std::endl ;
+		std::cout << "f neg = " << f.neg() << std::endl ;
+		std::cout << "f abs = " << f.abs() << std::endl ;
+
+		std::string str = f ;
+		std::cout << "f     = " << str << std::endl ;
+		std::cout << "f     = " << f.toString() << std::endl ;
+	}
+
+	{
+		std::cout << "---------------------" << std::endl ;
+
+		abm::mpq a = -34 ;
+		std::cout << "a = " << a << std::endl ;
+
+		abm::mpq b = -0 ;
+		std::cout << "b = " << b << std::endl ;
+
+		abm::mpq c = 10000 ;
+		std::cout << "c = " << c << std::endl ;
+
+		abm::mpq d = -10000 ;
+		std::cout << "d = " << d << std::endl ;
+
+		a = c ;
+		std::cout << "a = " << a << std::endl ;
+
+		auto e = d ;
+		std::cout << "e = " << e << std::endl ;
+	}
+
+	{
+		std::cout << "---------------------" << std::endl ;
+
+		abm::mpq a = -34 ;
+		std::cout << "a = " << a << std::endl ;
+
+		abm::mpq b = 400 ;
+		std::cout << "b = " << b << std::endl ;
+
+		std::cout << "a == b --> " << std::boolalpha << (a == b) << std::endl ;
+		std::cout << "a != b --> " << std::boolalpha << (a != b) << std::endl ;
+		std::cout << "a <  b --> " << std::boolalpha << (a <  b) << std::endl ;
+		std::cout << "a <= b --> " << std::boolalpha << (a <= b) << std::endl ;
+		std::cout << "a >  b --> " << std::boolalpha << (a >  b) << std::endl ;
+		std::cout << "a >= b --> " << std::boolalpha << (a >= b) << std::endl ;
+	}
+
+	{
+		std::cout << "---------------------" << std::endl ;
+
+		abm::mpq a = 34 ;
+		std::cout << "a = " << a << std::endl ;
+
+		abm::mpq b = -400 ;
+		std::cout << "b = " << b << std::endl ;
+
+		std::cout << "a == b --> " << std::boolalpha << (a == b) << std::endl ;
+		std::cout << "a != b --> " << std::boolalpha << (a != b) << std::endl ;
+		std::cout << "a <  b --> " << std::boolalpha << (a <  b) << std::endl ;
+		std::cout << "a <= b --> " << std::boolalpha << (a <= b) << std::endl ;
+		std::cout << "a >  b --> " << std::boolalpha << (a >  b) << std::endl ;
+		std::cout << "a >= b --> " << std::boolalpha << (a >= b) << std::endl ;
+	}
+
+	{
+		std::cout << "---------------------" << std::endl ;
+
+		abm::mpq a = -400 ;
+		std::cout << "a = " << a << std::endl ;
+
+		abm::mpq b = -400 ;
+		std::cout << "b = " << b << std::endl ;
+
+		std::cout << "a == b --> " << std::boolalpha << (a == b) << std::endl ;
+		std::cout << "a != b --> " << std::boolalpha << (a != b) << std::endl ;
+		std::cout << "a <  b --> " << std::boolalpha << (a <  b) << std::endl ;
+		std::cout << "a <= b --> " << std::boolalpha << (a <= b) << std::endl ;
+		std::cout << "a >  b --> " << std::boolalpha << (a >  b) << std::endl ;
+		std::cout << "a >= b --> " << std::boolalpha << (a >= b) << std::endl ;
+	}
+	
+
 }
 
 void pi_nilakantha()

@@ -3,56 +3,27 @@ BACKLOG
 =======================================================================================================================================================================
 
 
-12. fix up readme      
+5/49 + 3/21 - 6/25 = 6/1225
+
+2 2/3 + 1 1/4 - 5/6 = 3 1/12
 
 
------------------------------------------------------------------------
-13.
+( 3 - 2/3 ) / 5/6 = 2 4/5
 
-* unit tests - which framework ???
-* do proper tests - do asserts for unit tests - for each section
-void print_number(int* myInt) {
-  assert (myInt!=NULL);
-  printf ("%d\n",*myInt);
-}
-
-* put thest code in /test folder
-----------------------------------------------------------------------
+1 2/7 / 5 = 9/35
 
 
-=======================================================================================================================================================================
-gmp c++
-=======================================================================================================================================================================
+1 2/3 / ( 1 1/4 * 4 2/5 )
+
+compare to float calc
+
+
 
 14.
-
-
  make my own c++ class for gmp
-. Repeat pattern for gmp
-. Conversion between mrfp and gmp
+. Conversion between mrfp and gmp ????
 
-
-
-// class mpq_t_wrapper
-
-mpq_t_wrapper
-mpfr::toMpq( std::string& numerator, std::string& denominator, bool reduce ) 
-{
-}
-
-
-std::string 
-mpfr::toFraction( std::string& numerator, std::string& denominator, bool reduce ) 
-{
-	return toMpq()->toSTring() ;
-}
-4. 
-
-gmp raw toRational() ; / return gmp rational
-
-... Convert to rational, fix numerator, convert back to mpfr ?????
-
-later, return class
+* way to move between gmp & mpfr as seamlessly as possible.
 
 
 --------------------
@@ -66,7 +37,7 @@ gmp c++ fucntions
 .inv
 .neg
 comparison functions
-.toMpfr()
+.toMpfr() NO
 
 
 mpq()                             ;               
@@ -91,12 +62,48 @@ mpq( const mpfr& rhs )            ;
 ??????????????? 
 
 
-need class 			
-mpq_t_wrapper* p        = nullptr         ;
 
---------------------
+NO :
 
-* way to move between gmp & mpfr as seamlessly as possible.
+// class mpq_t_wrapper
+
+mpq_t_wrapper
+mpfr::toMpq( std::string& numerator, std::string& denominator, bool reduce ) 
+{
+}
+
+
+std::string 
+mpfr::toFraction( std::string& numerator, std::string& denominator, bool reduce ) 
+{
+	return toMpq()->toSTring() ;
+}
+4. 
+
+gmp raw toRational() ; / return gmp rational
+
+... Convert to rational, fix numerator, convert back to mpfr ?????
+
+later, return class
+
+
+12. fix up readme      
+
+=======================================================================================================================================================================
+
+-----------------------------------------------------------------------
+13.
+
+* unit tests - which framework ???
+* do proper tests - do asserts for unit tests - for each section
+void print_number(int* myInt) {
+  assert (myInt!=NULL);
+  printf ("%d\n",*myInt);
+}
+
+* put thest code in /test folder
+----------------------------------------------------------------------
+
 
 =======================================================================================================================================================================
 DONE
@@ -142,7 +149,19 @@ sf
 binary sf = log2( power( 10, decimal sigdigs)) + 20
 
 * factorial
-* sqrt
+* sqrt-----------------------------------------------------------------------
+13.
+
+* unit tests - which framework ???
+* do proper tests - do asserts for unit tests - for each section
+void print_number(int* myInt) {
+  assert (myInt!=NULL);
+  printf ("%d\n",*myInt);
+}
+
+* put thest code in /test folder
+----------------------------------------------------------------------
+
 
 // change file nam stringhlper to stringhlp
 // change sprintf to cat
@@ -641,5 +660,9 @@ a(n+1) = 1 /pi
 
 -----------------------------------------------------------------------
 
+need class 			
+mpq_t_wrapper* p        = nullptr         ;
+
 =======================================================================================================================================================================
+
 

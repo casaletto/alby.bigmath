@@ -100,7 +100,10 @@ namespace alby::bigmath
 	
 			str2.replace( pos, find.length(), replace ) ;
 
-			pos = str2.find( find, pos + find.length() ) ;
+			if ( replace.empty() )
+				 pos = str2.find( find ) ;
+			else
+				 pos = str2.find( find, pos + find.length() ) ;
 		}
 
 		return str2 ;

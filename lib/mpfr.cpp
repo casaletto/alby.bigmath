@@ -904,21 +904,6 @@ namespace alby::bigmath
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------
-
-	std::string 
-	mpfr::version() 
-	{
-		return stringcat
-		(
-			"GMP version       ",			gmp_version,			
-			"\nMPFR version      ",			mpfr_get_version(),
-			"\nMPFR_PREC_MAX     ",			MPFR_PREC_MAX,
-			"\nMPFR default prec ",			mpfr_get_default_prec() ,
-			"\nMPFR min exponent ",			mpfr_get_emin(), 
-			"\nMPFR max exponent ",			mpfr_get_emax(), 			
-			"\nbits per limb     ",			mp_bits_per_limb 			
-		) ;
-	}
-
+	
 } // end ns
 

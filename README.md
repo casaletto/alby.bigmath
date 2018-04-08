@@ -2,8 +2,8 @@
 
 a c++ wrapper around mpfr and gmp to make extreme maths more pleasant.\
 \
-move seamlessly between exact rational number arithmetic (gmp)\
-and almost unlimited precision floating point aritmetic (mpfr).
+move seamlessly between exact rational number arithmetic (class mpq)\
+and almost unlimited precision floating point aritmetic (class mpfr).
 
 # base projects
 
@@ -43,8 +43,11 @@ cpp files
 #include "../lib/numberhlp.h"
 #include "../lib/mpfr_t_wrapper.h"
 #include "../lib/mpfr.h"
+#include "../lib/mpq_t_wrapper.h"
+#include "../lib/mpq.h"
 #include "../lib/random.h"
 #include "../lib/pi.h"
+#include "../lib/version.h"
 ```
 
 makefile

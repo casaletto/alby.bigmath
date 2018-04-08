@@ -62,8 +62,6 @@ namespace alby::bigmath
 			std::string toFraction( bool reduce = true ) ;			
 			std::string toFraction( std::string& numerator, std::string& denominator, bool reduce = true ) ;			
 
-			static std::string version()                ;
-
 			mpfr& operator-=( const mpfr& op2 ) ;
 			mpfr& operator+=( const mpfr& op2 ) ;
 			mpfr& operator*=( const mpfr& op2 ) ;
