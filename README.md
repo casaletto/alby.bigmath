@@ -1,12 +1,12 @@
 # alby.bigmath
 
-a c++ wrapper around the mpfr and gmp projects to make extreme maths more pleasant.\
+a c++ wrapper around the mpfr **ℝ** and gmp **ℚ** projects to make extreme maths more pleasant.\
 \
-move seamlessly between gmp exact rational number **ℚ** arithmetic
+move seamlessly between exact rational number **ℚ** arithmetic
 ```
 class alby::bigmath::mpq
 ```
-and almost unlimited precision mpfr real number **ℝ** arithmetic
+and almost unlimited precision real number **ℝ** arithmetic
 ```
 class alby::bigmath::mpfr
 ```
