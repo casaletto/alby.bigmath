@@ -1,9 +1,15 @@
 # alby.bigmath
 
-a c++ wrapper around mpfr and gmp to make extreme maths more pleasant.\
+a c++ wrapper around the mpfr and gmp projects to make extreme maths more pleasant.\
 \
-move seamlessly between exact rational number arithmetic (class mpq)\
-and almost unlimited precision floating point aritmetic (class mpfr).
+move seamlessly between gmp exact rational number **ℚ** arithmetic
+```
+class alby::bigmath::mpq
+```
+and almost unlimited precision mpfr real number **ℝ** arithmetic
+```
+class alby::bigmath::mpfr
+```
 
 # base projects
 
@@ -163,7 +169,7 @@ result (2)
 
 # calculate π, method #1
 
-![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20nilakantha.png "pi #1")
+![π #1](doc/pi%20nilakantha.png)
 
 500 000 iterations yield 17 decimal places
 ```
@@ -213,7 +219,7 @@ abm::mpfr pi_nilakantha_term( unsigned long _i )
 
 # calculate π, method #2
 
-![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20ramujan.png "pi #2")
+![π #2](doc/pi%20ramujan.png)
 
 10 iterations yield 155 decimal places
 ```
@@ -292,9 +298,9 @@ abm::mpfr pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::mpfr
 
 # calculate π, method #3
 
-![alt text](https://github.com/casaletto/alby.bigmath/blob/master/doc/pi%20nonic%20convergence.png "pi #3")
+![π #3](doc/pi%20nonic%20convergence.png)
 
-calculate π to 1 000 000 decimal places with only 7 iterations
+calculate π to **1 000 000 decimal places** with only 7 iterations
 ```
 +3.141592653589793238462...696552087542450598956787961303311646283996346460422090106105779458151
 ```
@@ -383,5 +389,6 @@ $ make test
 * http://www.eveandersson.com/pi/digits/1000000
 * https://jbt.github.io/markdown-editor/
 * https://www.calculatorsoup.com/calculators/discretemathematics/factorials.php
+* http://xahlee.info/comp/unicode_math_operators.html
 
 &nbsp;
