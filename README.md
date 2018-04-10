@@ -4,11 +4,11 @@ a c++ wrapper around the mpfr **ℝ** and gmp **ℚ** projects to make extreme m
 \
 move seamlessly between exact rational number **ℚ** arithmetic
 ```
-class alby::bigmath::mpq
+class alby::bigmath::Q
 ```
 and almost unlimited precision real number **ℝ** arithmetic
 ```
-class alby::bigmath::mpfr
+class alby::bigmath::R
 ```
 
 # base projects
@@ -48,9 +48,9 @@ cpp files
 #include "../lib/stringcat.h"
 #include "../lib/numberhlp.h"
 #include "../lib/mpfr_t_wrapper.h"
-#include "../lib/mpfr.h"
+#include "../lib/R.h"
 #include "../lib/mpq_t_wrapper.h"
-#include "../lib/mpq.h"
+#include "../lib/Q.h"
 #include "../lib/random.h"
 #include "../lib/pi.h"
 #include "../lib/version.h"
@@ -117,9 +117,9 @@ void example1()
 	abm::mpfr::setSignificantFigures( 22 ) ;
 	abm::mpfr::setDebug( false ) ; 
 
-	auto a = abm::mpfr( "1.2e10"  ) ;
-	auto b = abm::mpfr( "3.4"     ) ;
-	auto c = abm::mpfr( "5.6e-10" ) ;	
+	auto a = abm::R( "1.2e10"  ) ;
+	auto b = abm::R( "3.4"     ) ;
+	auto c = abm::R( "5.6e-10" ) ;	
 
 	auto sum = a + b + c ;
 
@@ -132,9 +132,9 @@ void example1()
 
 	abm::mpfr::setSignificantFigures( 2002 ) ;
 
-	a = abm::mpfr( "1.2e1000"  ) ;
-	b = abm::mpfr( "3.4"       ) ;
-	c = abm::mpfr( "5.6e-1000" ) ;	
+	a = "1.2e1000"  ;
+	b = "3.4"       ;
+	c = "5.6e-1000" ;	
 
 	sum = a + b + c ;
 

@@ -23,7 +23,7 @@
 #include "./stringcat.h"
 #include "./numberhlp.h"
 #include "./mpq_t_wrapper.h"
-#include "./mpq.h"
+#include "./Q.h"
 
 namespace alby::bigmath 
 {

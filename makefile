@@ -3,14 +3,14 @@ default: build
 
 # ------------------------------------------------------------------------------------------
 
-obj/mpfr.o: lib/mpfr.cpp lib/*.h 
-	g++ -c -Os lib/mpfr.cpp -o obj/mpfr.o
+obj/R.o: lib/R.cpp lib/*.h 
+	g++ -c -Os lib/R.cpp -o obj/R.o
 
 obj/mpfr_t_wrapper.o: lib/mpfr_t_wrapper.cpp lib/*.h
 	g++ -c -Os lib/mpfr_t_wrapper.cpp -o obj/mpfr_t_wrapper.o
 
-obj/mpq.o: lib/mpq.cpp lib/*.h 
-	g++ -c -Os lib/mpq.cpp -o obj/mpq.o
+obj/Q.o: lib/Q.cpp lib/*.h 
+	g++ -c -Os lib/Q.cpp -o obj/Q.o
 
 obj/mpq_t_wrapper.o: lib/mpq_t_wrapper.cpp lib/*.h
 	g++ -c -Os lib/mpq_t_wrapper.cpp -o obj/mpq_t_wrapper.o
@@ -30,11 +30,11 @@ obj/pi.o: lib/pi.cpp lib/*.h
 obj/version.o: lib/version.cpp lib/*.h 
 	g++ -c -Os lib/version.cpp -o obj/version.o
 
-bin/libalbybigmath.a: obj/mpfr.o obj/mpfr_t_wrapper.o obj/mpq.o obj/mpq_t_wrapper.o  obj/stringhlp.o obj/numberhlp.o obj/random.o obj/pi.o obj/version.o
+bin/libalbybigmath.a: obj/R.o obj/mpfr_t_wrapper.o obj/Q.o obj/mpq_t_wrapper.o  obj/stringhlp.o obj/numberhlp.o obj/random.o obj/pi.o obj/version.o
 	ar rvs bin/libalbybigmath.a \
-		obj/mpfr.o \
+		obj/R.o \
 		obj/mpfr_t_wrapper.o \
-		obj/mpq.o \
+		obj/Q.o \
 		obj/mpq_t_wrapper.o \
 		obj/stringhlp.o \
 		obj/numberhlp.o \
