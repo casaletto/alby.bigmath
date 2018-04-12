@@ -20,7 +20,7 @@ namespace alby::bigmath
 			random( const random& rhs ) ;
 			random& operator=( const random& rhs ) ; 
 
-            mpfr				next() ;     						// get next float random number [0.0, 1.0)
+            R					next() ;     						// get next float random number [0.0, 1.0)
             unsigned long		nextInteger( unsigned long max ) ; 	// return an integer [1, max]
 
             std::string			getSeed() ;

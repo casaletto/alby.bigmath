@@ -23,48 +23,50 @@
 #include "./stringhlp.h"
 #include "./stringcat.h"
 #include "./numberhlp.h"
+#include "./mpq_t_wrapper.h"
+#include "./Q.h"
 #include "./mpfr_t_wrapper.h"
 #include "./R.h"
  
 namespace alby::bigmath 
 {
-	unsigned long mpfr::sigFig10global = mpfr::sigFig10default ;
-	bool          mpfr::debug          = false                 ;
+	unsigned long R::sigFig10global = R::sigFig10default ;
+	bool          R::debug          = false              ;
 
 	//----------------------------------------------------------------------------------------------------------------------
 
 	mpfr_t& 
-	mpfr::deref( const mpfr& mpfr ) // dereference the important part
+	R::deref( const R& r ) // dereference the important part
 	{
-		return *( mpfr.p->get() ) ;
+		return *( r.p->get() ) ;
 	}	
 
 	unsigned long 
-	mpfr::getSignificantFiguresLocal()
+	R::getSignificantFiguresLocal()
 	{
 		return sigFig10 ;	
 	}
 
 	unsigned long 
-	mpfr::getSignificantFigures()
+	R::getSignificantFigures()
 	{
 		return sigFig10global ;	
 	}
 
 	void 
-	mpfr::setSignificantFigures( unsigned long theSigFig10 )
+	R::setSignificantFigures( unsigned long theSigFig10 )
 	{
 		sigFig10global = theSigFig10 ;	
 	}
 
 	bool 
-	mpfr::getDebug()
+	R::getDebug()
 	{
 		return debug ;	
 	}
 
 	void 
-	mpfr::setDebug( bool theDebug )
+	R::setDebug( bool theDebug )
 	{
 		debug = theDebug ;	
 	}
@@ -72,13 +74,13 @@ namespace alby::bigmath
 	//----------------------------------------------------------------------------------------------------------------------
 
 	void 
-	mpfr::init()
+	R::init()
 	{
 		p = nullptr ;
 	}
 
 	void 
-	mpfr::cleanup()
+	R::cleanup()
 	{
 		if ( p != nullptr )
 			 delete p ;		
@@ -86,12 +88,12 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr::~mpfr() // destr
+	R::~R() // destr
 	{
 		cleanup() ;
 	}
 
-	mpfr::mpfr() // constr
+	R::R() // constr
 	{
 		init() ;
 
@@ -100,14 +102,14 @@ namespace alby::bigmath
 		p = new mpfr_t_wrapper( sigFig10 ) ; // default 0
 	}
 
-	mpfr::mpfr( const mpfr& rhs ) // copy constr
+	R::R( const R& rhs ) // copy constr
 	{
 		init() ;
 
 		*this = rhs ;
 	}
 
-	mpfr::mpfr( const mpfr& rhs, unsigned long theSigFig10 ) // constr
+	R::R( const R& rhs, unsigned long theSigFig10 ) // constr
 	{
 		init() ;
 
@@ -118,8 +120,8 @@ namespace alby::bigmath
 		mpfr_set( deref(*this), deref(rhs), roundingDefault ) ; 
 	}
 
-	mpfr&
-	mpfr::operator=( const mpfr& rhs ) // =
+	R&
+	R::operator=( const R& rhs ) // =
 	{
 		if ( this != &rhs )
 		{
@@ -135,7 +137,7 @@ namespace alby::bigmath
 		return *this ;
 	}
 
-	mpfr::mpfr( long l ) // constr
+	R::R( long l ) // constr
 	{
 		init() ;
 
@@ -150,7 +152,7 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr::mpfr( const char* str ) // constr
+	R::R( const char* str ) // constr
 	{
 		init() ;
 
@@ -166,7 +168,7 @@ namespace alby::bigmath
 		mpfr_set_str( deref(*this), strScientificNotation.c_str(), 10, roundingDefault ) ; 
 	}
 
-	mpfr::mpfr( const char* str, unsigned long theSigFig10, numberBase base ) // constr
+	R::R( const char* str, unsigned long theSigFig10, numberBase base ) // constr
 	{
 		init() ;
 
@@ -190,7 +192,7 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr::mpfr( const std::string& str ) // constr
+	R::R( const std::string& str ) // constr
 	{
 		init() ;
 
@@ -206,7 +208,7 @@ namespace alby::bigmath
 		mpfr_set_str( deref(*this), strScientificNotation.c_str(), 10, roundingDefault ) ; 	
 	}
 
-	mpfr::mpfr( const std::string& str, unsigned long theSigFig10, numberBase base ) // constr
+	R::R( const std::string& str, unsigned long theSigFig10, numberBase base ) // constr
 	{
 		init() ;
 
@@ -230,28 +232,68 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
+	R::R( const Q& rhs ) // explicit constructor
+	{
+		init() ;
+
+		sigFig10 = sigFig10global ;
+
+		p = new mpfr_t_wrapper( sigFig10 ) ;
+
+		std::string str = rhs ;
+
+		std::string numerator, denominator, sign ;
+
+		auto ok = numberhlp::splitRational( str, numerator, denominator, sign ) ;
+
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
+
+		*this = R( sign + numerator ) / R( denominator ) ;
+	}
+
+	R::R( const Q& rhs, unsigned long theSigFig10 ) // explicit constructor
+	{
+		init() ;
+
+		sigFig10 = theSigFig10 ;
+
+		p = new mpfr_t_wrapper( sigFig10 ) ;
+
+		std::string str = rhs ;
+
+		std::string numerator, denominator, sign ;
+
+		auto ok = numberhlp::splitRational( str, numerator, denominator, sign ) ;
+
+		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
+
+		*this = R( sign + numerator ) / R( denominator ) ;
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
+
 	std::ostream& 
-	operator<<( std::ostream& os, const mpfr& rhs )  
+	operator<<( std::ostream& os, const R& rhs )  
 	{  
-		os << const_cast<mpfr*>( &rhs )->toString() ;
+		os << const_cast<R*>( &rhs )->toString() ;
 
 		return os ;   
 	}  
 
-	mpfr::operator 
+	R::operator 
 	std::string() 
     {
         return toString() ;
     }
 
-	mpfr::operator 
+	R::operator 
 	std::string() const
     {
-		return const_cast<mpfr*>( this )->toDecimal( false )  ;
+		return const_cast<R*>( this )->toDecimal( false )  ;
     }
 
 	std::string 
-	mpfr::toString() // return minumal decimal string
+	R::toString() // return minumal decimal string
 	{
 		if ( debug )
 			 return p->toString( debug ) ;  
@@ -262,7 +304,7 @@ namespace alby::bigmath
 	//----------------------------------------------------------------------------------------------------------------------
 
 	std::string 
-	mpfr::toDecimal( bool allSigFig ) // default false, false means remove trailing zeros
+	R::toDecimal( bool allSigFig ) // default false, false means remove trailing zeros
 	{
 		std::string result ;
 
@@ -277,7 +319,7 @@ namespace alby::bigmath
 	}
 
 	std::string 
-	mpfr::toScientificNotation( bool allSigFig ) // default false, false means remove trailing zeros
+	R::toScientificNotation( bool allSigFig ) // default false, false means remove trailing zeros
 	{
 		std::string result ;
 
@@ -292,7 +334,7 @@ namespace alby::bigmath
 	}
 
 	std::string 
-	mpfr::toSignificantFigures( unsigned long theSigFig10 ) 
+	R::toSignificantFigures( unsigned long theSigFig10 ) 
 	{
 		auto t = roundToSignificantFigures( theSigFig10 ) ;
 
@@ -306,8 +348,8 @@ namespace alby::bigmath
 		return strResult ;
 	}
 
-	mpfr 
-	mpfr::roundToSignificantFigures( unsigned long theSigFig10 ) 
+	R 
+	R::roundToSignificantFigures( unsigned long theSigFig10 ) 
 	{
 		auto str = p->toString() ;
 
@@ -316,13 +358,13 @@ namespace alby::bigmath
 
 		if ( ! ok ) throw std::invalid_argument( stringcat( "Bad number [", str, "]" ) ) ;
 
-		auto result = mpfr( strResult, sigFig10 ) ;
+		auto result = R( strResult, sigFig10 ) ;
 
 		return result ;
 	}
 
 	std::string 
-	mpfr::toDecimalPlaces( unsigned long theDecimalPlaces ) 
+	R::toDecimalPlaces( unsigned long theDecimalPlaces ) 
 	{
 		auto str = p->toString() ;
 
@@ -334,18 +376,18 @@ namespace alby::bigmath
 		return strResult ;
 	}
 
-	mpfr 
-	mpfr::roundToDecimalPlaces( unsigned long theDecimalPlaces ) 
+	R 
+	R::roundToDecimalPlaces( unsigned long theDecimalPlaces ) 
 	{
 		auto str = toDecimalPlaces( theDecimalPlaces ) ;
 
-		mpfr result( str, sigFig10 ) ;
+		R result( str, sigFig10 ) ;
 
 		return result ;
 	}
 
 	std::string 
-	mpfr::toFraction( bool reduce ) 
+	R::toFraction( bool reduce ) 
 	{
 		// return gmp compatibile fraction as string
 
@@ -356,7 +398,7 @@ namespace alby::bigmath
 	}	
 
 	std::string 
-	mpfr::toFraction( std::string& numerator, std::string& denominator, bool bReduce ) 
+	R::toFraction( std::string& numerator, std::string& denominator, bool bReduce ) 
 	{
 		// return gmp compatibile fraction as string
 
@@ -376,8 +418,16 @@ namespace alby::bigmath
 		return reduce( rational ) ; 
 	}			
 
+	Q 
+	R::toQ()
+	{
+		return Q( *this ) ;
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
+ 
 	std::string 
-	mpfr::reduce( const std::string& rational )
+	R::reduce( const std::string& rational )
 	{
 		// initialise mpq rational
 		mpq_t r ;
@@ -410,166 +460,166 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr 
-	operator+( const mpfr& op1, const mpfr& op2 )  
+	R 
+	operator+( const R& op1, const R& op2 )  
 	{ 
 		auto maxsf = std::max( op1.sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0", maxsf ) ;
+		R result( "0", maxsf ) ;
 
 		mpfr_add( 
-			mpfr::deref( result ), 
-			mpfr::deref( op1.sigFig10 == maxsf ? op1 : mpfr( op1, maxsf ) ),
-			mpfr::deref( op2.sigFig10 == maxsf ? op2 : mpfr( op2, maxsf ) ), 
-			mpfr::roundingDefault ) ;
+			R::deref( result ), 
+			R::deref( op1.sigFig10 == maxsf ? op1 : R( op1, maxsf ) ),
+			R::deref( op2.sigFig10 == maxsf ? op2 : R( op2, maxsf ) ), 
+			R::roundingDefault ) ;
 
 		return result ;   
 	}  
 
-	mpfr& 
-	mpfr::operator+=( const mpfr& op2 )  
+	R& 
+	R::operator+=( const R& op2 )  
 	{  
 		auto maxsf = std::max( sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0", maxsf ) ;
+		R result( "0", maxsf ) ;
 
 		mpfr_add( 
-			mpfr::deref( result ), 
-			mpfr::deref( sigFig10     == maxsf ? *this : mpfr( *this, maxsf ) ),
-			mpfr::deref( op2.sigFig10 == maxsf ? op2   : mpfr( op2,   maxsf ) ), 
-			mpfr::roundingDefault ) ;
+			R::deref( result ), 
+			R::deref( sigFig10     == maxsf ? *this : R( *this, maxsf ) ),
+			R::deref( op2.sigFig10 == maxsf ? op2   : R( op2,   maxsf ) ), 
+			R::roundingDefault ) ;
 
 		*this = result ;
 		return *this ;   
 	}
 
-	mpfr 
-	operator-( const mpfr& op1, const mpfr& op2 )  
+	R 
+	operator-( const R& op1, const R& op2 )  
 	{  
 		auto maxsf = std::max( op1.sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0", maxsf ) ;
+		R result( "0", maxsf ) ;
 
 		mpfr_sub( 
-			mpfr::deref( result ), 
-			mpfr::deref( op1.sigFig10 == maxsf ? op1 : mpfr( op1, maxsf ) ),
-			mpfr::deref( op2.sigFig10 == maxsf ? op2 : mpfr( op2, maxsf ) ), 
-			mpfr::roundingDefault ) ;
+			R::deref( result ), 
+			R::deref( op1.sigFig10 == maxsf ? op1 : R( op1, maxsf ) ),
+			R::deref( op2.sigFig10 == maxsf ? op2 : R( op2, maxsf ) ), 
+			R::roundingDefault ) ;
 
 		return result ;   
 	}  
 
-	mpfr& 
-	mpfr::operator-=( const mpfr& op2 )  
+	R& 
+	R::operator-=( const R& op2 )  
 	{  
 		auto maxsf = std::max( sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0", maxsf ) ;
+		R result( "0", maxsf ) ;
 
 		mpfr_sub( 
-			mpfr::deref( result ), 
-			mpfr::deref( sigFig10     == maxsf ? *this : mpfr( *this, maxsf ) ),
-			mpfr::deref( op2.sigFig10 == maxsf ? op2   : mpfr( op2,   maxsf ) ), 
-			mpfr::roundingDefault ) ;
+			R::deref( result ), 
+			R::deref( sigFig10     == maxsf ? *this : R( *this, maxsf ) ),
+			R::deref( op2.sigFig10 == maxsf ? op2   : R( op2,   maxsf ) ), 
+			R::roundingDefault ) ;
 
 		*this = result ;
 		return *this ;   	
 	}  
 
-	mpfr 
-	operator*( const mpfr& op1, const mpfr& op2 )  
+	R 
+	operator*( const R& op1, const R& op2 )  
 	{ 
 		auto maxsf = std::max( op1.sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0", maxsf ) ;
+		R result( "0", maxsf ) ;
 
 		mpfr_mul( 
-			mpfr::deref( result ), 
-			mpfr::deref( op1.sigFig10 == maxsf ? op1 : mpfr( op1, maxsf ) ),
-			mpfr::deref( op2.sigFig10 == maxsf ? op2 : mpfr( op2, maxsf ) ), 
-			mpfr::roundingDefault ) ;
+			R::deref( result ), 
+			R::deref( op1.sigFig10 == maxsf ? op1 : R( op1, maxsf ) ),
+			R::deref( op2.sigFig10 == maxsf ? op2 : R( op2, maxsf ) ), 
+			R::roundingDefault ) ;
 
 		return result ;   
 	}  
 
-	mpfr& 
-	mpfr::operator*=( const mpfr& op2 )  
+	R& 
+	R::operator*=( const R& op2 )  
 	{  
 		auto maxsf = std::max( sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0", maxsf ) ;
+		R result( "0", maxsf ) ;
 
 		mpfr_mul( 
-			mpfr::deref( result ), 
-			mpfr::deref( sigFig10     == maxsf ? *this : mpfr( *this, maxsf ) ),
-			mpfr::deref( op2.sigFig10 == maxsf ? op2   : mpfr( op2,   maxsf ) ), 
-			mpfr::roundingDefault ) ;
+			R::deref( result ), 
+			R::deref( sigFig10     == maxsf ? *this : R( *this, maxsf ) ),
+			R::deref( op2.sigFig10 == maxsf ? op2   : R( op2,   maxsf ) ), 
+			R::roundingDefault ) ;
 
 		*this = result ;
 		return *this ;   	
 	}  
 
-	mpfr 
-	operator/( const mpfr& op1, const mpfr& op2 )  
+	R 
+	operator/( const R& op1, const R& op2 )  
 	{  
 		auto maxsf = std::max( op1.sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0", maxsf ) ;
+		R result( "0", maxsf ) ;
 
 		mpfr_div( 
-			mpfr::deref( result ), 
-			mpfr::deref( op1.sigFig10 == maxsf ? op1 : mpfr( op1, maxsf ) ),
-			mpfr::deref( op2.sigFig10 == maxsf ? op2 : mpfr( op2, maxsf ) ), 
-			mpfr::roundingDefault ) ;
+			R::deref( result ), 
+			R::deref( op1.sigFig10 == maxsf ? op1 : R( op1, maxsf ) ),
+			R::deref( op2.sigFig10 == maxsf ? op2 : R( op2, maxsf ) ), 
+			R::roundingDefault ) ;
 
 		return result ;   
 	}  
 
-	mpfr& 
-	mpfr::operator/=( const mpfr& op2 )  
+	R& 
+	R::operator/=( const R& op2 )  
 	{  
 		auto maxsf = std::max( sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0", maxsf ) ;
+		R result( "0", maxsf ) ;
 
 		mpfr_div( 
-			mpfr::deref( result ), 
-			mpfr::deref( sigFig10     == maxsf ? *this : mpfr( *this, maxsf ) ),
-			mpfr::deref( op2.sigFig10 == maxsf ? op2   : mpfr( op2,   maxsf ) ), 
-			mpfr::roundingDefault ) ;
+			R::deref( result ), 
+			R::deref( sigFig10     == maxsf ? *this : R( *this, maxsf ) ),
+			R::deref( op2.sigFig10 == maxsf ? op2   : R( op2,   maxsf ) ), 
+			R::roundingDefault ) ;
 
 		*this = result ;
 		return *this ;   	
 	}  
 
-	mpfr 
-	operator^( const mpfr& op1, const mpfr& op2 )  
+	R 
+	operator^( const R& op1, const R& op2 )  
 	{  
 		auto maxsf = std::max( op1.sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0", maxsf ) ;
+		R result( "0", maxsf ) ;
 
 		mpfr_pow( 
-			mpfr::deref( result ), 
-			mpfr::deref( op1.sigFig10 == maxsf ? op1 : mpfr( op1, maxsf ) ),
-			mpfr::deref( op2.sigFig10 == maxsf ? op2 : mpfr( op2, maxsf ) ), 
-			mpfr::roundingDefault ) ;
+			R::deref( result ), 
+			R::deref( op1.sigFig10 == maxsf ? op1 : R( op1, maxsf ) ),
+			R::deref( op2.sigFig10 == maxsf ? op2 : R( op2, maxsf ) ), 
+			R::roundingDefault ) ;
 
 		return result ;   		
 	}  
 
-	mpfr& 
-	mpfr::operator^=( const mpfr& op2 )  
+	R& 
+	R::operator^=( const R& op2 )  
 	{  
 		auto maxsf = std::max( sigFig10, op2.sigFig10 ) ;
 
-		mpfr result( "0", maxsf ) ;
+		R result( "0", maxsf ) ;
 
 		mpfr_pow( 
-			mpfr::deref( result ), 
-			mpfr::deref( sigFig10     == maxsf ? *this : mpfr( *this, maxsf ) ),
-			mpfr::deref( op2.sigFig10 == maxsf ? op2   : mpfr( op2,   maxsf ) ), 
-			mpfr::roundingDefault ) ;
+			R::deref( result ), 
+			R::deref( sigFig10     == maxsf ? *this : R( *this, maxsf ) ),
+			R::deref( op2.sigFig10 == maxsf ? op2   : R( op2,   maxsf ) ), 
+			R::roundingDefault ) ;
 
 		*this = result ;
 		return *this ;   		
@@ -578,7 +628,7 @@ namespace alby::bigmath
 	//----------------------------------------------------------------------------------------------------------------------
 
 	void
-	mpfr::compare( const mpfr& op1, const mpfr& op2, bool& equal, bool& moreThan, bool& lessThan ) 
+	R::compare( const R& op1, const R& op2, bool& equal, bool& moreThan, bool& lessThan ) 
 	{
 		equal    = false ;
 		moreThan = false ;
@@ -592,103 +642,103 @@ namespace alby::bigmath
 	}
 
 	bool 
-	operator>( const mpfr& op1, const mpfr& op2 )  
+	operator>( const R& op1, const R& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+		R::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return moreThan ;
 	}
 
 	bool 
-	operator<( const mpfr& op1, const mpfr& op2 )  
+	operator<( const R& op1, const R& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+		R::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return lessThan ;
 	}
 
 	bool 
-	operator>=( const mpfr& op1, const mpfr& op2 )  
+	operator>=( const R& op1, const R& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+		R::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return moreThan || equal ;
 	}
 
 	bool 
-	operator<=( const mpfr& op1, const mpfr& op2 )  
+	operator<=( const R& op1, const R& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+		R::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return lessThan || equal ;
 	}
 
 	bool 
-	operator==( const mpfr& op1, const mpfr& op2 )  
+	operator==( const R& op1, const R& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+		R::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return equal ;
 	}
 
 	bool 
-	operator!=( const mpfr& op1, const mpfr& op2 )  
+	operator!=( const R& op1, const R& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpfr::compare( op1, op2, equal, moreThan, lessThan )  ;
+		R::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return ! equal ;
 	}
 	
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr 
-	mpfr::sin()  
+	R 
+	R::sin()  
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_sin( deref(result), deref(*this), roundingDefault ) ;
 
 		return result ;   
 	}
 
-	mpfr 
-	mpfr::cos()  
+	R 
+	R::cos()  
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_cos( deref(result), deref(*this), roundingDefault ) ;
 
 		return result ;   
 	}
 
-	mpfr 
-	mpfr::tan()  
+	R 
+	R::tan()  
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_tan( deref(result), deref(*this), roundingDefault ) ;
 
@@ -697,22 +747,22 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr 
-	mpfr::pi()  
+	R 
+	R::pi()  
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_const_pi( deref(result), roundingDefault ) ;
 
 		return result ;   
 	}
 
-	mpfr 
-	mpfr::e()  
+	R 
+	R::e()  
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
-		mpfr one( "1", sigFig10 ) ; 
+		R one( "1", sigFig10 ) ; 
 
 		mpfr_exp( deref(result), deref(one), roundingDefault ) ;
 
@@ -721,26 +771,26 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr 
-	mpfr::neg()  
+	R 
+	R::neg()  
 	{ 
-		mpfr minusone( "-1", sigFig10 ) ; 
+		R minusone( "-1", sigFig10 ) ; 
 
 		return *this * minusone ;  
 	}
 
-	mpfr 
-	mpfr::inv()  
+	R 
+	R::inv()  
 	{ 
-		mpfr one( "1", sigFig10 ) ; 
+		R one( "1", sigFig10 ) ; 
 
 		return one / *this ;   
 	}
 
-	mpfr 
-	mpfr::abs()  
+	R 
+	R::abs()  
 	{ 
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_abs( deref(result), deref(*this), roundingDefault ) ;
 
@@ -749,40 +799,40 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr 
-	mpfr::exp() 
+	R 
+	R::exp() 
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_exp( deref(result), deref(*this), roundingDefault ) ;
 
 		return result ;   
 	}
 
-	mpfr 
-	mpfr::log() 
+	R 
+	R::log() 
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_log( deref(result), deref(*this), roundingDefault ) ;
 
 		return result ;   
 	}
 
-	mpfr 
-	mpfr::log2() 
+	R 
+	R::log2() 
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_log2( deref(result), deref(*this), roundingDefault ) ;
 
 		return result ;   
 	}
 
-	mpfr 
-	mpfr::log10() 
+	R 
+	R::log10() 
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_log10( deref(result), deref(*this), roundingDefault ) ;
 
@@ -791,61 +841,61 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr 
-	mpfr::pow2() // 2 ^ this
+	R 
+	R::pow2() // 2 ^ this
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
-		mpfr two( "2", sigFig10 ) ; 
+		R two( "2", sigFig10 ) ; 
 
 		mpfr_pow( deref(result), deref(two), deref(*this), roundingDefault ) ;
 
 		return result ;   
 	}
 
-	mpfr 
-	mpfr::pow10() // 10 ^ this
+	R 
+	R::pow10() // 10 ^ this
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
-		mpfr ten( "10", sigFig10 ) ; 
+		R ten( "10", sigFig10 ) ; 
 
 		mpfr_pow( deref(result), deref(ten), deref(*this), roundingDefault ) ;
 
 		return result ;   
 	}
 
-	mpfr 
-	mpfr::root( const mpfr& op1 ) // the op1-th root of this
+	R 
+	R::root( const R& op1 ) // the op1-th root of this
 	{
 		auto maxsf = std::max( sigFig10, op1.sigFig10 ) ;
 
-		mpfr result( *this, maxsf ) ;
-		mpfr one   ( "1",   maxsf ) ; 
+		R result( *this, maxsf ) ;
+		R one   ( "1",   maxsf ) ; 
 
-		mpfr index = one / op1 ;
+		R index = one / op1 ;
 
 		mpfr_pow( 
-			mpfr::deref( result ), 
-			mpfr::deref( result ),
-			mpfr::deref( index  ), 
-			mpfr::roundingDefault ) ;
+			R::deref( result ), 
+			R::deref( result ),
+			R::deref( index  ), 
+			R::roundingDefault ) ;
 
 		return result ;   		
 	}
 
-	mpfr 
-	mpfr::sqrt() // square root
+	R 
+	R::sqrt() // square root
 	{
-		mpfr two( "2", sigFig10 ) ; 
+		R two( "2", sigFig10 ) ; 
 
 		return root( two ) ;
 	}
 		
-	mpfr 
-	mpfr::fact() // factorial n!
+	R 
+	R::fact() // factorial n!
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		auto n = mpfr_get_ui( deref( floor() ), roundingDefault ) ;
 
@@ -856,30 +906,30 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr 
-	mpfr::ceil() 
+	R 
+	R::ceil() 
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_ceil( deref(result), deref(*this) ) ;
 
 		return result ;   
 	}
 
-	mpfr 
-	mpfr::floor() 
+	R 
+	R::floor() 
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_floor( deref(result), deref(*this) ) ;
 
 		return result ;   
 	}
 
-	mpfr 
-	mpfr::trunc() 
+	R 
+	R::trunc() 
 	{
-		mpfr result( *this ) ; 
+		R result( *this ) ; 
 
 		mpfr_trunc( deref(result), deref(*this) ) ;
 
@@ -888,10 +938,10 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	std::map<unsigned long, mpfr> 
-	mpfr::factorialMap( unsigned long n )
+	std::map<unsigned long, R> 
+	R::factorialMap( unsigned long n )
 	{
-		std::map<unsigned long, mpfr> map ;
+		std::map<unsigned long, R> map ;
 
 		map[0] = 1 ;
 

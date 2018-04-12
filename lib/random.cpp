@@ -23,6 +23,8 @@
 #include "./stringhlp.h"
 #include "./stringcat.h"
 #include "./numberhlp.h"
+#include "./mpq_t_wrapper.h"
+#include "./Q.h"
 #include "./mpfr_t_wrapper.h"
 #include "./R.h"
 #include "./random.h"
@@ -92,14 +94,14 @@ namespace alby::bigmath
         return theSignificantFigures ;
     }
 
-    mpfr 
+    R 
     random::next() // next float [0.0, 1)
     {
-        auto sf = theSignificantFigures == 0 ? mpfr::getSignificantFigures() : theSignificantFigures ;
+        auto sf = theSignificantFigures == 0 ? R::getSignificantFigures() : theSignificantFigures ;
 
-        mpfr num( "0", sf ) ;
+        R num( "0", sf ) ;
 
-        mpfr_urandomb( mpfr::deref( num ), state ) ;
+        mpfr_urandomb( R::deref( num ), state ) ;
 
         return num ;
     }
@@ -107,7 +109,7 @@ namespace alby::bigmath
     unsigned long		
     random::nextInteger( unsigned long max ) // next integer [1, .max]
     {
-        auto rnd = next() * mpfr( std::to_string( max ) ) ;
+        auto rnd = next() * R( std::to_string( max ) ) ;
 
         rnd = rnd.floor() ;
 

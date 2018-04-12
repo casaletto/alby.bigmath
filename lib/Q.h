@@ -2,7 +2,9 @@
 
 namespace alby::bigmath
 {
-	class mpq
+	class R ; // forward declaration
+
+	class Q
 	{
 		protected:
 			mpq_t_wrapper* p = nullptr ;
@@ -10,51 +12,55 @@ namespace alby::bigmath
 			void init() ;
 			void cleanup() ;
 
-			static void compare( const mpq& op1, const mpq& op2, bool& equal, bool& moreThan, bool& lessThan ) ;
+			static void compare( const Q& op1, const Q& op2, bool& equal, bool& moreThan, bool& lessThan ) ;
 	
 		public:
-			virtual ~mpq() ;
+			virtual ~Q() ;
 
-			mpq() ;  
-			mpq( const mpq& rhs ) ;
-			mpq( long l ) ;
-			mpq( const char* ) ;
-			mpq( const std::string& ) ;
-			
-			mpq& operator=( const mpq& rhs ) ;
+			Q() ;  
+			Q( const Q& rhs ) ;
+			Q( long l ) ;
+			Q( const char* ) ;
+			Q( const std::string& ) ;
+			Q( long l, const char* ) ;
+			Q( long l, const std::string& ) ;
+			Q& operator=( const Q& rhs ) ;
 
-			static mpq_t& deref( const mpq& mpq ) ; // get the important part of the wrapper, the actual mpq_t
-
-			std::string toString()          ;
-			operator    std::string()       ;
+			explicit Q( const R& rhs ) ; // explicit constructor 
+		
+			operator    std::string() ;
 			operator    std::string() const ;
+			std::string toString() ;
+			R 			toR() ;
 
-			friend std::ostream& operator<<( std::ostream& os, const mpq& mpq ) ;
+			static mpq_t& deref( const Q& q ) ; // get the important part of the wrapper, the actual mpq_t
 
-			mpq& operator-=( const mpq& op2 ) ;
-			mpq& operator+=( const mpq& op2 ) ;
-			mpq& operator*=( const mpq& op2 ) ;
-			mpq& operator/=( const mpq& op2 ) ;
+			friend std::ostream& operator<<( std::ostream& os, const Q& q ) ;
 
-			friend mpq operator-( const mpq& op1, const mpq& op2 ) ;
-			friend mpq operator+( const mpq& op1, const mpq& op2 ) ;
-			friend mpq operator*( const mpq& op1, const mpq& op2 ) ;
-			friend mpq operator/( const mpq& op1, const mpq& op2 ) ;
+			Q& operator-=( const Q& op2 ) ;
+			Q& operator+=( const Q& op2 ) ;
+			Q& operator*=( const Q& op2 ) ;
+			Q& operator/=( const Q& op2 ) ;
 
-			friend bool operator> ( const mpq& op1, const mpq& op2 ) ; 
-			friend bool operator< ( const mpq& op1, const mpq& op2 ) ;
-			friend bool operator>=( const mpq& op1, const mpq& op2 ) ; 
-			friend bool operator<=( const mpq& op1, const mpq& op2 ) ;
-			friend bool operator==( const mpq& op1, const mpq& op2 ) ;
-			friend bool operator!=( const mpq& op1, const mpq& op2 ) ;
+			friend Q operator-( const Q& op1, const Q& op2 ) ;
+			friend Q operator+( const Q& op1, const Q& op2 ) ;
+			friend Q operator*( const Q& op1, const Q& op2 ) ;
+			friend Q operator/( const Q& op1, const Q& op2 ) ;
 
+			friend bool operator> ( const Q& op1, const Q& op2 ) ; 
+			friend bool operator< ( const Q& op1, const Q& op2 ) ;
+			friend bool operator>=( const Q& op1, const Q& op2 ) ; 
+			friend bool operator<=( const Q& op1, const Q& op2 ) ;
+			friend bool operator==( const Q& op1, const Q& op2 ) ;
+			friend bool operator!=( const Q& op1, const Q& op2 ) ;
+
+			void	    reduce()      ;			
 			std::string numerator()   ;
 			std::string denominator() ;			
-			void	    reduce()      ;			
 
-			mpq neg() ;
-			mpq inv() ; 
-			mpq abs() ;
+			Q neg() ;
+			Q inv() ; 
+			Q abs() ;
 	} ;
 } 
 

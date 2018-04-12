@@ -2,32 +2,9 @@
 BACKLOG
 =======================================================================================================================================================================
 
-* conversion of mpq tp mpfr and vice-versa
-* way to move between gmp & mpfr as seamlessly as possible.
-* Q and R
+* put the smoke tests into /smoketest folder and fix make file
 
-5/49 + 3/21 - 6/25 = 6/1225
-
-2 2/3 + 1 1/4 - 5/6 = 3 1/12
-
-( 3 - 2/3 ) / 5/6 = 2 4/5
-
-1 2/7 / 5 = 9/35
-
-1 2/3 / ( 1 1/4 * 4 2/5 )
-
-
-
- ??compare to float calc
------------------------------------------------------------------------------------------------
-
-
-12. fix up readme      
-
-=======================================================================================================================================================================
-
------------------------------------------------------------------------
-13.
+13. unit test fraework
 
 * unit tests - which framework ???
 * do proper tests - do asserts for unit tests - for each section
@@ -36,7 +13,8 @@ void print_number(int* myInt) {
   printf ("%d\n",*myInt);
 }
 
-* put thest code in /test folder
+
+* put the test code in /test folder
 ----------------------------------------------------------------------
 
 
@@ -665,6 +643,40 @@ later, return class
  make my own c++ class for gmp
 . Conversion between mrfp and gmp ????
 
+
+fix the comments around this 
+
+//Re: R = r * q, r = q* r, q = q *r, q = r* q
+//R()
+//.Q()
+// explicit constructors ???
+
+* conversion of mpq tp mpfr and vice-versa
+* way to move between gmp & mpfr as seamlessly as possible.
+* Q and R
+
+10. Q maths
+
+
+5/49 + 3/21 - 6/25 = 6/1225 
+
+2 2/3 + 1 1/4 - 5/6 = 3 1/12
+
+( 3 - 2/3 ) / 5/6 = 2 4/5
+
+1 2/7 / 5 = 9/35
+
+1 2/3 / ( 1 1/4 * 4 2/5 ) = 10/33
+
+
+
+ ??compare the above to float calcs 
+
+
+
+11. review the examples
+
+12. fix up readme      
 
 =======================================================================================================================================================================
 

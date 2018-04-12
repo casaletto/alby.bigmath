@@ -8,13 +8,13 @@ namespace alby::bigmath
 			class nonic_term_t
 			{
 				public:
-					mpfr a ;
-					mpfr r ;
-					mpfr s ;
-					mpfr t ;
-					mpfr u ;
-					mpfr v ;
-					mpfr w ;
+					R a ;
+					R r ;
+					R s ;
+					R t ;
+					R u ;
+					R v ;
+					R w ;
 
 					virtual ~nonic_term_t() 
 					{}
@@ -60,8 +60,8 @@ namespace alby::bigmath
 			} ;
 
 		protected:
-			static mpfr         nilakantha_term( unsigned long n ) ;
-			static mpfr         ramanujan_term ( unsigned long n, std::map<unsigned long, mpfr>& factorial ) ;
+			static R            nilakantha_term( unsigned long n ) ;
+			static R            ramanujan_term ( unsigned long n, std::map<unsigned long, R>& factorial ) ;
 			static nonic_term_t nonic_term     ( unsigned long n, nonic_term_t& prev ) ;
 
 		public:
@@ -71,8 +71,8 @@ namespace alby::bigmath
 			pi( const pi& rhs ) ;
 			pi& operator=( const pi& rhs ) ; 
 
-			static mpfr nilakantha( unsigned long n ) ;
-			static mpfr ramanujan ( unsigned long n ) ;			
-			static mpfr nonic     ( unsigned long n ) ;			
+			static R nilakantha( unsigned long n ) ;
+			static R ramanujan ( unsigned long n ) ;			
+			static R nonic     ( unsigned long n ) ;			
 	} ;
 } 

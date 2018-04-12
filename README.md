@@ -30,10 +30,22 @@ class alby::bigmath::R
 libalbybigmath.a
 ```
 
-# how do I build it?
+# how do I build the code?
 
 ```
 $ make 
+```
+
+# how do I run the smoke tests?
+
+```
+$ make smoke
+```
+
+# how do I run the unit tests?
+
+```
+$ make test
 ```
 
 # how do I use it in my project?
@@ -71,7 +83,8 @@ $ g++ -s \
 	-llibalbybigmath.a
 ```
 
-I hate dll hell. I do static linking as much as possible.
+I have previously suffered terribly in dll hell.\
+Ipso facto, I perform static linking wherever possible.
 
 # developed and tested on
 
@@ -97,14 +110,12 @@ $ uname -a
 MINGW64_NT-6.3 xxxxxxx 2.5.2(0.297/5/3) 2016-07-15 08:31 x86_64 Msys
 ```
 
-# some examples
+# some ℝ examples
 
-(1)
 ```
 1.2e+10 + 3.4 + 5.6e-10
 ```
 
-(2)
 ```
 1.2e+1000 + 3.4 + 5.6e-1000 
 ```
@@ -114,8 +125,8 @@ namespace abm = alby::bigmath ;
 
 void example1()
 {
-	abm::mpfr::setSignificantFigures( 22 ) ;
-	abm::mpfr::setDebug( false ) ; 
+	abm::R::setSignificantFigures( 22 ) ;
+	abm::R::setDebug( false ) ; 
 
 	auto a = abm::R( "1.2e10"  ) ;
 	auto b = abm::R( "3.4"     ) ;
@@ -130,7 +141,7 @@ void example1()
 		<< "= " << sum << std::endl << std::endl 
 		<< "= " << sum.toScientificNotation() << std::endl << std::endl ;
 
-	abm::mpfr::setSignificantFigures( 2002 ) ;
+	abm::R::setSignificantFigures( 2002 ) ;
 
 	a = "1.2e1000"  ;
 	b = "3.4"       ;
@@ -147,7 +158,7 @@ void example1()
 }
 ```
 
-result (1)
+results
 
 ```
 +12000000000.0 + +3.4 + +0.00000000056
@@ -156,8 +167,6 @@ result (1)
 
 = +1.200000000340000000056E+10
 ```
-
-result (2)
 
 ```
 +1.2E+1000 + +3.4 + +5.6E-1000
@@ -186,10 +195,10 @@ namespace abm = alby::bigmath ;
 
 void pi_nilakantha()
 {
-	abm::mpfr::setSignificantFigures( 1000 ) ;
-	abm::mpfr::setDebug( false ) ;
+	abm::R::setSignificantFigures( 1000 ) ;
+	abm::R::setDebug( false ) ;
 
-	abm::mpfr pi ;
+	abm::R pi ;
 
 	auto plus = true ;
 
@@ -207,11 +216,11 @@ void pi_nilakantha()
 	std::cout << pi << std::endl ;
 }
 
-abm::mpfr pi_nilakantha_term( unsigned long _i )
+abm::R pi_nilakantha_term( unsigned long _i )
 {
-	static abm::mpfr _4 = 4 ;
+	static abm::R _4 = 4 ;
 
-	abm::mpfr i = _i ;
+	abm::R i = _i ;
 
 	return _4 / ( i * (i+1) * (i+2) ) ;
 }
@@ -248,12 +257,12 @@ void pi_ramanujan()
 {
 	unsigned long N = 100 ;
 	
-	abm::mpfr::setSignificantFigures( 1500 ) ;
-	abm::mpfr::setDebug( false ) ;
+	abm::R::setSignificantFigures( 1500 ) ;
+	abm::R::setDebug( false ) ;
 
-	auto factorial = abm::mpfr::factorialMap( N * 6 ) ;
+	auto factorial = abm::R::factorialMap( N * 6 ) ;
 
-	abm::mpfr pi ;
+	abm::R pi ;
 
 	auto plus = true ;
 
@@ -272,18 +281,18 @@ void pi_ramanujan()
 	std::cout << pi << std::endl ;
 }
 
-abm::mpfr pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::mpfr>& factorial )
+abm::R pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::R>& factorial )
 {
-	static abm::mpfr _3   = 3     ;
-	static abm::mpfr _6   = 6     ;
-	static abm::mpfr _1_5 = "1.5" ;
+	static abm::R _3   = 3     ;
+	static abm::R _6   = 6     ;
+	static abm::R _1_5 = "1.5" ;
 
-	static abm::mpfr a = 13591409  ;
-	static abm::mpfr b = 545140134 ;
-	static abm::mpfr c = 640320    ;
+	static abm::R a = 13591409  ;
+	static abm::R b = 545140134 ;
+	static abm::R c = 640320    ;
 
-	abm::mpfr n = _n   ;
-	abm::mpfr num, den ;
+	abm::R n = _n   ;
+	abm::R num, den ;
 
 	num  = factorial[ 6*_n ] ;
 	num *= a + n*b           ;
@@ -310,23 +319,23 @@ namespace abm = alby::bigmath ;
 
 void pi_nonic()
 {
-	abm::mpfr::setSignificantFigures( 1000001 ) ;
-	abm::mpfr::setDebug( false ) ;
+	abm::R::setSignificantFigures( 1000001 ) ;
+	abm::R::setDebug( false ) ;
 
 	auto pi = abm::pi::nonic( 7 ) ;
 
 	std::cout << pi << std::endl ;
 }
 
-mpfr pi::nonic( unsigned long N ) 
+R pi::nonic( unsigned long N ) 
 {
 	nonic_term_t t0 ; 
 
-	t0.a = mpfr(1) / 3 ;
-	t0.r = ( mpfr(3).sqrt() - 1 ) / 2 ;
+	t0.a = R(1) / 3 ;
+	t0.r = ( R(3).sqrt() - 1 ) / 2 ;
 
 	t0.s  = 1 - ( t0.r ^ 3 ) ;
-	t0.s ^= mpfr(1) / 3 ;
+	t0.s ^= R(1) / 3 ;
 
 	auto prev = t0 ;
 	auto t    = t0 ;
@@ -347,7 +356,7 @@ pi::nonic_term_t pi::nonic_term( unsigned long n, nonic_term_t& prev ) // calcul
 	t.t = 1 + 2 * prev.r ;
 	
 	t.u  = 9 * prev.r * ( 1 + prev.r + ( prev.r ^ 2 ) ) ;
-	t.u ^= mpfr(1) / 3 ; 
+	t.u ^= R(1) / 3 ; 
 
 	t.v = ( t.t ^ 2 ) + t.t * t.u + ( t.u ^ 2 ) ;
 
@@ -355,22 +364,131 @@ pi::nonic_term_t pi::nonic_term( unsigned long n, nonic_term_t& prev ) // calcul
 	t.w *= 27 / t.v ;
 
 	t.a  = t.w * prev.a ;
-	t.a += ( 3 ^ mpfr( 2 * (n-1) - 1 ) ) * ( 1 - t.w ) ;
+	t.a += ( 3 ^ R( 2 * (n-1) - 1 ) ) * ( 1 - t.w ) ;
 
 	t.s  = ( 1 - prev.r ) ^ 3;
 	t.s /= ( t.t + 2 * t.u ) * t.v ;
 
 	t.r  = 1 - ( t.s ^ 3 ) ;
-	t.r ^= mpfr(1) / 3 ; 
+	t.r ^= R(1) / 3 ; 
 
 	return t ;
 }
 ```
 
-# how do I run the unit tests?
+# some ℚ examples
 
 ```
-$ make test
+a = 5/49 + 3/21 - 6/25 
+b = 2 2/3 + 1 1/4 - 5/6
+c = ( 3 - 2/3 ) / 5/6
+d = 1 2/7 / 5 
+e = 1 2/3 / ( 1 1/4 * 4 2/5 )
+```
+
+```
+namespace abm = alby::bigmath ; 
+
+void rationals()
+{
+	auto a = abm::Q( "5/49" ) + "3/21" - "6/25" ;
+	std::cout << "a = " << a << std::endl ;
+	
+	auto b = abm::Q( 2,"2/3" ) + abm::Q( 1,"1/4" ) - "5/6" ;
+	std::cout << "b = " << b << std::endl ;
+
+	auto c = ( abm::Q(3) - "2/3" ) / "5/6" ;
+	std::cout << "c = " << c << std::endl ;
+
+	auto d = abm::Q( 1,"2/7" ) / 5 ;
+	std::cout << "d = " << d << std::endl ;
+
+	auto e = abm::Q( 1,"2/3" ) / ( abm::Q( 1,"1/4" ) * abm::Q( 4,"2/5" ) ) ;
+	std::cout << "e = "             << e << std::endl ;
+	std::cout << "e numerator   = " << e.numerator()   << std::endl ;
+	std::cout << "e denominator = " << e.denominator() << std::endl ;
+
+	e *= -1 ;	
+	std::cout << "e = "             << e << std::endl ;
+	std::cout << "e numerator   = " << e.numerator()   << std::endl ;
+	std::cout << "e denominator = " << e.denominator() << std::endl ;
+}
+```
+
+results
+
+```
+a = +6/1225
+b = +37/12
+c = +14/5
+d = +9/35
+e = +10/33
+e numerator   = +10
+e denominator = +33
+e = -10/33
+e numerator   = -10
+e denominator = +33
+```
+
+# some mixed ℚ and ℝ examples
+
+```
+namespace abm = alby::bigmath ; 
+
+void pythagoras1()
+{
+	abm::R::setSignificantFigures( 15 ) ;
+	abm::R::setDebug( false ) ;
+	
+	abm::Q a = 3 ;
+	abm::Q b = 4 ;
+
+	auto temp = a*a + b*b ;
+	auto c    = temp.toR().sqrt().toQ() ; 
+
+	std::cout << "a = " << a       << std::endl ;
+	std::cout << "b = " << b       << std::endl ;
+	std::cout << "c = " << c       << std::endl ;
+	std::cout << "c = " << c.toR() << std::endl ;
+}
+```
+
+```
+namespace abm = alby::bigmath ; 
+
+void pythagoras2()
+{
+	abm::R::setSignificantFigures( 15 ) ;
+	abm::R::setDebug( false ) ;
+	
+	auto a = abm::Q( 3, "1/100" ) ;
+	auto b = abm::Q( 4, "1/100" ) ;
+
+	auto temp = a*a + b*b ;
+	auto c    = temp.toR().sqrt().toQ() ; 
+
+	std::cout << "a = " << a       << std::endl ;
+	std::cout << "b = " << b       << std::endl ;
+	std::cout << "c = " << c       << std::endl ;
+	std::cout << "c = " << c.toR() << std::endl ;
+}
+
+```
+
+results
+
+```
+a = +3
+b = +4
+c = +5
+c = +5.0
+```
+
+```
+a = +301/100
+b = +401/100
+c = +501400039888311/100000000000000
+c = +5.01400039888311
 ```
 
 # useful links
@@ -390,5 +508,6 @@ $ make test
 * https://jbt.github.io/markdown-editor/
 * https://www.calculatorsoup.com/calculators/discretemathematics/factorials.php
 * http://xahlee.info/comp/unicode_math_operators.html
+* https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.cbclx01/explicit_keyword.htm
 
 &nbsp;

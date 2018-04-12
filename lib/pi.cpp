@@ -23,6 +23,8 @@
 #include "./stringhlp.h"
 #include "./stringcat.h"
 #include "./numberhlp.h"
+#include "./mpq_t_wrapper.h"
+#include "./Q.h"
 #include "./mpfr_t_wrapper.h"
 #include "./R.h"
 #include "./random.h"
@@ -56,10 +58,10 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr 
+	R 
 	pi::nilakantha( unsigned long N ) 
 	{
-		mpfr pi ;
+		R pi ;
 
 		auto plus = true ;
 
@@ -77,24 +79,24 @@ namespace alby::bigmath
 		return pi ;
 	}
 	
-	mpfr 
+	R 
 	pi::nilakantha_term( unsigned long n )
 	{
-		static mpfr _4 = 4 ;
+		static R _4 = 4 ;
 
-		mpfr _n = n ;
+		R _n = n ;
 
 		return _4 / ( _n * ( _n+1 ) * ( _n+2 ) ) ;
 	}
 	
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr 
+	R 
 	pi::ramanujan( unsigned long N ) 
 	{
-		auto factorial = mpfr::factorialMap( N * 6 ) ;
+		auto factorial = R::factorialMap( N * 6 ) ;
 
-		mpfr pi ;
+		R pi ;
 
 		auto plus = true ;
 
@@ -113,19 +115,19 @@ namespace alby::bigmath
 		return pi ;
 	}
 
-	mpfr 
-	pi::ramanujan_term( unsigned long n, std::map<unsigned long, mpfr>& factorial ) 
+	R 
+	pi::ramanujan_term( unsigned long n, std::map<unsigned long, R>& factorial ) 
 	{
-		static mpfr _3   = 3      ;
-		static mpfr _6   = 6      ;
-		static mpfr _1_5 = "1.5"  ;
+		static R _3   = 3      ;
+		static R _6   = 6      ;
+		static R _1_5 = "1.5"  ;
 
-		static mpfr a = 13591409  ;
-		static mpfr b = 545140134 ;
-		static mpfr c = 640320    ;
+		static R a = 13591409  ;
+		static R b = 545140134 ;
+		static R c = 640320    ;
 
-		mpfr _n = n   ;
-		mpfr num, den ;
+		R _n = n   ;
+		R num, den ;
 
 		num  = factorial[ 6*n ]    ;
 		num *= a + _n*b            ;
@@ -139,16 +141,16 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpfr 
+	R 
 	pi::nonic( unsigned long N ) 
 	{
 		nonic_term_t t0 ; 
 
-		t0.a = mpfr(1) / 3 ;
-		t0.r = ( mpfr(3).sqrt() - 1 ) / 2 ;
+		t0.a = R(1) / 3 ;
+		t0.r = ( R(3).sqrt() - 1 ) / 2 ;
 
 		t0.s  = 1 - ( t0.r ^ 3 ) ;
-		t0.s ^= mpfr(1) / 3 ;
+		t0.s ^= R(1) / 3 ;
 
 		auto prev = t0 ;
 		auto t    = t0 ;
@@ -170,7 +172,7 @@ namespace alby::bigmath
 		t.t = 1 + 2 * prev.r ;
 		
 		t.u  = 9 * prev.r * ( 1 + prev.r + ( prev.r ^ 2 ) ) ;
-		t.u ^= mpfr(1) / 3 ; 
+		t.u ^= R(1) / 3 ; 
 
 		t.v = ( t.t ^ 2 ) + t.t * t.u + ( t.u ^ 2 ) ;
 
@@ -178,13 +180,13 @@ namespace alby::bigmath
 		t.w *= 27 / t.v ;
 
 		t.a  = t.w * prev.a ;
-		t.a += ( 3 ^ mpfr( 2 * (n-1) - 1 ) ) * ( 1 - t.w ) ;
+		t.a += ( 3 ^ R( 2 * (n-1) - 1 ) ) * ( 1 - t.w ) ;
 
 		t.s  = ( 1 - prev.r ) ^ 3 ;
 		t.s /= ( t.t + 2 * t.u ) * t.v ;
 
 		t.r  = 1 - ( t.s ^ 3 ) ;
-		t.r ^= mpfr(1) / 3 ; 
+		t.r ^= R(1) / 3 ; 
 	
 		return t ;
 	}

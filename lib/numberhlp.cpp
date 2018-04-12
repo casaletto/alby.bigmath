@@ -851,6 +851,82 @@ namespace alby::bigmath
 		return true ;
 	}
 
+	bool
+	numberhlp::splitRational 
+	( 
+		const std::string& 	strNumber, 
+		std::string& 		strNumerator, 
+		std::string& 		strDenominator, 
+		std::string& 		strSign 
+	) 
+	{
+		// split +12345/-54321 
+		// into
+		// 12345, 54321, -
+
+		auto str = stringhlp::trim( strNumber ) ;
+
+		strNumerator    = "0" ;
+		strDenominator  = "1" ;
+		strSign 		= "+" ;
+
+		auto rng = stringhlp::split( str, '/' ) ;
+
+		if ( rng.size() == 1 ) 
+		{
+			strNumerator = rng[0] ;	
+		}
+		else 
+		if ( rng.size() == 2 ) 
+		{
+			strNumerator   = rng[0] ;	
+			strDenominator = rng[1] ;	
+		}
+		else return false ; // no good
+
+		strNumerator   = stringhlp::trim( strNumerator   ) ;
+		strDenominator = stringhlp::trim( strDenominator ) ;
+
+		bool numeratorPositive   = true ;
+		bool denominatorPositive = true ;
+
+		if ( stringhlp::startsWith( strNumerator, "+" ) )
+			 strNumerator = stringhlp::substr( strNumerator, 1 ) ;
+
+		if ( stringhlp::startsWith( strDenominator, "+" ) )
+			 strDenominator = stringhlp::substr( strDenominator, 1 ) ;
+		
+		if ( stringhlp::startsWith( strNumerator, "-" ) )
+		{
+			strNumerator = stringhlp::substr( strNumerator, 1 ) ;
+			numeratorPositive = false ;
+		}
+
+		if ( stringhlp::startsWith( strDenominator, "-" ) )
+		{
+			strDenominator = stringhlp::substr( strDenominator, 1 ) ;
+			denominatorPositive = false ;
+		}
+
+		strNumerator   = stringhlp::trim( strNumerator   ) ;
+		strDenominator = stringhlp::trim( strDenominator ) ;
+
+		if ( numeratorPositive != denominatorPositive )
+			 strSign = "-" ;
+
+		 // must have at least one digit
+		if ( strNumerator.length()   == 0 ) return false ;
+		if ( strDenominator.length() == 0 ) return false ;
+		
+		// each integer must only consist of the digit '0' to '9'
+		auto pos = strNumerator.find_first_not_of( "0123456789" ) ; 
+		if ( pos != std::string::npos ) return false ;
+
+		pos = strDenominator.find_first_not_of( "0123456789" ) ; 
+		if ( pos != std::string::npos ) return false ;
+
+		return true ;
+	}
 
 } // end ns
 

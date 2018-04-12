@@ -16,6 +16,7 @@ namespace alby::bigmath
 			static bool decimalPlacesExtend     ( const std::string& strNumber, std::string& strDecimal,            unsigned long decimalPlaces          ) ; 
 			static bool	toNumeratorDenominator  ( const std::string& strNumber, std::string& strNumerator, std::string& strDenominator ) ;
 			static bool regex2					( const std::string& strNumber, std::string& decimalSign, std::string& decimal, std::string& fraction, std::string& exponentSign, std::string& exponent ) ;
+			static bool splitRational			( const std::string& strNumber, std::string& strNumerator, std::string& strDenominator, std::string& strSign ) ;
 
 		protected:
 			static bool regexOld                ( const std::string& strNumber, std::string& decimalSign, std::string& decimal, std::string& fraction, std::string& exponentSign, std::string& exponent ) ;

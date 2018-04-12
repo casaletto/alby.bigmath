@@ -17,6 +17,7 @@
 #include <thread>
   
 #include <gmp.h>
+#include <mpfr.h>
 
 #include "./numberBase.h"
 #include "./stringhlp.h"
@@ -24,26 +25,28 @@
 #include "./numberhlp.h"
 #include "./mpq_t_wrapper.h"
 #include "./Q.h"
+#include "./mpfr_t_wrapper.h"
+#include "./R.h"
 
 namespace alby::bigmath 
 {
 
 	mpq_t& 
-	mpq::deref( const mpq& mpq ) // dereference the important part
+	Q::deref( const Q& q ) // dereference the important part
 	{
-		return *( mpq.p->get() ) ;
+		return *( q.p->get() ) ;
 	}	
 
 	//----------------------------------------------------------------------------------------------------------------------
 
 	void 
-	mpq::init()
+	Q::init()
 	{
 		p = nullptr ;
 	}
 
 	void 
-	mpq::cleanup()
+	Q::cleanup()
 	{
 		if ( p != nullptr )
 			 delete p ;		
@@ -51,19 +54,19 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpq::~mpq() // destr
+	Q::~Q() // destr
 	{
 		cleanup() ;
 	}
 
-	mpq::mpq() // constr
+	Q::Q() // constr
 	{
 		init() ;
 
 		p = new mpq_t_wrapper() ; // default 0 
 	}
 
-	mpq::mpq( const mpq& rhs ) // copy constr
+	Q::Q( const Q& rhs ) // copy constr
 	{
 		init() ;
 
@@ -72,8 +75,8 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpq&
-	mpq::operator=( const mpq& rhs ) // =
+	Q&
+	Q::operator=( const Q& rhs ) // =
 	{
 		if ( this != &rhs )
 		{
@@ -87,7 +90,7 @@ namespace alby::bigmath
 		return *this ;
 	}
 
-	mpq::mpq( long l ) // constr
+	Q::Q( long l ) // constr
 	{
 		init() ;
 
@@ -100,7 +103,7 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpq::mpq( const char* str1 ) // constr
+	Q::Q( const char* str1 ) // constr
 	{
 		init() ;
 
@@ -120,7 +123,7 @@ namespace alby::bigmath
 		reduce() ;
 	}
 
-	mpq::mpq( const std::string& str1 ) // constr
+	Q::Q( const std::string& str1 ) // constr
 	{
 		init() ;
 
@@ -142,147 +145,234 @@ namespace alby::bigmath
 
 	//----------------------------------------------------------------------------------------------------------------------
 
+	Q::Q( long l, const char* str1 ) // constr
+	{
+		init() ;
+
+		p = new mpq_t_wrapper() ;
+
+		std::string str = str1 ;
+		str = stringhlp::trim( str ) ;
+		str = stringhlp::replace( str, " ", "" ) ;
+
+		if ( stringhlp::startsWith( str, "+" ) )
+			 str = stringhlp::substr( str, 1 ) ;
+
+		auto rc = mpq_set_str( deref( *this ), str.c_str(), 10 ) ;
+
+		if ( rc == -1 ) throw std::invalid_argument( stringcat( "Bad rational number [", str, "]" ) ) ;
+
+		reduce() ;
+
+		*this += l ;
+	}
+
+	Q::Q( long l, const std::string& str1 ) // constr
+	{
+		init() ;
+
+		p = new mpq_t_wrapper() ;
+
+		std::string str = str1 ;
+		str = stringhlp::trim( str ) ;
+		str = stringhlp::replace( str, " ", "" ) ;
+
+		if ( stringhlp::startsWith( str, "+" ) )
+			 str = stringhlp::substr( str, 1 ) ;
+
+		auto rc = mpq_set_str( deref( *this ), str.c_str(), 10 ) ;
+
+		if ( rc == -1 ) throw std::invalid_argument( stringcat( "Bad rational number [", str, "]" ) ) ;
+
+		reduce() ;
+
+		*this += l ;
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
+
+	Q::Q( const R& rhs ) // explicit constructor
+	{
+		init() ;
+
+		auto str = const_cast<R*>( &rhs )->toFraction() ;
+
+		*this = str ;
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------
+
 	std::ostream& 
-	operator<<( std::ostream& os, const mpq& rhs )  
+	operator<<( std::ostream& os, const Q& rhs )  
 	{  
-		os << const_cast<mpq*>( &rhs )->toString() ;
+		os << const_cast<Q*>( &rhs )->toString() ;
 
 		return os ;   
 	}  
 
-	mpq::operator 
+	Q::operator 
 	std::string() 
     {
         return toString() ;
     }
 
-	mpq::operator 
+	Q::operator 
 	std::string() const
     {
-		return const_cast<mpq*>( this )->toString() ;
+		return const_cast<Q*>( this )->toString() ;
     }
 
 	std::string 
-	mpq::toString() 
+	Q::toString() 
 	{
 		auto str = p->toString() ;
 
 		return str ;	 
 	}
 
+	R 
+	Q::toR()
+	{
+		return R( *this ) ;
+	}
+
 	//----------------------------------------------------------------------------------------------------------------------
 
 	void
-	mpq::reduce()
+	Q::reduce()
 	{
  		mpq_canonicalize( deref( *this ) ) ;
 	}
 
+	std::string 
+	Q::numerator()  
+	{
+		std::string str = *this ;
+
+		std::string numerator, denominator, sign ;
+
+		numberhlp::splitRational( str, numerator, denominator, sign ) ;
+
+		return sign + numerator ;
+	}
+
+	std::string 
+	Q::denominator() 
+	{
+		std::string str = *this ;
+
+		std::string numerator, denominator, sign ;
+
+		numberhlp::splitRational( str, numerator, denominator, sign ) ;
+
+		return "+" + denominator ;
+	}
+
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpq 
-	operator+( const mpq& op1, const mpq& op2 )  
+	Q 
+	operator+( const Q& op1, const Q& op2 )  
 	{ 
-		mpq result ;
+		Q result ;
 
 		mpq_add( 
-			mpq::deref( result ), 
-			mpq::deref( op1    ),
-			mpq::deref( op2    ) ) ;
+			Q::deref( result ), 
+			Q::deref( op1    ),
+			Q::deref( op2    ) ) ;
 
 		return result ;   
 	}  
 
-	mpq& 
-	mpq::operator+=( const mpq& op2 )  
+	Q& 
+	Q::operator+=( const Q& op2 )  
 	{  
-		mpq result ;
+		Q result ;
 
 		mpq_add( 
-			mpq::deref( result ), 
-			mpq::deref( *this  ),
-			mpq::deref( op2    ) ) ;
+			Q::deref( result ), 
+			Q::deref( *this  ),
+			Q::deref( op2    ) ) ;
 
 		*this = result ;
 		return *this ;   	
 	}
 
-	mpq 
-	operator-( const mpq& op1, const mpq& op2 )  
+	Q 
+	operator-( const Q& op1, const Q& op2 )  
 	{  
-		mpq result ;
+		Q result ;
 
 		mpq_sub( 
-			mpq::deref( result ), 
-			mpq::deref( op1    ),
-			mpq::deref( op2    ) ) ;
+			Q::deref( result ), 
+			Q::deref( op1    ),
+			Q::deref( op2    ) ) ;
 
 		return result ;   
 	}  
 
-	mpq& 
-	mpq::operator-=( const mpq& op2 )  
+	Q& 
+	Q::operator-=( const Q& op2 )  
 	{  
-		mpq result ;
+		Q result ;
 
 		mpq_sub( 
-			mpq::deref( result ), 
-			mpq::deref( *this  ),
-			mpq::deref( op2    ) ) ;
+			Q::deref( result ), 
+			Q::deref( *this  ),
+			Q::deref( op2    ) ) ;
 
 		*this = result ;
 		return *this ;   	
 	}  
 
-	mpq 
-	operator*( const mpq& op1, const mpq& op2 )  
+	Q 
+	operator*( const Q& op1, const Q& op2 )  
 	{ 
-		mpq result ;
+		Q result ;
 
 		mpq_mul( 
-			mpq::deref( result ), 
-			mpq::deref( op1    ),
-			mpq::deref( op2    ) ) ;
+			Q::deref( result ), 
+			Q::deref( op1    ),
+			Q::deref( op2    ) ) ;
 
 		return result ;   
 	}  
 
-	mpq& 
-	mpq::operator*=( const mpq& op2 )  
+	Q& 
+	Q::operator*=( const Q& op2 )  
 	{  
-		mpq result ;
+		Q result ;
 
 		mpq_mul( 
-			mpq::deref( result ), 
-			mpq::deref( *this  ),
-			mpq::deref( op2    ) ) ;
+			Q::deref( result ), 
+			Q::deref( *this  ),
+			Q::deref( op2    ) ) ;
 
 		*this = result ;
 		return *this ;   	
 	}  
 
-	mpq 
-	operator/( const mpq& op1, const mpq& op2 )  
+	Q 
+	operator/( const Q& op1, const Q& op2 )  
 	{  
-		mpq result ;
+		Q result ;
 
 		mpq_div( 
-			mpq::deref( result ), 
-			mpq::deref( op1    ),
-			mpq::deref( op2    ) ) ;
+			Q::deref( result ), 
+			Q::deref( op1    ),
+			Q::deref( op2    ) ) ;
 
 		return result ;   
 	}  
 
-	mpq& 
-	mpq::operator/=( const mpq& op2 )  
+	Q& 
+	Q::operator/=( const Q& op2 )  
 	{  
-		mpq result ;
+		Q result ;
 
 		mpq_div( 
-			mpq::deref( result ), 
-			mpq::deref( *this  ),
-			mpq::deref( op2    ) ) ;
+			Q::deref( result ), 
+			Q::deref( *this  ),
+			Q::deref( op2    ) ) ;
 
 		*this = result ;
 		return *this ;   	
@@ -291,7 +381,7 @@ namespace alby::bigmath
 	//----------------------------------------------------------------------------------------------------------------------
 
 	void
-	mpq::compare( const mpq& op1, const mpq& op2, bool& equal, bool& moreThan, bool& lessThan ) 
+	Q::compare( const Q& op1, const Q& op2, bool& equal, bool& moreThan, bool& lessThan ) 
 	{
 		equal    = false ;
 		moreThan = false ;
@@ -305,83 +395,83 @@ namespace alby::bigmath
 	}
 
 	bool 
-	operator>( const mpq& op1, const mpq& op2 )  
+	operator>( const Q& op1, const Q& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpq::compare( op1, op2, equal, moreThan, lessThan )  ;
+		Q::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return moreThan ;
 	}
 
 	bool 
-	operator<( const mpq& op1, const mpq& op2 )  
+	operator<( const Q& op1, const Q& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpq::compare( op1, op2, equal, moreThan, lessThan )  ;
+		Q::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return lessThan ;
 	}
 
 	bool 
-	operator>=( const mpq& op1, const mpq& op2 )  
+	operator>=( const Q& op1, const Q& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpq::compare( op1, op2, equal, moreThan, lessThan )  ;
+		Q::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return moreThan || equal ;
 	}
 
 	bool 
-	operator<=( const mpq& op1, const mpq& op2 )  
+	operator<=( const Q& op1, const Q& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpq::compare( op1, op2, equal, moreThan, lessThan )  ;
+		Q::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return lessThan || equal ;
 	}
 
 	bool 
-	operator==( const mpq& op1, const mpq& op2 )  
+	operator==( const Q& op1, const Q& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpq::compare( op1, op2, equal, moreThan, lessThan )  ;
+		Q::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return equal ;
 	}
 
 	bool 
-	operator!=( const mpq& op1, const mpq& op2 )  
+	operator!=( const Q& op1, const Q& op2 )  
 	{  
 		auto equal    = false ;
 		auto moreThan = false ;
 		auto lessThan = false ;
 
-		mpq::compare( op1, op2, equal, moreThan, lessThan )  ;
+		Q::compare( op1, op2, equal, moreThan, lessThan )  ;
 
 		return ! equal ;
 	}
 	
 	//----------------------------------------------------------------------------------------------------------------------
 
-	mpq 
-	mpq::neg()  
+	Q 
+	Q::neg()  
 	{ 
-		mpq result ;
+		Q result ;
 
 		mpq_neg( 
 			deref( result ), 
@@ -390,10 +480,10 @@ namespace alby::bigmath
 		return result ;  
 	}
 
-	mpq 
-	mpq::inv()  
+	Q 
+	Q::inv()  
 	{ 
-		mpq result ;
+		Q result ;
 
 		mpq_inv( 
 			deref( result ), 
@@ -402,10 +492,10 @@ namespace alby::bigmath
 		return result ;  
 	}
 
-	mpq 
-	mpq::abs()  
+	Q 
+	Q::abs()  
 	{ 
-		mpq result ;
+		Q result ;
 
 		mpq_abs( 
 			deref( result ), 

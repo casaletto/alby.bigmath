@@ -23,10 +23,10 @@
 #include "../lib/stringhlp.h"
 #include "../lib/stringcat.h"
 #include "../lib/numberhlp.h"
-#include "../lib/mpfr_t_wrapper.h"
-#include "../lib/R.h"
 #include "../lib/mpq_t_wrapper.h"
 #include "../lib/Q.h"
+#include "../lib/mpfr_t_wrapper.h"
+#include "../lib/R.h"
 #include "../lib/random.h"
 #include "../lib/pi.h"
 #include "../lib/version.h"
@@ -48,6 +48,8 @@ void pi_nilakantha() ;
 void pi_ramanujan() ;
 void pi_nonic() ;
 void doMpqMath0() ;
+void doMpqMath1() ;
+void doMpqMath2() ;
 
 int main( void )
 {
@@ -55,6 +57,7 @@ int main( void )
 	{
 		std::cout << abm::version::getVersion() << std::endl ;		
 
+		doMpqMath0() ;
 		doMpfrMath0() ;
 		doMpfrMath1() ;
 		doMpfrNumberParse() ;
@@ -65,12 +68,12 @@ int main( void )
 		roundToSignificantDigits() ;
 		doMpfrRandom() ;
 		doMpfrRandom2() ;
-		example1() ;
 		pi_nilakantha() ;
 		pi_ramanujan() ;
 		pi_nonic() ;
-
-		doMpqMath0() ;
+		example1() ;
+		doMpqMath1() ;
+		doMpqMath2() ;
 	}
 	catch( const std::exception& ex )
 	{
@@ -82,6 +85,192 @@ int main( void )
 	}
 	
 	return 0 ;	
+}
+
+void doMpqMath2()
+{
+	std::cout << "---------------------" << std::endl ;
+
+	// 5/49 + 3/21 - 6/25 = 6/1225 
+	auto a = abm::Q( "5/49" ) + "3/21" - "6/25" ;
+	std::cout << "a = " << a << std::endl ;
+	
+	// 2 2/3 + 1 1/4 - 5/6 = 37/12
+	auto b = abm::Q( 2,"2/3" ) + abm::Q( 1,"1/4" ) - "5/6" ;
+	std::cout << "b = " << b << std::endl ;
+
+	// ( 3 - 2/3 ) / 5/6 = 14/5
+	auto c = ( abm::Q(3) - "2/3" ) / "5/6" ;
+	std::cout << "c = " << c << std::endl ;
+
+	// 1 2/7 / 5 = 9/35
+	auto d = abm::Q( 1,"2/7" ) / 5 ;
+	std::cout << "d = " << d << std::endl ;
+
+	// 1 2/3 / ( 1 1/4 * 4 2/5 ) = 10/33
+	auto e = abm::Q( 1,"2/3" ) / ( abm::Q( 1,"1/4" ) * abm::Q( 4,"2/5" ) ) ;
+	std::cout << "e = "             << e << std::endl ;
+	std::cout << "e numerator   = " << e.numerator()   << std::endl ;
+	std::cout << "e denominator = " << e.denominator() << std::endl ;
+
+	e *= -1 ;	
+	std::cout << "e = "             << e << std::endl ;
+	std::cout << "e numerator   = " << e.numerator()   << std::endl ;
+	std::cout << "e denominator = " << e.denominator() << std::endl ;
+}
+
+void doMpqMath1()
+{
+	abm::R::setSignificantFigures( 10 ) ;
+	abm::R::setDebug( false ) ;
+
+	{
+		// mixed Q and R math
+
+		std::cout << "---------------------" << std::endl ;
+		
+		abm::Q a = "1/4" ;
+		abm::Q b = "-2 / 3" ;
+
+		auto c = a + b ;
+		auto d = a - b ;
+		auto e = a * b ;
+		auto f = a / b ;
+
+		abm::R aa = a.toR() ;
+
+		abm::R _1 = -1 ;
+		abm::R bb = a.toR() * _1 ;
+
+		auto cc = abm::R("100.5") + abm::Q(-10).toR() + abm::Q(90).toR() + abm::Q("1/4").toR()  + abm::Q("-1/8").toR() ; 
+		auto dd = abm::R("100.5") - abm::Q(10).toR()  - abm::Q(-90).toR() - abm::Q("-1/4").toR() - abm::Q("1/8").toR()  ; 
+		
+		auto ee = abm::Q(-10).toR() + abm::Q(90).toR()  + abm::Q("1/4").toR()  + abm::Q("-1/8").toR() + abm::R("100.5")  ; 
+		auto ff = abm::Q(-10).toR() - abm::Q(-90).toR() - abm::Q("-1/4").toR() - abm::Q("1/8").toR()  - abm::R("-100.5") ; 
+
+		std::cout << "a  =         " << a  << std::endl ;
+		std::cout << "aa =         " << aa << std::endl ;
+		std::cout << "b  =         " << b  << std::endl ;
+		std::cout << "c  = a + b = " << c  << std::endl ;
+		std::cout << "d  = a - b = " << d  << std::endl ;
+		std::cout << "e  = a * b = " << e  << std::endl ;
+		std::cout << "f  = a / b = " << f  << std::endl ;
+		std::cout << "bb =         " << bb << std::endl ;
+		std::cout << "cc =         " << cc << std::endl ;
+		std::cout << "dd =         " << dd << std::endl ;
+		std::cout << "ee =         " << ee << std::endl ;
+		std::cout << "ff =         " << ff << std::endl ;
+	}
+	{
+		std::cout << "---------------------" << std::endl ;
+		
+		auto a = abm::R( "100.5" ) ;
+		auto b = abm::Q( -10 ) ;
+		auto c = abm::Q( 90 )  ;
+		auto d = abm::Q( "1/4" ) ; 
+		auto e = abm::Q( "-1/8" )  ; 
+
+		auto f = a + b.toR() + c.toR() + d.toR() + e.toR() ;
+
+		std::cout << "a = " << a << std::endl ;
+		std::cout << "b = " << b << std::endl ;
+		std::cout << "c = " << c << std::endl ;
+		std::cout << "d = " << d << std::endl ;
+		std::cout << "e = " << e << std::endl ;
+		std::cout << "f = " << f << std::endl ;
+	}
+
+	{
+		// cross conversions between R and Q
+		// Q(R)
+		// R(Q)
+		// R = Q ;
+		// Q = R ;
+
+		std::cout << "---------------------" << std::endl ;
+
+		abm::Q q1 = "22/7"  ;
+		abm::R r1 = "3.14" ;
+
+		auto q2 = abm::Q( r1 ) ;
+		auto r2 = abm::R( q2 )  ;
+
+		abm::Q q3 ;
+		abm::R r3 ;
+		
+		q3 = r2.toQ() ;
+		r3 = q2.toR() ;
+
+		std::cout << "q1 = " << q1  << std::endl ;
+		std::cout << "r1 = " << r1  << std::endl ;
+		std::cout << "q2 = " << q2  << std::endl ;
+		std::cout << "r2 = " << r2  << std::endl ;
+		std::cout << "q3 = " << q3  << std::endl ;
+		std::cout << "r3 = " << r3  << std::endl ;
+	}
+
+	{
+		// pythagoras, mixed Q and R math
+
+		std::cout << "---------------------" << std::endl ;
+
+		abm::R::setSignificantFigures( 15 ) ;
+		abm::R::setDebug( false ) ;
+		
+		abm::Q a = 3 ;
+		abm::Q b = 4 ;
+
+		auto temp = a*a + b*b ;
+		auto c    = temp.toR().sqrt().toQ() ; 
+
+		std::cout << "a = " << a      << std::endl ;
+		std::cout << "b = " << b       << std::endl ;
+		std::cout << "c = " << c       << std::endl ;
+		std::cout << "c = " << c.toR() << std::endl ;
+	}
+
+	{
+		// pythagoras, mixed Q and R math
+
+		std::cout << "---------------------" << std::endl ;
+
+		abm::R::setSignificantFigures( 15 ) ;
+		abm::R::setDebug( false ) ;
+		
+		auto a = abm::Q( 3, "1/100" ) ;
+		auto b = abm::Q( 4, "1/100" ) ;
+
+		auto temp = a*a + b*b ;
+		auto c    = temp.toR().sqrt().toQ() ; 
+
+		std::cout << "a = " << a      << std::endl ;
+		std::cout << "b = " << b       << std::endl ;
+		std::cout << "c = " << c       << std::endl ;
+		std::cout << "c = " << c.toR() << std::endl ;
+	}
+
+	{
+		std::cout << "---------------------" << std::endl ;
+
+		// more Q and R math
+		// R = r * q, r = q* r, q = q *r, q = r* q
+
+		abm::Q q1 = "22/7" ;
+		abm::R r1 = "3.14" ;
+
+		abm::R r2 = r1       * q1.toR() ;
+		abm::R r3 = q1.toR() * r1       ;
+
+		abm::Q q2 = r1.toQ() * q1       ;
+		abm::Q q3 = q1       * r1.toQ() ;
+
+		std::cout << "q1 = " << q1 << std::endl ;
+		std::cout << "r1 = " << r1 << std::endl ;
+		std::cout << "q2 = " << q2 << std::endl ;
+		std::cout << "q3 = " << q3 << std::endl ;
+		std::cout << "r2 = " << r2 << std::endl ;
+		std::cout << "r3 = " << r3 << std::endl ;
+	}
 }
 
 void doMpqMath0()
@@ -100,8 +289,8 @@ void doMpqMath0()
 	{
 		std::cout << "---------------------" << std::endl ;
 		
-		abm::mpq a = "1/4" ;
-		abm::mpq b = "-2 / 3" ;
+		abm::Q a = "1/4" ;
+		abm::Q b = "-2 / 3" ;
 
 		auto c = a + b ;
 		auto d = a - b ;
@@ -119,8 +308,8 @@ void doMpqMath0()
 	{
 		std::cout << "---------------------" << std::endl ;
 		
-		abm::mpq a = "+1/4" ;
-		abm::mpq b = "-2 / 3" ;
+		abm::Q a = "+1/4" ;
+		abm::Q b = "-2 / 3" ;
 
 		auto c = a + b ;
 		auto d = a - b ;
@@ -138,8 +327,8 @@ void doMpqMath0()
 	{
 		std::cout << "---------------------" << std::endl ;
 		
-		abm::mpq a = "  2 / 8   " ;
-		abm::mpq b = " -  2 0 / 3    0 " ;
+		abm::Q a = "  2 / 8   " ;
+		abm::Q b = " -  2 0 / 3    0 " ;
 
 		auto c = a + b ;
 		auto d = a - b ;
@@ -158,8 +347,8 @@ void doMpqMath0()
 	{
 		std::cout << "---------------------" << std::endl ;
 
-		abm::mpq a = std::string( "  2 / 8   " ) ;
-		abm::mpq b = std::string( "      -  2    0   /    3    0     " ) ;
+		abm::Q a = std::string( "  2 / 8   " ) ;
+		abm::Q b = std::string( "      -  2    0   /    3    0     " ) ;
 
 		std::cout << "a = " << a << std::endl ;
 		std::cout << "b = " << b << std::endl ;
@@ -190,16 +379,16 @@ void doMpqMath0()
 	{
 		std::cout << "---------------------" << std::endl ;
 
-		abm::mpq a = -34 ;
+		abm::Q a = -34 ;
 		std::cout << "a = " << a << std::endl ;
 
-		abm::mpq b = -0 ;
+		abm::Q b = -0 ;
 		std::cout << "b = " << b << std::endl ;
 
-		abm::mpq c = 10000 ;
+		abm::Q c = 10000 ;
 		std::cout << "c = " << c << std::endl ;
 
-		abm::mpq d = -10000 ;
+		abm::Q d = -10000 ;
 		std::cout << "d = " << d << std::endl ;
 
 		a = c ;
@@ -212,10 +401,10 @@ void doMpqMath0()
 	{
 		std::cout << "---------------------" << std::endl ;
 
-		abm::mpq a = -34 ;
+		abm::Q a = -34 ;
 		std::cout << "a = " << a << std::endl ;
 
-		abm::mpq b = 400 ;
+		abm::Q b = 400 ;
 		std::cout << "b = " << b << std::endl ;
 
 		std::cout << "a == b --> " << std::boolalpha << (a == b) << std::endl ;
@@ -229,10 +418,10 @@ void doMpqMath0()
 	{
 		std::cout << "---------------------" << std::endl ;
 
-		abm::mpq a = 34 ;
+		abm::Q a = 34 ;
 		std::cout << "a = " << a << std::endl ;
 
-		abm::mpq b = -400 ;
+		abm::Q b = -400 ;
 		std::cout << "b = " << b << std::endl ;
 
 		std::cout << "a == b --> " << std::boolalpha << (a == b) << std::endl ;
@@ -246,10 +435,10 @@ void doMpqMath0()
 	{
 		std::cout << "---------------------" << std::endl ;
 
-		abm::mpq a = -400 ;
+		abm::Q a = -400 ;
 		std::cout << "a = " << a << std::endl ;
 
-		abm::mpq b = -400 ;
+		abm::Q b = -400 ;
 		std::cout << "b = " << b << std::endl ;
 
 		std::cout << "a == b --> " << std::boolalpha << (a == b) << std::endl ;
@@ -277,8 +466,8 @@ void pi_nilakantha()
 	// 20 dp 
 	// 5 000 000 iterations
 
-	abm::mpfr::setSignificantFigures( 15 ) ;
-	abm::mpfr::setDebug( false ) ;
+	abm::R::setSignificantFigures( 15 ) ;
+	abm::R::setDebug( false ) ;
 
 	auto pi = abm::pi::nilakantha( 5000 ) ;
 
@@ -305,8 +494,8 @@ void pi_ramanujan()
 	// n = 10000, dp = 141830
 	// pi = +3.1415926535897932384626433.....9605721400330661597939815697061366098396405520287669991722547240
 
-	abm::mpfr::setSignificantFigures( 1500 ) ;
-	abm::mpfr::setDebug( false ) ;
+	abm::R::setSignificantFigures( 1500 ) ;
+	abm::R::setDebug( false ) ;
 
 	auto pi = abm::pi::ramanujan( 100 ) ;
 
@@ -339,8 +528,8 @@ void pi_nonic()
 	// n = 7, dp > 1 000 000
 	// pi = +3.141592653589793238462...696552087542450598956787961303311646283996346460422090106105779458151
 
-	abm::mpfr::setSignificantFigures( 1985 ) ;
-	abm::mpfr::setDebug( false ) ;
+	abm::R::setSignificantFigures( 1985 ) ;
+	abm::R::setDebug( false ) ;
 
 	auto pi = abm::pi::nonic( 4 ) ;
 
@@ -349,8 +538,8 @@ void pi_nonic()
 
 void doMpfrRandom2()
 {
-	abm::mpfr::setSignificantFigures( 14 ) ;
-	abm::mpfr::setDebug( false ) ;
+	abm::R::setSignificantFigures( 14 ) ;
+	abm::R::setDebug( false ) ;
 
 	abm::random rnd ;
 
@@ -361,7 +550,7 @@ void doMpfrRandom2()
 		
 		auto r = rnd.next().roundToDecimalPlaces( 1 ) ;
 
-		auto d1 = r * abm::mpfr( "2147483647" ) ;
+		auto d1 = r * abm::R( "2147483647" ) ;
 		d1 = d1.roundToDecimalPlaces( 1 ) ;
 		std::string str1 = d1 ;
 
@@ -378,8 +567,8 @@ void doMpfrRandom2()
 
 void doMpfrRandom()
 {
-	abm::mpfr::setSignificantFigures( 55 ) ;
-	abm::mpfr::setDebug( true ) ;
+	abm::R::setSignificantFigures( 55 ) ;
+	abm::R::setDebug( true ) ;
 
 	{
 		abm::random rnd ;
@@ -529,12 +718,12 @@ void doMpfrNumberParse()
 
 void example1()
 {
-	abm::mpfr::setSignificantFigures( 22 ) ;
-	abm::mpfr::setDebug( false ) ; 
+	abm::R::setSignificantFigures( 22 ) ;
+	abm::R::setDebug( false ) ; 
 
-	auto a = abm::mpfr( "1.2e10"  ) ;
-	auto b = abm::mpfr( "3.4"     ) ;
-	auto c = abm::mpfr( "5.6e-10" ) ;	
+	auto a = abm::R( "1.2e10"  ) ;
+	auto b = abm::R( "3.4"     ) ;
+	auto c = abm::R( "5.6e-10" ) ;	
 
 	auto sum = a + b + c ;
 
@@ -545,11 +734,11 @@ void example1()
 		<< "= " << sum << std::endl << std::endl 
 		<< "= " << sum.toScientificNotation() << std::endl << std::endl ;
 
-	abm::mpfr::setSignificantFigures( 2002 ) ;
+	abm::R::setSignificantFigures( 2002 ) ;
 
-	a = abm::mpfr( "1.2e1000"  ) ;
-	b = abm::mpfr( "3.4"       ) ;
-	c = abm::mpfr( "5.6e-1000" ) ;	
+	a = "1.2e1000"  ;
+	b = "3.4"       ;
+	c = "5.6e-1000" ;	
 
 	sum = a + b + c ;
 
@@ -563,13 +752,13 @@ void example1()
 
 void doMpfrMath0()
 {
-	abm::mpfr::setDebug( true )   ; 
-	abm::mpfr::setSignificantFigures( 10 ) ; 
+	abm::R::setDebug( true )   ; 
+	abm::R::setSignificantFigures( 10 ) ; 
 
 	{
 		std::cout << "-----------------------------------------------------------------" << std::endl ;
-		abm::mpfr a( "2.0234" , 20 ) ;
-		abm::mpfr b( "3.12345", 20 ) ;
+		abm::R a( "2.0234" , 20 ) ;
+		abm::R b( "3.12345", 20 ) ;
 
 		std::cout << a << ", " << a.toFraction() << std::endl ;
 		std::cout << b << ", " << b.toFraction() << std::endl ;
@@ -580,8 +769,8 @@ void doMpfrMath0()
 		std::cout << b << ", " << b.toFraction() << std::endl ;
 
 		std::cout << "-----------------------------------------------------------------" << std::endl ;
-		abm::mpfr c( "2.0234" , 20 ) ;
-		abm::mpfr d( "3.12345", 30 ) ;
+		abm::R c( "2.0234" , 20 ) ;
+		abm::R d( "3.12345", 30 ) ;
 
 		std::cout << "c      = " << c << std::endl ;
 		std::cout << "d      = " << d << std::endl ;
@@ -593,21 +782,21 @@ void doMpfrMath0()
 		std::cout << "c      = " << c << ", " << c.toFraction() << std::endl ;
 		std::cout << "d      = " << d << ", " << d.toFraction() << std::endl ;
 
-		abm::mpfr e( c, 3 ) ;
-		abm::mpfr f( d, 3 ) ;
+		abm::R e( c, 3 ) ;
+		abm::R f( d, 3 ) ;
 		std::cout << "e      = " << e << ", " << e.toFraction() << std::endl ;
 		std::cout << "f      = " << f << ", " << f.toFraction() << std::endl ;
 
-		abm::mpfr g( c, 2 ) ;
-		abm::mpfr h( d, 2 ) ;
+		abm::R g( c, 2 ) ;
+		abm::R h( d, 2 ) ;
 		std::cout << "g      = " << g << ", " << g.toFraction() <<  std::endl ;
 		std::cout << "h      = " << h << ", " << h.toFraction() << std::endl ;
 		std::cout << "==================================================================" << std::endl ;
 	}
 
 	{
-		abm::mpfr i( "2.0234",  20 ) ;
-		abm::mpfr j( "3.12345", 20 ) ;
+		abm::R i( "2.0234",  20 ) ;
+		abm::R j( "3.12345", 20 ) ;
 
 		std::cout << "i      = " << i << std::endl ;
 		std::cout << "j      = " << j << std::endl ;
@@ -620,8 +809,8 @@ void doMpfrMath0()
 		std::cout << "j      = " << j << ", " << j.toFraction() << std::endl ;
 		std::cout << "-----------------------------------------------------------------" << std::endl ;
 
-		i = abm::mpfr( "2.0234",  20 ) ;
-		j = abm::mpfr( "3.12345", 30 ) ;
+		i = abm::R( "2.0234",  20 ) ;
+		j = abm::R( "3.12345", 30 ) ;
 
 		std::cout << "i      = " << i << std::endl ;
 		std::cout << "j      = " << j << std::endl ;
@@ -636,8 +825,8 @@ void doMpfrMath0()
 	}
 
 	{
-		abm::mpfr k( "2.0234" , 20 ) ;
-		abm::mpfr l( "3.12345", 20 ) ;
+		abm::R k( "2.0234" , 20 ) ;
+		abm::R l( "3.12345", 20 ) ;
 
 		std::cout << "k      = " << k << std::endl ;
 		std::cout << "l      = " << l << std::endl ;
@@ -650,8 +839,8 @@ void doMpfrMath0()
 		std::cout << "k      = " << k << ", " << k.toFraction() << std::endl ;
 		std::cout << "-----------------------------------------------------------------" << std::endl ;
 
-		k = abm::mpfr( "2.0234",  20 ) ;
-		l = abm::mpfr( "3.12345", 30 ) ;
+		k = abm::R( "2.0234",  20 ) ;
+		l = abm::R( "3.12345", 30 ) ;
 
 		std::cout << "k      = " << k << std::endl ;
 		std::cout << "l      = " << l << std::endl ;
@@ -666,8 +855,8 @@ void doMpfrMath0()
 	}
 
 	{
-		abm::mpfr k( "2.0234" , 20 ) ;
-		abm::mpfr l( "3.12345", 20 ) ;
+		abm::R k( "2.0234" , 20 ) ;
+		abm::R l( "3.12345", 20 ) ;
 
 		std::cout << "k      = " << k << std::endl ;
 		std::cout << "l      = " << l << std::endl ;
@@ -680,8 +869,8 @@ void doMpfrMath0()
 		std::cout << "l      = " << l << ", " << l.toFraction() << std::endl ;
 		std::cout << "-----------------------------------------------------------------" << std::endl ;
 
-		k = abm::mpfr( "2.0234",  20 ) ;
-		l = abm::mpfr( "3.12345", 30 ) ;
+		k = abm::R( "2.0234",  20 ) ;
+		l = abm::R( "3.12345", 30 ) ;
 
 		std::cout << "k      = " << k << std::endl ;
 		std::cout << "l      = " << l << std::endl ;
@@ -697,8 +886,8 @@ void doMpfrMath0()
 	}
 
 	{
-		abm::mpfr k( "2.0234" , 20 ) ;
-		abm::mpfr l( "3.12345", 20 ) ;
+		abm::R k( "2.0234" , 20 ) ;
+		abm::R l( "3.12345", 20 ) ;
 
 		std::cout << "k      = " << k << std::endl ;
 		std::cout << "l      = " << l << std::endl ;
@@ -711,8 +900,8 @@ void doMpfrMath0()
 		std::cout << "l      = " << l << ", " << l.toFraction() << std::endl ;
 		std::cout << "-----------------------------------------------------------------" << std::endl ;
 
-		k = abm::mpfr( "2.0234",  20 ) ;
-		l = abm::mpfr( "3.12345", 30 ) ;
+		k = abm::R( "2.0234",  20 ) ;
+		l = abm::R( "3.12345", 30 ) ;
 
 		std::cout << "k      = " << k << std::endl ;
 		std::cout << "l      = " << l << std::endl ;
@@ -728,8 +917,8 @@ void doMpfrMath0()
 	}
 
 	{
-		abm::mpfr k( "125.0234", 20 ) ;
-		abm::mpfr l( "3.12345" , 20 ) ;
+		abm::R k( "125.0234", 20 ) ;
+		abm::R l( "3.12345" , 20 ) ;
 
 		std::cout << "k            = " << k << std::endl ;
 		std::cout << "l            = " << l << std::endl ;
@@ -743,8 +932,8 @@ void doMpfrMath0()
 		std::cout << "l root k ^ k = " << y1 << ", " << y1.toFraction() << std::endl ;		
 		std::cout << "-----------------------------------------------------------------" << std::endl ;
 
-		k = abm::mpfr( "125.0234", 20 ) ;
-		l = abm::mpfr( "3.12345" , 10 ) ; 
+		k = abm::R( "125.0234", 20 ) ;
+		l = abm::R( "3.12345" , 10 ) ; 
 
 		std::cout << "k            = " << k << std::endl ;
 		std::cout << "l            = " << l << std::endl ;
@@ -758,8 +947,8 @@ void doMpfrMath0()
 		std::cout << "l root k ^ k = " << y1 << ", " << y1.toFraction() << std::endl ;		
 		std::cout << "-----------------------------------------------------------------" << std::endl ;
 
-		k = abm::mpfr( "125.0234", 10 ) ;
-		l = abm::mpfr( "3.12345" , 20 ) ; 
+		k = abm::R( "125.0234", 10 ) ;
+		l = abm::R( "3.12345" , 20 ) ; 
 
 		std::cout << "k            = " << k << std::endl ;
 		std::cout << "l            = " << l << std::endl ;
@@ -778,22 +967,22 @@ void doMpfrMath0()
 
 void doMpfrMathCompare() 
 {
-	abm::mpfr::setDebug( true )   ; 
-	abm::mpfr::setSignificantFigures( 10 ) ; 
+	abm::R::setDebug( true )   ; 
+	abm::R::setSignificantFigures( 10 ) ; 
 
-	abm::mpfr a( "2.0234" ) ; 
-	abm::mpfr b( "3.1234" ) ;
-	abm::mpfr c( "3.1234" ) ;
-	abm::mpfr d( "2.0234" ) ;
-	abm::mpfr e( "-3.1234" ) ;
-	abm::mpfr f( "0.00000000000000000009123456787" ) ;
-	abm::mpfr g( "0.00000000000000000009123456789" ) ;
+	abm::R a( "2.0234" ) ; 
+	abm::R b( "3.1234" ) ;
+	abm::R c( "3.1234" ) ;
+	abm::R d( "2.0234" ) ;
+	abm::R e( "-3.1234" ) ;
+	abm::R f( "0.00000000000000000009123456787" ) ;
+	abm::R g( "0.00000000000000000009123456789" ) ;
 
-	abm::mpfr h( "1.2345678E-34", 8 ) ;
-	abm::mpfr i( "1.2345679E-50", 10 ) ;
+	abm::R h( "1.2345678E-34", 8 ) ;
+	abm::R i( "1.2345679E-50", 10 ) ;
 
-	abm::mpfr j( "9.2345678E-200001", 10 ) ; // smaller
-	abm::mpfr k( "1.2345679E-200000", 10 ) ; // bigger
+	abm::R j( "9.2345678E-200001", 10 ) ; // smaller
+	abm::R k( "1.2345679E-200000", 10 ) ; // bigger
 
 	std::cout << "-----------------------------------------------------------------" << std::endl ;
 	std::cout << a << "\t==\t" << b << "\t[" << std::boolalpha << ( a == b ) <<  std::endl ;
@@ -890,11 +1079,11 @@ void doMpfrMathRound()
 	std::string numer ;
 	std::string denom ;
 	
-	abm::mpfr::setDebug( false )   ; 
-	abm::mpfr::setSignificantFigures( 30 ) ; 
+	abm::R::setDebug( false )   ; 
+	abm::R::setSignificantFigures( 30 ) ; 
 
 	{
-		abm::mpfr c( "987654321.123456789", 30 ) ;
+		abm::R c( "987654321.123456789", 30 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -914,7 +1103,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "-987654321.123456789", 30 ) ;
+		abm::R c( "-987654321.123456789", 30 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -932,7 +1121,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "4567.789", 10 ) ;
+		abm::R c( "4567.789", 10 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -950,7 +1139,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "1.0", 5 ) ;
+		abm::R c( "1.0", 5 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -968,7 +1157,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "-1.0", 5 ) ;
+		abm::R c( "-1.0", 5 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -986,7 +1175,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "0", 5 ) ;
+		abm::R c( "0", 5 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1004,7 +1193,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "0.00000987654321", 15 ) ;
+		abm::R c( "0.00000987654321", 15 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1022,7 +1211,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "0.99999", 10 ) ;
+		abm::R c( "0.99999", 10 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1040,7 +1229,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "0.42645", 10 ) ;
+		abm::R c( "0.42645", 10 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1058,7 +1247,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "0.62645", 10 ) ;
+		abm::R c( "0.62645", 10 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1076,7 +1265,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "9.62645", 10 ) ;
+		abm::R c( "9.62645", 10 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1094,7 +1283,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "98.62645", 10 ) ;
+		abm::R c( "98.62645", 10 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1112,7 +1301,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "99.62645", 10 ) ;
+		abm::R c( "99.62645", 10 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1130,7 +1319,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "-6.02e5", 10 ) ;
+		abm::R c( "-6.02e5", 10 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1148,7 +1337,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "-6.02e-5", 10 ) ;
+		abm::R c( "-6.02e-5", 10 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1166,7 +1355,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "2.71828459045e10", 15 ) ;
+		abm::R c( "2.71828459045e10", 15 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1184,7 +1373,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "2.71828459045e-10", 15 ) ;
+		abm::R c( "2.71828459045e-10", 15 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1202,7 +1391,7 @@ void doMpfrMathRound()
 		}
 	}
 	{
-		abm::mpfr c( "-2.71828459045e-10", 15 ) ;
+		abm::R c( "-2.71828459045e-10", 15 ) ;
 		std::cout << "---------------------------------------------" << std::endl ;
 		std::cout << c << std::endl ;
 		std::cout << "---------------------------------------------" << std::endl ;
@@ -1223,14 +1412,14 @@ void doMpfrMathRound()
 
 void doMpfrMath1()
 {
-	abm::mpfr::setSignificantFigures( 50 ) ; 
+	abm::R::setSignificantFigures( 50 ) ; 
 		
 	std::string str = "3.14" ;
 
-	abm::mpfr a ;
-	abm::mpfr b( "2.0234" ) ;
-	abm::mpfr c( "8.02345333" ) ;
-	abm::mpfr d( str ) ;
+	abm::R a ;
+	abm::R b( "2.0234" ) ;
+	abm::R c( "8.02345333" ) ;
+	abm::R d( str ) ;
 
 	auto s = b.toString() ;
 	auto aa = a ;
@@ -1277,7 +1466,7 @@ void doMpfrMath1()
 	std::cout << f << std::endl ;
 	std::cout << g << std::endl ;
 
-	abm::mpfr h( "1.0"  ) ;
+	abm::R h( "1.0"  ) ;
 	auto i = h.sin() ;
 	std::cout << "sin " << i << std::endl ;
 
@@ -1344,15 +1533,15 @@ void doMpfrMath1()
 	t = r.root( a.e() ) ;
 	std::cout << t << std::endl ;
 
-	std::cout << abm::mpfr( "1000.00001" ).root( abm::mpfr( "3.000001" ) ) << std::endl ;
+	std::cout << abm::R( "1000.00001" ).root( abm::R( "3.000001" ) ) << std::endl ;
 	
-	auto u = abm::mpfr( "-FFee.100", abm::mpfr::getSignificantFigures(), abm::numberBase::_16 ) ;
+	auto u = abm::R( "-FFee.100", abm::R::getSignificantFigures(), abm::numberBase::_16 ) ;
 	std::cout << u << std::endl ;
 
-	u = abm::mpfr( "FFFF.FFFF", abm::mpfr::getSignificantFigures(), abm::numberBase::_16 ) ;
+	u = abm::R( "FFFF.FFFF", abm::R::getSignificantFigures(), abm::numberBase::_16 ) ;
 	std::cout << u << std::endl ;
 
-	auto v = abm::mpfr( "-11111111.01", abm::mpfr::getSignificantFigures(), abm::numberBase::_2 ) ;
+	auto v = abm::R( "-11111111.01", abm::R::getSignificantFigures(), abm::numberBase::_2 ) ;
 	std::cout << v << std::endl ;
 
 	v = v.abs() ;
@@ -1445,30 +1634,30 @@ void doMpfrMath1()
 	std::cout << z << std::endl ;
 
 	// 1e10
-	abm::mpfr a1( "-1.23E-2" ) ;
+	abm::R a1( "-1.23E-2" ) ;
 	std::cout << a1 << std::endl ;
 
-	abm::mpfr::setSignificantFigures( 204 ) ;
+	abm::R::setSignificantFigures( 204 ) ;
 
-	auto sum = abm::mpfr( "1.1e100" ) + abm::mpfr( "1.2e-100", 206 ) + abm::mpfr( "1.3" ) ;
+	auto sum = abm::R( "1.1e100" ) + abm::R( "1.2e-100", 206 ) + abm::R( "1.3" ) ;
 
-	abm::mpfr::setDebug( true ) ;
+	abm::R::setDebug( true ) ;
 	std::cout << sum << std::endl ;
 
-	abm::mpfr::setDebug( false ) ;
+	abm::R::setDebug( false ) ;
 	std::cout << sum << std::endl ;
 
-	abm::mpfr::setSignificantFigures( 50 ) ;
+	abm::R::setSignificantFigures( 50 ) ;
 
 	// fact
-	abm::mpfr a2( "4.49" ) ; // expect 1.2.3.4 = 24
+	abm::R a2( "4.49" ) ; // expect 1.2.3.4 = 24
 	std::cout << a2.fact() << std::endl ;
 
 	a2 = "4.9999" ; // expect 1.2.3.4 = 24
 	std::cout << a2.fact() << std::endl ;
 
 	// sqrt
-	abm::mpfr a3( "100.01", 3 ) ;
+	abm::R a3( "100.01", 3 ) ;
 	std::cout << a3.sqrt() << std::endl ;
 	
 	a3 = "0.0" ;
@@ -1478,18 +1667,18 @@ void doMpfrMath1()
 	std::cout << "sqrt [" << a3.sqrt() << "]" << std::endl ;
 
 	// recurring
-	abm::mpfr a4 = abm::mpfr( "1" ) / abm::mpfr( "3") ;
+	abm::R a4 = abm::R( "1" ) / abm::R( "3") ;
 	std::cout << a4 << std::endl ;
 
-	a4 = abm::mpfr( "2", 10 ) / abm::mpfr( "3", 10 ) ;
-	abm::mpfr::setDebug( false ) ;
+	a4 = abm::R( "2", 10 ) / abm::R( "3", 10 ) ;
+	abm::R::setDebug( false ) ;
 	std::cout << a4 << std::endl ;
 	std::cout << "   1234567890" << std::endl ;
-	abm::mpfr::setDebug( true ) ;
+	abm::R::setDebug( true ) ;
 	std::cout << a4 << std::endl ;
-	abm::mpfr::setDebug( false ) ;
+	abm::R::setDebug( false ) ;
 
-	abm::mpfr a5( "1" ) ;
+	abm::R a5( "1" ) ;
 	auto fmt = abm::stringcat( "HeLlOwOrLd a5", " = ", a5 ) ;
 	std::cout << fmt << std::endl ;
 	std::cout << abm::stringhlp::toUpper( fmt  ) << std::endl ;
@@ -1536,20 +1725,20 @@ void doMpfrMath1()
 
 	//---------------------------------------------------
 
-	abm::mpfr::setSignificantFigures( 44 ) ;
+	abm::R::setSignificantFigures( 44 ) ;
 
-	abm::mpfr a6( "0", 5 ) ; 
+	abm::R a6( "0", 5 ) ; 
 	std::cout << a6 << std::endl ; // sf 5
 
-	abm::mpfr a7( "8", 10  ) ; 
-	abm::mpfr a8( "9", 8   ) ; 
+	abm::R a7( "8", 10  ) ; 
+	abm::R a8( "9", 8   ) ; 
 	
 	a6 = a7 / a8 ; 
 	std::cout << a6 << std::endl ; // sf 10
 	std::cout << a7 << std::endl ; // sf 10
 	std::cout << a8 << std::endl ; // sf 8
 
-	abm::mpfr a9( "-12.3456789", 5 ) ;
+	abm::R a9( "-12.3456789", 5 ) ;
 	std::cout << a9 << std::endl ; // sf 5
 	
 	auto a10 = a9 ;
@@ -1558,27 +1747,27 @@ void doMpfrMath1()
 	a10 = a7 ;
 	std::cout << a10 << std::endl ; // sf 10
 
-	auto a11 = abm::mpfr( "10.1" ) + abm::mpfr( "23.2" ) ;
+	auto a11 = abm::R( "10.1" ) + abm::R( "23.2" ) ;
 	std::cout << a11 << std::endl ; // sf 44
 
-	a11 = a7 + abm::mpfr( "23.2" ) ;
+	a11 = a7 + abm::R( "23.2" ) ;
 	std::cout << a11 << std::endl ; // sf 10
 
-	a11 = abm::mpfr( "23.2" ) + a7 ;
+	a11 = abm::R( "23.2" ) + a7 ;
 	std::cout << a11 << std::endl ; // sf 44
 
-	abm::mpfr a12( "-12.3456789", 5 ) ;
+	abm::R a12( "-12.3456789", 5 ) ;
 	a12 += a11 ;
 	std::cout << a12 << std::endl ; // sf 5
 
-	abm::mpfr a13( "-12.3456789"  ) ;
+	abm::R a13( "-12.3456789"  ) ;
 	a13 += a11 ;
 	std::cout << a13 << std::endl ; // sf 44
 
 	std::cout << "---" << std::endl ;
 
-	auto a14 = abm::mpfr( "-12.3456789" )  ;
-	auto a15 = abm::mpfr( "-12.3456789", 5 ) ;
+	auto a14 = abm::R( "-12.3456789" )  ;
+	auto a15 = abm::R( "-12.3456789", 5 ) ;
 	auto a16 = a14 + a15 ;
 	auto a17 = a15 + a14 ;
 
@@ -1590,7 +1779,7 @@ void doMpfrMath1()
 	auto a18 = a14 + a14 ;
 	auto a19 = a15 + a15 ;
 	auto a20 = a14 * "2" ;
-	auto a21 = a15 * abm::mpfr( "2", 5 )  ;
+	auto a21 = a15 * abm::R( "2", 5 )  ;
 	std::cout << "a18 " << a18 << std::endl ; // sf ??
 	std::cout << "a19 " << a19 << std::endl ; // sf ??
 	std::cout << "a20 " << a20 << std::endl ; // sf ??
@@ -1598,7 +1787,7 @@ void doMpfrMath1()
 
 	std::cout << "---" << std::endl ;
 
-	auto a22 = abm::mpfr( "-12.3456789" ) ;
+	auto a22 = abm::R( "-12.3456789" ) ;
 	auto a23 = a14 + a22 ;
 	auto a24 = a22 + a14 ;
 	std::cout << "a14               " << a14 << std::endl ; // sf ??
