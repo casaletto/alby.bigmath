@@ -13,8 +13,9 @@ class alby::bigmath::R
 
 # base projects
 
-* http://www.mpfr.org
-* https://gmplib.org
+* mpfr        http://www.mpfr.org
+* gmp         https://gmplib.org
+* googletest  https://github.com/google/googletest
 
 # packages required
 
@@ -47,6 +48,10 @@ $ make smoke
 ```
 $ make test
 ```
+
+# what unit test framework used by the project?
+
+* googletest https://github.com/google/googletest
 
 # how do I use it in my project?
 
@@ -495,6 +500,7 @@ c = +5.01400039888311
 
 * http://www.mpfr.org
 * https://gmplib.org
+* https://github.com/google/googletest
 * https://regexr.com/3m16c
 * https://en.wikipedia.org/wiki/Borwein%27s_algorithm
 * https://helloacm.com/two-simple-equations-to-compute-pi

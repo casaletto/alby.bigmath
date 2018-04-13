@@ -4,18 +4,51 @@ BACKLOG
 
 * put the smoke tests into /smoketest folder and fix make file
 
+·         Rename lib to src
+·         Rename src to smoke, put in makefile
+·         unit test stuff in test
+·         add to readme
+·         what unit test framework is this project using?
+
 13. unit test fraework
 
-* unit tests - which framework ???
-* do proper tests - do asserts for unit tests - for each section
-void print_number(int* myInt) {
-  assert (myInt!=NULL);
-  printf ("%d\n",*myInt);
-}
+
+/d/tempcode5/alby.bigmath/googletest
+
+$ ls -al
+docs
+include
+LICENSE
+make
+README.md
+samples
+src
+
+# ------------------------------------------------------------------------------------------
+
+googletest/make/gtest.a:
+googletest/make/gtest_main.a:
+googletest: googletest/make/gtest.a googletest/make/gtest_main.a
+                make -C googletest/make gtest.a
+                make -C googletest/make gtest_main.a
+# ------------------------------------------------------------------------------------------
+clean:
+               rm -vf obj/*
+                rm -vf bin/*
+                make -C googletest/make clean
+build: googletest bin/mpfrtest
+
+rebuild: clean build
+
+test: build
+                bin/mpfrtest
+
+ 
+
+# ------------------------------------------------------------------------------------------
 
 
-* put the test code in /test folder
-----------------------------------------------------------------------
+
 
 
 =======================================================================================================================================================================
