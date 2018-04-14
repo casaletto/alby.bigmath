@@ -3,9 +3,11 @@
 	"files.exclude": 
     {
         "**/*.o": true,
-        "mpfrtest": true,
+        "**/*.a": true,
         "obj": true,
-        "bin": true
+        "bin": true,
+        "googletest": true,       
+        "smoketest/obj": true       
     },
     "files.associations": {
         "iostream": "cpp",

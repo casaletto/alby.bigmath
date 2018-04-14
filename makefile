@@ -1,7 +1,6 @@
 
 default: build
 
-
 # ------------------------------------------------------------------------------------------
 
 googletest/make/gtest.a:
@@ -55,18 +54,18 @@ bin/libalbybigmath.a: obj/R.o obj/mpfr_t_wrapper.o obj/Q.o obj/mpq_t_wrapper.o  
 
 # ------------------------------------------------------------------------------------------
 
-obj/main.o: src/main.cpp lib/*.h
-	g++ -c -Os src/main.cpp -o obj/main.o
+smoketest/obj/main.o: smoketest/main.cpp lib/*.h
+	g++ -c -Os smoketest/main.cpp -o smoketest/obj/main.o
 
-bin/mpfrtest: bin/libalbybigmath.a obj/main.o 
+bin/smoketest: bin/libalbybigmath.a smoketest/obj/main.o 
 	g++ -s -static -static-libgcc -static-libstdc++ \
-		obj/main.o \
+		smoketest/obj/main.o \
 		-L bin \
 		-l:libalbybigmath.a \
 		-l:libmpfr.a \
 		-l:libgmp.a \
-		-o bin/mpfrtest \
-	#ldd ./mpfrtest
+		-o bin/smoketest \
+	#ldd ./smoketest
 
 # ------------------------------------------------------------------------------------------
 	
@@ -74,12 +73,13 @@ clean:
 	make -C googletest/make clean
 	rm -vf obj/*
 	rm -vf bin/*
+	rm -vf smoketest/obj/*
 
-build: googletest bin/mpfrtest
+build: googletest bin/smoketest
 
 rebuild: clean build
 
-test: build
-	bin/mpfrtest
+smoke: build
+	bin/smoketest
 
 # ------------------------------------------------------------------------------------------
