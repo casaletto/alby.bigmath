@@ -54,10 +54,10 @@ bin/libalbybigmath.a: obj/R.o obj/mpfr_t_wrapper.o obj/Q.o obj/mpq_t_wrapper.o  
 
 # ------------------------------------------------------------------------------------------
 
-smoketest/obj/main.o: smoketest/main.cpp lib/*.h
-	g++ -c -Os smoketest/main.cpp -o smoketest/obj/main.o
+smoketest/obj/main.o: smoketest/src/main.cpp lib/*.h
+	g++ -c -Os smoketest/src/main.cpp -o smoketest/obj/main.o
 
-smoketest/bin/smoketest: bin/libalbybigmath.a smoketest/obj/main.o 
+smoketest/bin/smoketest: smoketest/obj/main.o 
 	g++ -s -static -static-libgcc -static-libstdc++ \
 		smoketest/obj/main.o \
 		-L bin \
@@ -76,7 +76,7 @@ clean:
 	rm -vf smoketest/obj/*
 	rm -vf smoketest/bin/*
 
-build: googletest smoketest/bin/smoketest
+build: googletest bin/libalbybigmath.a smoketest/bin/smoketest
 
 rebuild: clean build
 
