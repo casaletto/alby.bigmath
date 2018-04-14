@@ -57,14 +57,14 @@ bin/libalbybigmath.a: obj/R.o obj/mpfr_t_wrapper.o obj/Q.o obj/mpq_t_wrapper.o  
 smoketest/obj/main.o: smoketest/main.cpp lib/*.h
 	g++ -c -Os smoketest/main.cpp -o smoketest/obj/main.o
 
-bin/smoketest: bin/libalbybigmath.a smoketest/obj/main.o 
+smoketest/bin/smoketest: bin/libalbybigmath.a smoketest/obj/main.o 
 	g++ -s -static -static-libgcc -static-libstdc++ \
 		smoketest/obj/main.o \
 		-L bin \
 		-l:libalbybigmath.a \
 		-l:libmpfr.a \
 		-l:libgmp.a \
-		-o bin/smoketest \
+		-o smoketest/bin/smoketest \
 	#ldd ./smoketest
 
 # ------------------------------------------------------------------------------------------
@@ -74,12 +74,13 @@ clean:
 	rm -vf obj/*
 	rm -vf bin/*
 	rm -vf smoketest/obj/*
+	rm -vf smoketest/bin/*
 
-build: googletest bin/smoketest
+build: googletest smoketest/bin/smoketest
 
 rebuild: clean build
 
 smoke: build
-	bin/smoketest
+	smoketest/bin/smoketest
 
 # ------------------------------------------------------------------------------------------
