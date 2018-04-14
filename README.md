@@ -13,9 +13,9 @@ class alby::bigmath::R
 
 # base projects
 
-* mpfr        http://www.mpfr.org
-* gmp         https://gmplib.org
-* googletest  https://github.com/google/googletest
+* mpfr http://www.mpfr.org
+* gmp https://gmplib.org
+* googletest https://github.com/google/googletest
 
 # packages required
 
@@ -49,7 +49,7 @@ $ make smoke
 $ make test
 ```
 
-# what unit test framework used by the project?
+# what unit test framework is used by this project?
 
 * googletest https://github.com/google/googletest
 

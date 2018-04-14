@@ -1,6 +1,17 @@
 
 default: build
 
+
+# ------------------------------------------------------------------------------------------
+
+googletest/make/gtest.a:
+
+googletest/make/gtest_main.a:
+
+googletest: googletest/make/gtest.a googletest/make/gtest_main.a
+	make -C googletest/make gtest.a
+	make -C googletest/make gtest_main.a
+
 # ------------------------------------------------------------------------------------------
 
 obj/R.o: lib/R.cpp lib/*.h 
@@ -60,13 +71,15 @@ bin/mpfrtest: bin/libalbybigmath.a obj/main.o
 # ------------------------------------------------------------------------------------------
 	
 clean:
+	make -C googletest/make clean
 	rm -vf obj/*
 	rm -vf bin/*
 
-build: bin/mpfrtest
+build: googletest bin/mpfrtest
 
 rebuild: clean build
 
 test: build
 	bin/mpfrtest
 
+# ------------------------------------------------------------------------------------------

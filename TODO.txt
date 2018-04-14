@@ -12,6 +12,8 @@ BACKLOG
 
 13. unit test fraework
 
+* re do folder structire --> nested makfiles
+
 
 /d/tempcode5/alby.bigmath/googletest
 
