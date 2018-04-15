@@ -19,17 +19,7 @@
 #include <gmp.h>
 #include <mpfr.h>
 
-#include "albybigmath/numberBase.h"
-#include "albybigmath/stringhlp.h"
-#include "albybigmath/stringcat.h"
-#include "albybigmath/numberhlp.h"
-#include "albybigmath/mpq_t_wrapper.h"
-#include "albybigmath/Q.h"
-#include "albybigmath/mpfr_t_wrapper.h"
-#include "albybigmath/R.h"
-#include "albybigmath/random.h"
-#include "albybigmath/pi.h"
-#include "albybigmath/version.h"
+#include "albybigmath/albybigmath.h"
 
 namespace abm = alby::bigmath ; 
 

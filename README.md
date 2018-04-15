@@ -55,34 +55,44 @@ $ make test
 
 # how do I use it in my project?
 
-cpp files
+include files
 
 ```
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include <iostream>
+#include <cstring>
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <fstream>
+#include <iomanip>
+#include <assert.h>    
+#include <algorithm>
+#include <regex>
+#include <random>
+#include <chrono>
+#include <thread>
+
 #include <gmp.h>
 #include <mpfr.h>
-#include "../lib/numberBase.h"
-#include "../lib/stringhlp.h"
-#include "../lib/stringcat.h"
-#include "../lib/numberhlp.h"
-#include "../lib/mpfr_t_wrapper.h"
-#include "../lib/R.h"
-#include "../lib/mpq_t_wrapper.h"
-#include "../lib/Q.h"
-#include "../lib/random.h"
-#include "../lib/pi.h"
-#include "../lib/version.h"
+
+#include "albybigmath/albybigmath.h"
 ```
 
 makefile
 
 ```
-$ g++ -c *.cpp
+$ g++ -c *.cpp -I <path to albybigmath/include>
 
 $ g++ -s \
 	-o exefile *.o \
 	-static \
 	-static-libgcc \
 	-static-libstdc++ \
+	-L <path to albybigmath/lib> \
 	-l:libmpfr.a \
 	-l:libgmp.a \
 	-llibalbybigmath.a
