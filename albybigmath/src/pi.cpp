@@ -19,16 +19,16 @@
 #include <gmp.h>
 #include <mpfr.h>
 
-#include "./numberBase.h"
-#include "./stringhlp.h"
-#include "./stringcat.h"
-#include "./numberhlp.h"
-#include "./mpq_t_wrapper.h"
-#include "./Q.h"
-#include "./mpfr_t_wrapper.h"
-#include "./R.h"
-#include "./random.h"
-#include "./pi.h"
+#include "albybigmath/numberBase.h"
+#include "albybigmath/stringhlp.h"
+#include "albybigmath/stringcat.h"
+#include "albybigmath/numberhlp.h"
+#include "albybigmath/mpq_t_wrapper.h"
+#include "albybigmath/Q.h"
+#include "albybigmath/mpfr_t_wrapper.h"
+#include "albybigmath/R.h"
+#include "albybigmath/random.h"
+#include "albybigmath/pi.h"
 
 namespace alby::bigmath 
 {

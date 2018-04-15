@@ -16,10 +16,10 @@
 #include <gmp.h>
 #include <mpfr.h>
 
-#include "./stringhlp.h"
-#include "./stringcat.h"
-#include "./numberhlp.h"
-#include "./mpfr_t_wrapper.h"
+#include "albybigmath/stringhlp.h"
+#include "albybigmath/stringcat.h"
+#include "albybigmath/numberhlp.h"
+#include "albybigmath/mpfr_t_wrapper.h"
 
 namespace alby::bigmath 
 {

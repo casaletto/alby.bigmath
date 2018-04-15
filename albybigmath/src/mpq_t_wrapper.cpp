@@ -15,8 +15,8 @@
 
 #include <gmp.h>
 
-#include "./stringhlp.h"
-#include "./mpq_t_wrapper.h"
+#include "albybigmath/stringhlp.h"
+#include "albybigmath/mpq_t_wrapper.h"
 
 namespace alby::bigmath 
 {

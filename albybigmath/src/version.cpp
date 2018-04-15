@@ -19,11 +19,11 @@
 #include <gmp.h>
 #include <mpfr.h>
 
-#include "./numberBase.h"
-#include "./stringhlp.h"
-#include "./stringcat.h"
-#include "./numberhlp.h"
-#include "./version.h"
+#include "albybigmath/numberBase.h"
+#include "albybigmath/stringhlp.h"
+#include "albybigmath/stringcat.h"
+#include "albybigmath/numberhlp.h"
+#include "albybigmath/version.h"
 
 namespace alby::bigmath 
 {

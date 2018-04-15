@@ -16,7 +16,7 @@
 #include <chrono>
 #include <thread>
 
-#include "./stringhlp.h"
+#include "albybigmath/stringhlp.h"
 
 namespace alby::bigmath 
 {

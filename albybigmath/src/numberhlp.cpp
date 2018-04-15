@@ -16,9 +16,9 @@
 #include <chrono>
 #include <thread>
 
-#include "./stringhlp.h"
-#include "./stringcat.h"
-#include "./numberhlp.h"
+#include "albybigmath/stringhlp.h"
+#include "albybigmath/stringcat.h"
+#include "albybigmath/numberhlp.h"
 
 //
 // the 4 kinds of numbers

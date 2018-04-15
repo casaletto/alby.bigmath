@@ -7,7 +7,12 @@
         "obj": true,
         "bin": true,
         "googletest": true,       
-        "smoketest/obj": true       
+        "smoketest/obj": true,       
+        "smoketest/bin": true,       
+        "unittest/obj": true,       
+        "unittest/bin": true,       
+        "albybigmath/obj": true,       
+        "albybigmath/lib": true       
     },
     "files.associations": {
         "iostream": "cpp",
