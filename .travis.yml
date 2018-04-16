@@ -1,6 +1,7 @@
 sudo: false
 language: cpp
 compiler: gcc
+script: make test
 
 matrix:  
   include:
