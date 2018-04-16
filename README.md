@@ -11,6 +11,10 @@ and almost unlimited precision real number **ℝ** arithmetic
 class alby::bigmath::R
 ```
 
+# what is the current build status?
+
+[![Build Status](https://travis-ci.org/casaletto/alby.bigmath.svg?branch=master)](https://travis-ci.org/casaletto/alby.bigmath)
+
 # base projects
 
 * mpfr http://www.mpfr.org
@@ -52,6 +56,10 @@ $ make test
 # what unit test framework is used by this project?
 
 * googletest https://github.com/google/googletest
+
+# where os the continous integrationn for this project?
+
+* travis.ci https://travis-ci.org/casaletto/alby.bigmath
 
 # how do I use it in my project?
 
