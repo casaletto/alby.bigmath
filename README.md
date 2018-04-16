@@ -528,5 +528,10 @@ c = +5.01400039888311
 * https://www.calculatorsoup.com/calculators/discretemathematics/factorials.php
 * http://xahlee.info/comp/unicode_math_operators.html
 * https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.cbclx01/explicit_keyword.htm
+* https://raw.githubusercontent.com/ssss/sss/master/.travis.yml
+* https://github.com/mbonaci/mbo-storm/wiki/Integrate-Travis-CI-with-your-GitHub-repo 
+* https://docs.travis-ci.com/user/getting-started/
+* https://docs.travis-ci.com/user/languages/cpp/
+* https://docs.travis-ci.com/user/installing-dependencies/
 
 &nbsp;

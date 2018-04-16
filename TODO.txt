@@ -17,11 +17,6 @@ BACKLOG
 
 * use no sudo container operations
 
-	https://raw.githubusercontent.com/ssss/sss/master/.travis.yml
-	https://github.com/mbonaci/mbo-storm/wiki/Integrate-Travis-CI-with-your-GitHub-repo 
-	https://docs.travis-ci.com/user/getting-started/
-	https://docs.travis-ci.com/user/languages/cpp/
-	https://docs.travis-ci.com/user/installing-dependencies/
 	
 
 * add travis link to bottom of readme
