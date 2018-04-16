@@ -40,7 +40,7 @@ namespace alby::bigmath
 	}
 
 	version&
-	version::operator=( const version& rhs ) // =
+	version::operator=( const version& rhs ) // = 
 	{
         // not implemented
 		if ( this != &rhs )
@@ -61,8 +61,32 @@ namespace alby::bigmath
 			"\nMPFR default prec     ", mpfr_get_default_prec() ,
 			"\nMPFR min exponent     ", mpfr_get_emin(), 
 			"\nMPFR max exponent     ", mpfr_get_emax(), 			
-			"\nbits per limb         ", mp_bits_per_limb 			
+			"\nbits per limb         ", mp_bits_per_limb, 			
+			"\nuname                 ", system( "uname -a" ), 
+			"\ng++ version           ", system( "g++ --version" ) 
 		) ;
+	}
+
+	std::string 
+	version::system( const std::string& cmd )   
+	{
+		auto str = cmd + " 2>&1" ;
+
+		std::string result ;
+
+		auto stdout = ::popen( str.c_str(), "r" ) ;
+    	if ( stdout ) 
+		{
+			char buffer[ 1000 ] ;
+
+			while ( ! std::feof( stdout ) )
+				if ( std::fgets( buffer, sizeof buffer - 1, stdout ) != nullptr ) 
+					 result.append( buffer ) ;
+		}
+	    ::pclose( stdout ) ;
+
+		result = stringhlp::trim( result ) ;
+		return result ;
 	}
 
 } // ns

@@ -1,66 +1,52 @@
 =======================================================================================================================================================================
 BACKLOG
 =======================================================================================================================================================================
- - one .h file
- - fixe doco for includes etc 
-
-- move the smole test source to src
-- make a makefile
-
-* put the smoke tests into /smoketest folder and fix make file
-
-·         Rename lib to src
-·         Rename src to smoke, put in makefile
-·         unit test stuff in test
-·         add to readme
-·         what unit test framework is this project using?
-
-13. unit test fraework
-
-* re do folder structire --> nested makfiles
-
-* put .H files into one .h file
-
-
-/d/tempcode5/alby.bigmath/googletest
-
-$ ls -al
-docs
-include
-LICENSE
-make
-README.md
-samples
-src
-
-# ------------------------------------------------------------------------------------------
-
-googletest/make/gtest.a:
-googletest/make/gtest_main.a:
-googletest: googletest/make/gtest.a googletest/make/gtest_main.a
-                make -C googletest/make gtest.a
-                make -C googletest/make gtest_main.a
-# ------------------------------------------------------------------------------------------
-clean:
-               rm -vf obj/*
-                rm -vf bin/*
-                make -C googletest/make clean
-build: googletest bin/mpfrtest
-
-rebuild: clean build
-
-test: build
-                bin/mpfrtest
-
  
+* sub project for unit tests
 
-# ------------------------------------------------------------------------------------------
+* start with one unit test in one test suite
+	- the mpfr anf gmp versions 
+
+* have to upgrade mpfr gmp ???? maybe not, see ::version for each build
+
+* travis 
+
+* login/setup 
+
+* use no sudo container operations
+
+	https://raw.githubusercontent.com/ssss/sss/master/.travis.yml
+	https://github.com/mbonaci/mbo-storm/wiki/Integrate-Travis-CI-with-your-GitHub-repo 
+	https://docs.travis-ci.com/user/getting-started/
+	https://docs.travis-ci.com/user/languages/cpp/
+	https://docs.travis-ci.com/user/installing-dependencies/
+	
+
+* add travis link to bottom of readme
+
+* travis gcc-6
+* travis gcc-7
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.8
+    - g++-4.8
 
 
 
 
 
-=======================================================================================================================================================================
+* add status of build to readme
+	# Google Test #
+
+	[![Build Status](https://travis-ci.org/google/googletest.svg?branch=master)](https://travis-ci.org/google/googletest)
+
+
+* do the rest of the unit tests
+
 =======================================================================================================================================================================
 =======================================================================================================================================================================
 =======================================================================================================================================================================
@@ -719,6 +705,27 @@ fix the comments around this
 11. review the examples
 
 12. fix up readme      
+
+ * start with o
+ - one .h file
+ - fixe doco for includes etc 
+
+- move the smole test source to src
+- make a makefile
+
+* put the smoke tests into /smoketest folder and fix make file
+
+·         Rename lib to src
+·         Rename src to smoke, put in makefile
+·         unit test stuff in test
+·         add to readme
+·         what unit test framework is this project using?
+
+13. unit test fraework
+
+* re do folder structire --> nested makfiles
+
+* put .H files into one .h file
 
 =======================================================================================================================================================================
 
