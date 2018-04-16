@@ -13,6 +13,8 @@ BACKLOG
 
 * login/setup 
 
+* get working on gcc 7
+
 * use no sudo container operations
 
 	https://raw.githubusercontent.com/ssss/sss/master/.travis.yml
