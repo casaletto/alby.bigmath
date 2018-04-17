@@ -1,7 +1,5 @@
-sudo: false
 language: cpp
 compiler: gcc
-script: make test
 
 matrix:  
   include:
@@ -12,8 +10,16 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-6
+            - libgmp-dev
+            - libgmp10
+            - libmpfr-dev
+            - libmpfr4
       env:
         - MATRIX_EVAL="CXX=g++-6"
 
 before_install:
   - eval "${MATRIX_EVAL}"
+  - uname -a  
+  - $CXX --version  
+
+script: make test
