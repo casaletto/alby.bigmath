@@ -22,4 +22,7 @@ before_install:
   - uname -a  
   - $CXX --version  
 
-script: make test
+script: 
+  - make
+  - make smoke
+  - make test

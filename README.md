@@ -111,8 +111,8 @@ Ipso facto, I perform static linking wherever possible.
 # developed and tested on
 
 ```
-$ gcc --version
-gcc (Ubuntu 6.3.0-12ubuntu2) 6.3.0 20170406
+$ g++ --version
+g++ (Ubuntu 6.3.0-12ubuntu2) 6.3.0 20170406
 ```
 
 ```
@@ -120,11 +120,23 @@ $ uname -a
 Linux xxxxxxx 4.10.0-28-generic #32-Ubuntu SMP Fri Jun 30 05:32:18 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
+travis ci reports success on the following versions
+
+```
+$ g++6 --version
+g++-6 (Ubuntu/Linaro 6.3.0-18ubuntu2~14.04) 6.3.0 20170519
+```
+
+```
+$ uname -a
+Linux travis-job-casaletto-alby-bigmath-367621695.travisci.net 4.14.12-041412-generic #201801051649 SMP Fri Jan 5 16:50:54 UTC 2018 x86_64 x86_64  x86_64 GNU/Linux
+```
+
 I had a bad dream that I partly developed and tested this on windoze 10 mingw64/msys64, but yeh, probably just a dream.
 
 ```
-$ gcc --version
-gcc.exe (Rev1, Built by MSYS2 project) 6.1.0
+$ g++ --version
+g++.exe (Rev1, Built by MSYS2 project) 6.1.0
 ```
 
 ```
