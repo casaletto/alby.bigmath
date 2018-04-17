@@ -2,6 +2,8 @@
 BACKLOG
 =======================================================================================================================================================================
  
+* travis build versionssection in readme 
+
 * sub project for unit tests
 
 * start with one unit test in one test suite
