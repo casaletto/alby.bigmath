@@ -8,10 +8,10 @@ default: build
 # ------------------------------------------------------------------------------------------
 
 obj/main.o: src/main.cpp
-	g++ -c -Os -I ../albybigmath/include src/main.cpp -o obj/main.o
+	$(CXX) -c -Os -I ../albybigmath/include src/main.cpp -o obj/main.o
 
 bin/smoketest: obj/main.o ../albybigmath/lib/libalbybigmath.a
-	g++ -s -static -static-libgcc -static-libstdc++ \
+	$(CXX) -s -static -static-libgcc -static-libstdc++ \
 		obj/main.o \
 		-L ../albybigmath/lib \
 		-l:libalbybigmath.a \

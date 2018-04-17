@@ -12,5 +12,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-6
+      env:
+        - CXX=g++-6 
 
 

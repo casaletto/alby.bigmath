@@ -62,8 +62,7 @@ namespace alby::bigmath
 			"\nMPFR min exponent     ", mpfr_get_emin(), 
 			"\nMPFR max exponent     ", mpfr_get_emax(), 			
 			"\nbits per limb         ", mp_bits_per_limb, 			
-			"\nuname                 ", system( "uname -a" ), 
-			"\ng++ version           ", system( "g++ --version" ) 
+			"\nuname                 ", system( "uname -a" ) 
 		) ;
 	}
 

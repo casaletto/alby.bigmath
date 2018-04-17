@@ -6,7 +6,6 @@
         "**/*.a": true,
         "obj": true,
         "bin": true,
-        "googletest": true,       
         "smoketest/obj": true,       
         "smoketest/bin": true,       
         "unittest/obj": true,       

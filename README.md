@@ -56,7 +56,11 @@ $ make test
 
 * googletest https://github.com/google/googletest
 
-# how do I use it in my project?
+# where can i find the continuous integration builds for this project?
+
+* travis ci https://travis-ci.org/casaletto/alby.bigmath
+
+# how do I use the code in my project?
 
 include files
 
