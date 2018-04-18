@@ -56,7 +56,7 @@ $ make test
 
 * googletest https://github.com/google/googletest
 
-# where can i find the ci builds for this project?
+# where can I find the ci builds for this project?
 
 * travis ci https://travis-ci.org/casaletto/alby.bigmath
 

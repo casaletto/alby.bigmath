@@ -16,6 +16,19 @@ matrix:
             - libmpfr4
       env:
         - MATRIX_EVAL="CXX=g++-6"
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+            - libgmp-dev
+            - libgmp10
+            - libmpfr-dev
+            - libmpfr4
+      env:
+        - MATRIX_EVAL="CXX=g++-7"
 
 before_install:
   - eval "${MATRIX_EVAL}"
