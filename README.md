@@ -18,7 +18,6 @@ class alby::bigmath::R
 
 * mpfr http://www.mpfr.org
 * gmp https://gmplib.org
-* googletest https://github.com/google/googletest
 
 # packages required
 
@@ -27,6 +26,7 @@ class alby::bigmath::R
 * libgmp10
 * libmpfr-dev
 * libmpfr4
+* googletest https://github.com/google/googletest
 
 # what is the main artifact produced by this project?
 
@@ -125,6 +125,11 @@ travis ci reports success on the following versions
 ```
 $ g++6 --version
 g++-6 (Ubuntu/Linaro 6.3.0-18ubuntu2~14.04) 6.3.0 20170519
+```
+
+```
+$ g++7 --version
+g++-7 (Ubuntu 7.2.0-1ubuntu1~14.04) 7.2.0
 ```
 
 ```
