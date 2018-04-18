@@ -31,6 +31,7 @@ matrix:
         - MATRIX_EVAL="CXX=g++-7"
 
 before_install:
+  - echo ${TRAVIS_JOB_NUMBER}
   - eval "${MATRIX_EVAL}"
   - uname -a  
   - $CXX --version  

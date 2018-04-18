@@ -1,50 +1,23 @@
 =======================================================================================================================================================================
 BACKLOG
 =======================================================================================================================================================================
- 
+
+travis build number in readme and in abm::version()
+
+* (over) write  a default file version.txt
+
+
+https://docs.travis-ci.com/user/environment-variables/
+
+
 * travis build versionssection in readme 
 
-* sub project for unit tests
+TRAVIS_JOB_ID: The id of the current job that Travis CI uses internally.
+TRAVIS_JOB_NUMBER: The number of the current job (for example, “4.1”).
+TRAVIS_BUILD_ID: The id of the current build that Travis CI uses internally.
+TRAVIS_BUILD_NUMBER: The number of the current build (for example, “4”).
 
-* start with one unit test in one test suite
-	- the mpfr anf gmp versions 
-
-* have to upgrade mpfr gmp ???? maybe not, see ::version for each build
-
-* travis 
-
-* login/setup 
-
-* get working on gcc 7
-
-* use no sudo container operations
-
-	
-
-* add travis link to bottom of readme
-
-* travis gcc-6
-* travis gcc-7
-
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-6
-    - g++-7
-
-
-
-
-
-* add status of build to readme
-	# Google Test #
-
-	[![Build Status](https://travis-ci.org/google/googletest.svg?branch=master)](https://travis-ci.org/google/googletest)
-
-
-* do the rest of the unit tests
+* do the the unit tests
 
 =======================================================================================================================================================================
 =======================================================================================================================================================================
@@ -725,6 +698,27 @@ fix the comments around this
 * re do folder structire --> nested makfiles
 
 * put .H files into one .h file
+
+
+* travis 
+
+* login/setup 
+
+* get working on gcc 7
+
+* use no sudo container operations
+
+
+* add status of build to readme
+	# Google Test #
+
+	[![Build Status](https://travis-ci.org/google/googletest.svg?branch=master)](https://travis-ci.org/google/googletest)
+
+* sub project for unit tests
+
+* start with one unit test in one test suite
+	- the mpfr anf gmp versions 
+
 
 =======================================================================================================================================================================
 
