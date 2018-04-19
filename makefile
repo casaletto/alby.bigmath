@@ -22,6 +22,9 @@ rebuild: clean build
 # ------------------------------------------------------------------------------------------
 
 smoke: build
+	make -C smoketest smoke > /dev/null
+
+smoke2: build
 	make -C smoketest smoke
 
 test: build

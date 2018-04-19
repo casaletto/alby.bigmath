@@ -34,11 +34,8 @@ before_install:
   - echo ${TRAVIS_JOB_NUMBER}
   - eval "${MATRIX_EVAL}"
   - uname -a  
-  - $CXX --version  
+  - ${CXX} --version  
 
 script: 
-  - make travisbuildversion
-  - make rebuild
-  - make version
-  - make smoke
-  - make test
+  - make travisbuildversion rebuild smoke test version
+  
