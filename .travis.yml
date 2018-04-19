@@ -37,6 +37,8 @@ before_install:
   - $CXX --version  
 
 script: 
-  - make
+  - make travisbuildversion
+  - make rebuild
+  - make version
   - make smoke
   - make test

@@ -1,7 +1,5 @@
 #pragma once
 
-#define ALBY_BIGMATH_VERSION "1.0.0.1"
- 
 namespace alby::bigmath
 {
 	class version
@@ -14,8 +12,7 @@ namespace alby::bigmath
 
 			version& operator=( const version& rhs ) ; 
 
-			static std::string getVersion() ;
-			static std::string system( const std::string& cmd ) ;
-
+			static std::string getVersion( bool detailed = false  ) ;
+			static std::string system    ( const std::string& cmd ) ;
 	} ;
 } 

@@ -33,5 +33,8 @@ rebuild: clean build
 smoke: build
 	./bin/smoketest
 
+version: build
+	./bin/smoketest --version
+
 # ------------------------------------------------------------------------------------------
 

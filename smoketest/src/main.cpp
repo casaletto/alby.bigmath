@@ -41,11 +41,18 @@ void doMpqMath0() ;
 void doMpqMath1() ;
 void doMpqMath2() ;
 
-int main( void )
+int main( int argc, char** argv )
 {
 	try
 	{
-		std::cout << abm::version::getVersion() << std::endl ;		
+		// just the version number
+		if ( argc >= 2 && std::string( argv[1] ) == "--version" )
+		{
+			std::cout << abm::version::getVersion() << std::endl ;                        
+			return 0 ;
+		}
+
+		std::cout << abm::version::getVersion( true ) << std::endl ; // all versioln info
 
 		doMpqMath0() ;
 		doMpfrMath0() ;

@@ -27,8 +27,9 @@
 
 namespace alby::bigmath 
 {
-    const std::string version::_version = ALBY_BIGMATH_VERSION  ; 
-    
+    //const std::string version::_version = "0.0.0.0"  ; 
+	#include "../../version.inc" 
+
 	version::~version() // destr
 	{
         // not implemented
@@ -50,11 +51,15 @@ namespace alby::bigmath
 	}
 
 	std::string 
-	version::getVersion() 
+	version::getVersion( bool detailed ) 
 	{
+		auto version = stringhlp::trim( _version ) ;
+
+		if ( ! detailed ) return version ;
+		
 		return stringcat
 		(
-			"alby::bigmath version ", _version,			
+			"alby::bigmath version "  , version,			
 			"\nGMP version           ", gmp_version,			
 			"\nMPFR version          ", mpfr_get_version(),
 			"\nMPFR_PREC_MAX         ", MPFR_PREC_MAX,
@@ -73,16 +78,16 @@ namespace alby::bigmath
 
 		std::string result ;
 
-		auto stdout = ::popen( str.c_str(), "r" ) ;
-    	if ( stdout ) 
+		auto f = ::popen( str.c_str(), "r" ) ;
+    	if ( f ) 
 		{
 			char buffer[ 1000 ] ;
 
-			while ( ! std::feof( stdout ) )
-				if ( std::fgets( buffer, sizeof buffer - 1, stdout ) != nullptr ) 
+			while ( ! std::feof( f ) )
+				if ( std::fgets( buffer, sizeof buffer - 1, f ) != nullptr ) 
 					 result.append( buffer ) ;
 		}
-	    ::pclose( stdout ) ;
+	    ::pclose( f ) ;
 
 		result = stringhlp::trim( result ) ;
 		return result ;
