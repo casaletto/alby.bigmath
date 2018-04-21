@@ -8,17 +8,28 @@ default: build
 # ------------------------------------------------------------------------------------------
 
 obj/main.o: src/main.cpp
-	$(CXX) -c -Os -I ../albybigmath/include src/main.cpp -o obj/main.o
+	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/main.cpp -o obj/main.o
 
-bin/unittest: obj/main.o ../albybigmath/lib/libalbybigmath.a
-	$(CXX) -s -static -static-libgcc -static-libstdc++ \
+obj/versionTest.o: src/versionTest.cpp
+	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/versionTest.cpp -o obj/versionTest.o
+
+obj/environment.o: src/environment.cpp
+	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/environment.cpp -o obj/environment.o
+
+bin/unittest: obj/main.o obj/versionTest.o obj/environment.o ../albybigmath/lib/libalbybigmath.a
+	$(CXX) -s \
 		obj/main.o \
+		obj/versionTest.o \
+		obj/environment.o \
 		-L ../albybigmath/lib \
+		-L ../googletest/make \
 		-l:libalbybigmath.a \
 		-l:libmpfr.a \
 		-l:libgmp.a \
-		-o bin/unittest \
-	#ldd ./bin/unittest
+		-l:gtest.a \
+		-lpthread \
+		-o bin/unittest 
+	ldd ./bin/unittest
 
 # ------------------------------------------------------------------------------------------
 	
@@ -31,7 +42,8 @@ build: bin/unittest
 rebuild: clean build
 
 test: build
-	./bin/unittest
+	./bin/unittest --gtest_color=yes $(ARG)
 
 # ------------------------------------------------------------------------------------------
-
+# make test "ARG=--gtest_repeat=2 --gtest_filter=*det*"
+# ------------------------------------------------------------------------------------------

@@ -15,19 +15,27 @@
 #include <random>
 #include <chrono>
 #include <thread>
-
 #include <gmp.h>
 #include <mpfr.h>
-
 #include "albybigmath/albybigmath.h"
+#include "gtest/gtest.h"
+#include "environment.h"
 
 namespace abm = alby::bigmath ; 
 
-int main( void )
+int main( int argc, char** argv )
 {
+	int rc = 1 ;
+	std::cout << "[BEGIN] main()" << std::endl ;
+
 	try
 	{
-		std::cout << abm::version::getVersion() << std::endl ;		
+	  	testing::InitGoogleTest( &argc, argv ) ;
+
+  		auto p =  testing::AddGlobalTestEnvironment( new t::environment() ) ;
+		t::environment::set( (t::environment*) p ) ; //ALBY FIX ME
+
+  		rc = RUN_ALL_TESTS() ;		
 	}
 	catch( const std::exception& ex )
 	{
@@ -37,7 +45,8 @@ int main( void )
 	{
 		std::cout << "EXCEPTION: ..." << std::endl ;
 	}
-	
-	return 0 ;	
+
+	std::cout << abm::stringcat( "[FINISH] main() rc [", rc, "]" ) << std::endl ;
+	return rc ;	
 }
 

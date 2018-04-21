@@ -2,20 +2,6 @@
 BACKLOG
 =======================================================================================================================================================================
 
-travis build number in readme and in abm::version()
-
-* (over) write  a default file version.txt
-
-
-https://docs.travis-ci.com/user/environment-variables/
-
-
-* travis build versionssection in readme 
-
-TRAVIS_JOB_ID: The id of the current job that Travis CI uses internally.
-TRAVIS_JOB_NUMBER: The number of the current job (for example, “4.1”).
-TRAVIS_BUILD_ID: The id of the current build that Travis CI uses internally.
-TRAVIS_BUILD_NUMBER: The number of the current build (for example, “4”).
 
 * do the the unit tests
 
@@ -719,6 +705,20 @@ fix the comments around this
 * start with one unit test in one test suite
 	- the mpfr anf gmp versions 
 
+travis build number in readme and in abm::version()
+
+* (over) write  a default file version.txt
+
+
+https://docs.travis-ci.com/user/environment-variables/
+
+
+* travis build versionssection in readme 
+
+TRAVIS_JOB_ID: The id of the current job that Travis CI uses internally.
+TRAVIS_JOB_NUMBER: The number of the current job (for example, “4.1”).
+TRAVIS_BUILD_ID: The id of the current build that Travis CI uses internally.
+TRAVIS_BUILD_NUMBER: The number of the current build (for example, “4”).
 
 =======================================================================================================================================================================
 
