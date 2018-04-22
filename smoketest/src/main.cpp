@@ -45,6 +45,7 @@ int main( int argc, char** argv )
 {
 	try
 	{
+		//DONE
 		// just the version number
 		if ( argc >= 2 && std::string( argv[1] ) == "--version" )
 		{
@@ -52,6 +53,7 @@ int main( int argc, char** argv )
 			return 0 ;
 		}
 
+		//DONE
 		std::cout << abm::version::getVersion( true ) << std::endl ; // all versioln info
 
 		doMpqMath0() ;
@@ -63,8 +65,8 @@ int main( int argc, char** argv )
 		doMpfrMathtoCanonical() ;
 		doMpfrMathtoSigFig() ;
 		roundToSignificantDigits() ;
-		doMpfrRandom() ;
-		doMpfrRandom2() ;
+		doMpfrRandom() ; 				//DONE
+		doMpfrRandom2() ; 				//DONE
 		pi_nilakantha() ;
 		pi_ramanujan() ;
 		pi_nonic() ;
@@ -533,6 +535,7 @@ void pi_nonic()
 	std::cout << pi << std::endl ;
 }
 
+//DONE
 void doMpfrRandom2()
 {
 	abm::R::setSignificantFigures( 14 ) ;
@@ -562,6 +565,7 @@ void doMpfrRandom2()
 	}
 }
 
+//DONE
 void doMpfrRandom()
 {
 	abm::R::setSignificantFigures( 55 ) ;
@@ -576,11 +580,13 @@ void doMpfrRandom()
 			auto x = rnd.next() ;
 			std::cout << x << std::endl ;
 		}
+
 		for ( auto i = 1 ; i <= 10 ; i++ )
 		{
 			auto str = rnd.hexBytes( i ) ;
 			std::cout << str << std::endl ;
 		}	
+
 		for ( auto i = 1 ; i <= 10 ; i++ )
 		{
 			auto str = rnd.nanosecondsSinceEpoch() ;

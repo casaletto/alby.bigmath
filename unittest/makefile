@@ -3,24 +3,28 @@ default: build
 
 # ------------------------------------------------------------------------------------------
 
-../albybigmath/lib/libalbybigmath.a:
+../albybigmath/lib/libalbybigmath.a: 
 
 # ------------------------------------------------------------------------------------------
 
 obj/main.o: src/main.cpp
 	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/main.cpp -o obj/main.o
 
-obj/versionTest.o: src/versionTest.cpp
-	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/versionTest.cpp -o obj/versionTest.o
-
 obj/environment.o: src/environment.cpp
 	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/environment.cpp -o obj/environment.o
 
-bin/unittest: obj/main.o obj/versionTest.o obj/environment.o ../albybigmath/lib/libalbybigmath.a
+obj/versionTest.o: src/versionTest.cpp
+	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/versionTest.cpp -o obj/versionTest.o
+
+obj/randomTest.o: src/randomTest.cpp
+	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/randomTest.cpp -o obj/randomTest.o
+
+bin/unittest: ../albybigmath/lib/libalbybigmath.a obj/main.o obj/environment.o obj/versionTest.o obj/randomTest.o
 	$(CXX) -s \
 		obj/main.o \
-		obj/versionTest.o \
 		obj/environment.o \
+		obj/versionTest.o \
+		obj/randomTest.o \
 		-L ../albybigmath/lib \
 		-L ../googletest/make \
 		-l:libalbybigmath.a \

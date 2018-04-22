@@ -23,7 +23,7 @@
 
 namespace t 
 {
-	environment* environment::pEnvironment = NULL ;
+	environment* environment::pEnvironment = nullptr ;
 
 	environment::environment() : testing::Environment()
 	{

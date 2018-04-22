@@ -56,7 +56,7 @@ namespace t
 			}
 	} ;
 
-	TEST_F( versionTest, Simple ) 
+	TEST_F( versionTest, simple ) 
 	{
 		auto str = abm::version::getVersion()  ;		
 
@@ -64,17 +64,21 @@ namespace t
 
 		EXPECT_FALSE( abm::stringhlp::contains( str, "version" ) ) ;
 
-		hello() ;
-		environment::get()->hello() ;
 	}
 
-	TEST_F( versionTest, Detailed ) 
+	TEST_F( versionTest, detailed ) 
 	{
 		auto str = abm::version::getVersion( true )  ;		
 
 		EXPECT_GT( str.length(), 0 ) ;
 
 		EXPECT_TRUE( abm::stringhlp::contains( str, "version" ) ) ;
+	}
+
+	TEST_F( versionTest, hello ) 
+	{
+		hello() ;
+		environment::get()->hello() ;
 	}
 
 } // ns
