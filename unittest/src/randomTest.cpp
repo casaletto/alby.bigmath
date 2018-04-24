@@ -54,7 +54,7 @@ namespace t
 		abm::R::setSignificantFigures( 12 ) ;
 		abm::R::setDebug( false ) ;
 		
-		abm::random rnd( 10, abm::random::hexBytes( 3 ), abm::numberBase::_16 ) ;
+		abm::random rnd( 10, abm::random::getUrandomBytes( 3 ), abm::numberBase::_16 ) ;
 		//std::cout << "seed = " << rnd.getSeed() << std::endl ;
 
 		for ( auto i = 1 ; i <= 100 ; i++ )
@@ -109,14 +109,14 @@ namespace t
 		}
 	}
 
-	TEST_F( randomTest, hexBytes ) // only works on linux
+	TEST_F( randomTest, getUrandomBytes ) // only works on linux
 	{
 		abm::R::setSignificantFigures( 50 ) ;
 		abm::R::setDebug( false ) ;
 
 		for ( auto i = 1 ; i <= 10 ; i++ )
 		{
-			auto str = abm::random::hexBytes( i ) ;
+			auto str = abm::random::getUrandomBytes( i ) ;
 			//std::cout << "[" << str << "]" << std::endl ;
 
 			if ( str.length() > 0 )

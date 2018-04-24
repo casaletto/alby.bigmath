@@ -45,7 +45,7 @@ namespace alby::bigmath
         theSignificantFigures = 0 ;
 
         // try to get the seed from /dev/urandom, otherwise use the ns tick count
-        theSeed = hexBytes( seedBytes ) ;            
+        theSeed = getUrandomBytes( seedBytes ) ;            
         if ( theSeed.length() == 0 )
              theSeed = nanosecondsSinceEpoch() ;
 
@@ -117,7 +117,7 @@ namespace alby::bigmath
     }
 
 	std::string 
-	random::hexBytes( int bytes ) // hex string of random bytes from /dev/urandom
+	random::getUrandomBytes( int bytes ) // hex string of random bytes from /dev/urandom
 	{
 		std::vector<char> buffer ;
 		buffer.resize( bytes ) ;

@@ -583,7 +583,7 @@ void doMpfrRandom()
 
 		for ( auto i = 1 ; i <= 10 ; i++ )
 		{
-			auto str = rnd.hexBytes( i ) ;
+			auto str = rnd.getUrandomBytes( i ) ;
 			std::cout << str << std::endl ;
 		}	
 
@@ -617,7 +617,7 @@ void doMpfrRandom()
 	}
 
 	{
-		abm::random rnd( 10, abm::random::hexBytes( 3 ), abm::numberBase::_16 ) ;
+		abm::random rnd( 10, abm::random::getUrandomBytes( 3 ), abm::numberBase::_16 ) ;
 		std::cout << "\nseed3 = " << rnd.getSeed() << std::endl ;
 
 		for ( auto i = 1 ; i <= 10 ; i++ )

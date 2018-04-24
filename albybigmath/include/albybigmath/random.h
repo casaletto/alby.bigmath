@@ -25,7 +25,7 @@ namespace alby::bigmath
 
             std::string			getSeed() ;
 		 	unsigned long		getSignificantFigures() ;
-        	static std::string	hexBytes( int bytes ) ; 			// hex string of random bytes from urandom
+        	static std::string	getUrandomBytes( int bytes ) ; 			// hex string of random bytes from urandom
             static std::string	nanosecondsSinceEpoch() ; 			// alternate seed for windoze
 	} ;
 } 
