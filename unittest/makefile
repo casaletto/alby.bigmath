@@ -19,12 +19,29 @@ obj/versionTest.o: src/versionTest.cpp
 obj/randomTest.o: src/randomTest.cpp
 	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/randomTest.cpp -o obj/randomTest.o
 
-bin/unittest: ../albybigmath/lib/libalbybigmath.a obj/main.o obj/environment.o obj/versionTest.o obj/randomTest.o
+obj/piTest.o: src/piTest.cpp
+	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/piTest.cpp -o obj/piTest.o
+
+obj/rationalTest.o: src/rationalTest.cpp
+	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/rationalTest.cpp -o obj/rationalTest.o
+
+obj/realTest.o: src/realTest.cpp
+	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/realTest.cpp -o obj/realTest.o
+
+obj/mixedQandRTest.o: src/mixedQandRTest.cpp
+	$(CXX) -c -Os -I ../albybigmath/include -I ../googletest/include src/mixedQandRTest.cpp -o obj/mixedQandRTest.o
+
+bin/unittest: ../albybigmath/lib/libalbybigmath.a \
+obj/main.o obj/environment.o obj/versionTest.o obj/randomTest.o obj/piTest.o obj/rationalTest.o obj/realTest.o obj/mixedQandRTest.o
 	$(CXX) -s \
 		obj/main.o \
 		obj/environment.o \
 		obj/versionTest.o \
 		obj/randomTest.o \
+		obj/piTest.o \
+		obj/rationalTest.o \
+		obj/realTest.o \
+		obj/mixedQandRTest.o \
 		-L ../albybigmath/lib \
 		-L ../googletest/make \
 		-l:libalbybigmath.a \
@@ -49,5 +66,6 @@ test: build
 	./bin/unittest --gtest_color=yes $(ARG)
 
 # ------------------------------------------------------------------------------------------
-# make test "ARG=--gtest_repeat=2 --gtest_filter=*det*"
+# make test "ARG=--gtest_shuffle --gtest_repeat=10"
+# make test "ARG=--gtest_shuffle --gtest_repeat=2 --gtest_filter=*det*"
 # ------------------------------------------------------------------------------------------
