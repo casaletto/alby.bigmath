@@ -31,9 +31,7 @@ int main( int argc, char** argv )
 	try
 	{
 	  	testing::InitGoogleTest( &argc, argv ) ;
-
-  		auto p =  testing::AddGlobalTestEnvironment( new t::environment() ) ;
-		t::environment::set( (t::environment*) p ) ; //ALBY FIX ME
+		t::environment::init() ;
 
   		rc = RUN_ALL_TESTS() ;		
 	}

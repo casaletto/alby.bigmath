@@ -45,11 +45,6 @@ namespace t
 		std::cout << "environment::TearDown()" << std::endl ;
 	}
 
-	void environment::set( environment* p ) 
-	{
-		pEnvironment = p ;
-	}
-	
 	environment* environment::get() 
 	{
 		return pEnvironment ;
@@ -58,6 +53,12 @@ namespace t
 	void environment::hello() 
 	{
 		std::cout << "environment::hello()" << std::endl ;
+	}
+
+	void environment::init() 
+	{
+		if ( pEnvironment == nullptr )
+  			 pEnvironment = (t::environment*) testing::AddGlobalTestEnvironment( new environment() ) ;
 	}
 
 } // ns

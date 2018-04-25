@@ -8,10 +8,11 @@ namespace t
 			environment() ;
 			virtual ~environment() ;
 
+			static void 		init() ;
+			static environment* get() ;
+
 			virtual void 		SetUp() ;
 			virtual void 		TearDown() ;
-			static void 		set( environment* p ) ;
-			static environment* get() ;
 
 			virtual void 		hello() ;
 
