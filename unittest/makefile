@@ -33,7 +33,7 @@ obj/mixedQandRTest.o: src/mixedQandRTest.cpp
 
 bin/unittest: ../albybigmath/lib/libalbybigmath.a \
 obj/main.o obj/environment.o obj/versionTest.o obj/randomTest.o obj/piTest.o obj/rationalTest.o obj/realTest.o obj/mixedQandRTest.o
-	$(CXX) -s \
+	$(CXX) -s -static -static-libgcc -static-libstdc++\
 		obj/main.o \
 		obj/environment.o \
 		obj/versionTest.o \
@@ -48,9 +48,8 @@ obj/main.o obj/environment.o obj/versionTest.o obj/randomTest.o obj/piTest.o obj
 		-l:libmpfr.a \
 		-l:libgmp.a \
 		-l:gtest.a \
-		-lpthread \
 		-o bin/unittest 
-	ldd ./bin/unittest
+	ldd ./bin/unittest || true
 
 # ------------------------------------------------------------------------------------------
 	

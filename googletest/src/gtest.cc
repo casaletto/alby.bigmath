@@ -4194,6 +4194,7 @@ std::string StreamingListener::UrlEncode(const char* str) {
 }
 
 void StreamingListener::SocketWriter::MakeConnection() {
+/*
   GTEST_CHECK_(sockfd_ == -1)
       << "MakeConnection() can't be called when there is already a connection.";
 
@@ -4232,6 +4233,7 @@ void StreamingListener::SocketWriter::MakeConnection() {
     GTEST_LOG_(WARNING) << "stream_result_to: failed to connect to "
                         << host_name_ << ":" << port_num_;
   }
+*/  
 }
 
 // End of class Streaming Listener

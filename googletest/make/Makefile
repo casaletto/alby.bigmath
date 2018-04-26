@@ -25,7 +25,7 @@ USER_DIR = ../samples
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread
+CXXFLAGS += -g -Wall -Wextra -pthread -DGTEST_HAS_PTHREAD=0 
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
@@ -80,3 +80,4 @@ sample1_unittest.o : $(USER_DIR)/sample1_unittest.cc \
 
 sample1_unittest : sample1.o sample1_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+	
