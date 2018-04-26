@@ -17,8 +17,8 @@ bin/smoketest: obj/main.o ../albybigmath/lib/libalbybigmath.a
 		-l:libalbybigmath.a \
 		-l:libmpfr.a \
 		-l:libgmp.a \
-		-o bin/smoketest \
-	#ldd ./bin/smoketest
+		-o bin/smoketest 
+	ldd ./bin/smoketest || true
 
 # ------------------------------------------------------------------------------------------
 	
