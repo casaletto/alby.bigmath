@@ -17,21 +17,32 @@ class alby::bigmath::R
 # base projects
 
 * mpfr http://www.mpfr.org
-* gmp https://gmplib.org
+* gmp  https://gmplib.org
 
-# packages required
+# packages required   
 
 * build-essential (or equivalent gnu compiler toolchain)
-* libgmp-dev
-* libgmp10
-* libmpfr-dev
-* libmpfr4
-* googletest https://github.com/google/googletest
+* libgmp-dev \
+  2:6.2.0+dfsg-4 
+
+* libgmp10 \
+  2:6.2.0+dfsg-4 
+
+* libmpfr-dev  \
+  4.0.2-1  
+
+* libmpfr6  \
+  4.0.2-1 
+
+* googletest \
+  1.10.0-2 
+  
 
 # what is the main artifact produced by this project?
 
 ```
-libalbybigmath.a
+a C++ static library
+./albybigmath/lib/libalbybigmath.a
 ```
 
 # how do I build the code?
@@ -111,6 +122,18 @@ Ipso facto, I perform static linking wherever possible.
 # developed and tested on
 
 my development platform
+
+```
+$ g++ --version
+g++ (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
+```
+
+```
+$ uname -a
+Linux xxxxxxx 5.11.0-38-generic #42~20.04.1-Ubuntu SMP Tue Sep 28 20:41:07 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+```
+
+my previous development platform 
 
 ```
 $ g++ --version

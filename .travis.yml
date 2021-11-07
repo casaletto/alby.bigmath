@@ -29,6 +29,21 @@ matrix:
             - libmpfr4
       env:
         - MATRIX_EVAL="CXX=g++-7"
+    - os: linux
+      dist: focal
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++
+            - libgmp-dev
+            - libgmp10
+            - libmpfr-dev
+            - libmpfr6
+            - googletest
+      env:
+        - MATRIX_EVAL="CXX=g++"
 
 before_install:
   - echo ${TRAVIS_JOB_NUMBER}
