@@ -75,5 +75,12 @@ namespace t
 		EXPECT_TRUE( abm::stringhlp::endsWith  ( pi, "50471237137869609563643719172874677646575739624138908658326459958" ) ) ;
 	}
 
+	TEST_F( piTest, calculatePiToOneMillionDecimalPlacesAndDoItTenMillionTimes ) 
+	{
+		for ( int i = 1; i <= 1E7 ; i++ ) // calculate 10 million times
+			  piTest_nonic_Test() ;
+	}
+
+
 } // ns
 

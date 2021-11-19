@@ -1,0 +1,36 @@
+# comment
+
+name: build
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: git 
+        uses: actions/checkout@v2
+
+      - name: build info 
+        run: |
+          uname -a
+          echo ${{ github.run_id }}
+          echo ${{ github.run_number }}
+
+      - name: apt-get
+        run: |
+          sudo apt-get update
+          sudo apt-get install build-essential libgmp-dev libgmp10 libmpfr-dev libmpfr6 googletest -y
+
+      - name: build 
+        run: |
+          make rebuild version
+
+      - name: smoke test 
+        run: |
+          make smoke
+
+      - name: unit test 
+        run: |
+          make test
+
