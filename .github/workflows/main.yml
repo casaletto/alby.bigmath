@@ -11,16 +11,19 @@ jobs:
       - name: git 
         uses: actions/checkout@v2
 
-      - name: build info 
-        run: |
-          uname -a
-          echo ${{ github.run_id }}
-          echo ${{ github.run_number }}
-
       - name: apt-get
         run: |
           sudo apt-get update
           sudo apt-get install build-essential libgmp-dev libgmp10 libmpfr-dev libmpfr6 googletest -y
+
+      - name: build info 
+        run: |
+          uname -a
+          g++ --version
+          echo ${{ github.run_id }}
+          echo ${{ github.run_number }}
+          echo ${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+          echo $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
 
       - name: build 
         run: |

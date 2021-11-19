@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/casaletto/alby.bigmath.svg?branch=master)](https://travis-ci.org/casaletto/alby.bigmath)
+![github actions](https://github.com/casaletto/alby.bigmath/actions/workflows/main.yml/badge.svg)
 
 # alby.bigmath
 
