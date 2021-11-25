@@ -93,16 +93,16 @@ namespace t
 
 	TEST_F( randomTest, nextReal ) 
 	{
-		abm::R::setSignificantFigures( 50 ) ;
+		abm::R::setSignificantFigures( 200 ) ;
 		abm::R::setDebug( false ) ;
 
 		abm::random rnd ;
-		//std::cout << "seed = " << rnd.getSeed() << std::endl ;
+		std::cout << "seed = " << rnd.getSeed() << std::endl << std::endl ;
 		
 		for ( auto i = 1 ; i <= 100 ; i++ )
 		{
 			auto x = rnd.next() ;
-			//std::cout << x << std::endl ;
+			std::cout << x << std::endl ;
 
 			ASSERT_TRUE( x <  "1.0" ) ;
 			ASSERT_TRUE( x >= "0.0" ) ;		

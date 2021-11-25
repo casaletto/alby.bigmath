@@ -27,7 +27,11 @@ jobs:
 
       - name: build 
         run: |
-          make rebuild version
+          make rebuild 
+
+      - name: version 
+        run: |
+          make version
 
       - name: smoke test 
         run: |

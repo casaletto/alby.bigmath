@@ -1,18 +1,19 @@
-
-![github actions](https://github.com/casaletto/alby.bigmath/actions/workflows/main.yml/badge.svg)
-
 # alby.bigmath
 
-a c++ wrapper around the mpfr **ℝ** and gmp **ℚ** projects to make extreme maths more pleasant.\
+* a c++ wrapper around the mpfr **ℝ** and gmp **ℚ** projects to make extreme maths more pleasant\
 \
-move seamlessly between exact rational number **ℚ** arithmetic
+  move seamlessly between exact rational number **ℚ** arithmetic \
+  and almost unlimited precision real number **ℝ** arithmetic
+
 ```
 class alby::bigmath::Q
-```
-and almost unlimited precision real number **ℝ** arithmetic
-```
 class alby::bigmath::R
 ```
+
+# github ci 
+
+* ![github actions](https://github.com/casaletto/alby.bigmath/actions/workflows/main.yml/badge.svg) 
+* [build history](https://github.com/casaletto/alby.bigmath/actions)
 
 # base projects
 
@@ -40,9 +41,10 @@ class alby::bigmath::R
 
 # what is the main artifact produced by this project?
 
+* a C++ static library and include file
 ```
-a C++ static library
 ./albybigmath/lib/libalbybigmath.a
+./albybigmath/include/albybigmath/albybigmath.h
 ```
 
 # how do I build the code?
@@ -73,7 +75,7 @@ $ make test
 
 # how do I use the code in my project?
 
-include files
+* include files
 
 ```
 #include <stdio.h>
@@ -100,7 +102,7 @@ include files
 #include "albybigmath/albybigmath.h"
 ```
 
-makefile
+* makefile
 
 ```
 $ g++ -c *.cpp -I <path to albybigmath/include>
@@ -116,12 +118,12 @@ $ g++ -s \
 	-llibalbybigmath.a
 ```
 
-I have previously suffered terribly in dll hell.\
-Ipso facto, I perform static linking wherever possible.
+* I have previously suffered terribly in dll hell.\
+  Ipso facto, I perform static linking wherever possible.
 
 # developed and tested on
 
-my development platform
+* my development platform
 
 ```
 $ g++ --version
@@ -133,7 +135,7 @@ $ uname -a
 Linux xxxxxxx 5.11.0-38-generic #42~20.04.1-Ubuntu SMP Tue Sep 28 20:41:07 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
-my previous development platform 
+* my previous development platform 
 
 ```
 $ g++ --version
@@ -145,7 +147,7 @@ $ uname -a
 Linux xxxxxxx 4.10.0-28-generic #32-Ubuntu SMP Fri Jun 30 05:32:18 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
-my alt development platform
+* my alt development platform
 
 ```
 $ g++ --version
@@ -157,7 +159,7 @@ $ uname -a
 MINGW64_NT-6.3 xxxxxxx 2.5.2(0.297/5/3) 2016-07-15 08:31 x86_64 Msys
 ```
 
-travis ci reports build success on the following platforms
+* travis ci previously reported build success on the following platforms
 
 ```
 $ g++6 --version
@@ -222,7 +224,7 @@ void example1()
 }
 ```
 
-results
+* results
 
 ```
 +12000000000.0 + +3.4 + +0.00000000056
@@ -244,12 +246,12 @@ results
 
 ![π #1](doc/pi%20nilakantha.png)
 
-500 000 iterations yield 17 decimal places
+* 500 000 iterations yield 17 decimal places
 ```
 +3.14159265358979323
 ```
 
-5 000 000 iterations yield 20 decimal places
+* 5 000 000 iterations yield 20 decimal places
 ```
 +3.14159265358979323846
 ```
@@ -294,22 +296,22 @@ abm::R pi_nilakantha_term( unsigned long _i )
 
 ![π #2](doc/pi%20ramujan.png)
 
-10 iterations yield 155 decimal places
+* 10 iterations yield 155 decimal places
 ```
 +3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111
 ```
 
-100 iterations yield 1 432 decimal places
+* 100 iterations yield 1 432 decimal places
 ```
 +3.1415926535897932384626433...42699227967823547816360093417216412199245
 ```
 
-1 000 iterations yield 14 195 decimal places
+* 1 000 iterations yield 14 195 decimal places
 ```
 +3.1415926535897932384626433...228435988341003583854238973542439564755568409522484455413
 ```
 
-10 000 iterations yield 141 830 decimal places
+* 10 000 iterations yield 141 830 decimal places
 ```
 +3.1415926535897932384626433...9605721400330661597939815697061366098396405520287669991722547240
 ```
@@ -373,7 +375,7 @@ abm::R pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::R>& fac
 
 ![π #3](doc/pi%20nonic%20convergence.png)
 
-calculate π to **1 000 000 decimal places** with only 7 iterations
+* calculate π to **1 000 000 decimal places** with only 7 iterations
 ```
 +3.141592653589793238462...696552087542450598956787961303311646283996346460422090106105779458151
 ```
@@ -479,7 +481,7 @@ void rationals()
 }
 ```
 
-results
+* results
 
 ```
 a = +6/1225
@@ -539,7 +541,7 @@ void pythagoras2()
 
 ```
 
-results
+* results
 
 ```
 a = +3
