@@ -19,10 +19,12 @@ jobs:
       - name: env 
         run: |
           uname -a
+          lscpu | egrep '(^CPU MHz|^Model name|^CPU\(s\))'
+          free -h
           cat /etc/lsb-release
           g++ --version
           echo $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
-          echo $GITHUB_RUN_ID
+          echo $GITHUB_RUN_NUMBER
 
       - name: version 
         run: |
