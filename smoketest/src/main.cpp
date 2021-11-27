@@ -45,16 +45,14 @@ int main( int argc, char** argv )
 {
 	try
 	{
-		//DONE
 		// just the version number
 		if ( argc >= 2 && std::string( argv[1] ) == "--version" )
 		{
-			std::cout << abm::version::getVersion() << std::endl ;                        
+			std::cout << abm::version::getVersion( true ) << std::endl ;                        
 			return 0 ;
 		}
 
-		//DONE
-		std::cout << abm::version::getVersion( true ) << std::endl ; // all versioln info
+		std::cout << abm::version::getVersion( true ) << std::endl ; // all version info
 
 		doMpqMath0() ;
 		doMpfrMath0() ;
@@ -65,8 +63,8 @@ int main( int argc, char** argv )
 		doMpfrMathtoCanonical() ;
 		doMpfrMathtoSigFig() ;
 		roundToSignificantDigits() ;
-		doMpfrRandom() ; 				//DONE
-		doMpfrRandom2() ; 				//DONE
+		doMpfrRandom() ; 				
+		doMpfrRandom2() ; 				
 		pi_nilakantha() ;
 		pi_ramanujan() ;
 		pi_nonic() ;

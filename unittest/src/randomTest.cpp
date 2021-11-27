@@ -77,27 +77,28 @@ namespace t
 
 		std::map<unsigned long, unsigned long> map ;
 
-		for ( auto i = 1 ; i <= 6000 ; i++ )
+		for ( auto i = 1 ; i <= 100000 ; i++ )
 		{
-			auto x = rnd.nextInteger( 6 ) ;
+			auto x = rnd.nextInteger( 100 ) ;
 		
-			ASSERT_GE( x, 1 ) ;
-			ASSERT_LE( x, 6 ) ;
+			ASSERT_GE( x, 1   ) ;
+			ASSERT_LE( x, 100 ) ;
 		
 			map[x]++ ;
 		}	
 	
+//ALBY average	To DO
 		//for ( auto const &i : map )
 		//	  std::cout << i.first << " = " << i.second <<std::endl ;
 	}
 
 	TEST_F( randomTest, nextReal ) 
 	{
-		abm::R::setSignificantFigures( 200 ) ;
+		abm::R::setSignificantFigures( 100 ) ;
 		abm::R::setDebug( false ) ;
 
 		abm::random rnd ;
-		std::cout << "seed = " << rnd.getSeed() << std::endl << std::endl ;
+		//std::cout << "seed = " << rnd.getSeed() << std::endl << std::endl ;
 		
 		for ( auto i = 1 ; i <= 100 ; i++ )
 		{
@@ -107,6 +108,9 @@ namespace t
 			ASSERT_TRUE( x <  "1.0" ) ;
 			ASSERT_TRUE( x >= "0.0" ) ;		
 		}
+
+//ALBY average	TO DO
+
 	}
 
 	TEST_F( randomTest, getUrandomBytes ) // only works on linux

@@ -33,8 +33,8 @@ test: build
 version: build
 	make -C smoketest version
 
-travisbuildversion:
-	echo "const std::string version::_version = \"`cat version.txt`.${TRAVIS_JOB_NUMBER}\" ;" > version.inc
+buildversion:
+	echo "const std::string version::_version = \"`cat version.txt`.${GITHUB_RUN_NUMBER}\" ;" > version.inc
 
 # ------------------------------------------------------------------------------------------
 

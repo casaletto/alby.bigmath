@@ -14,6 +14,7 @@ class alby::bigmath::R
 
 * ![github actions](https://github.com/casaletto/alby.bigmath/actions/workflows/main.yml/badge.svg) 
 * [build history](https://github.com/casaletto/alby.bigmath/actions)
+* [packages](https://github.com/casaletto/alby.bigmath/packages/) *coming soon*
 
 # base projects
 
@@ -133,6 +134,15 @@ g++ (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
 ```
 $ uname -a
 Linux xxxxxxx 5.11.0-38-generic #42~20.04.1-Ubuntu SMP Tue Sep 28 20:41:07 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+```
+
+```
+$ lscpu 
+Architecture:                    x86_64
+CPU(s):                          16
+Model name:                      AMD Ryzen 7 5700G with Radeon Graphics
+CPU max MHz:                     4672.0698
+BogoMIPS:                        7585.96
 ```
 
 * my previous development platform 
@@ -375,7 +385,10 @@ abm::R pi_ramanujan_term( unsigned long _n, std::map<unsigned long, abm::R>& fac
 
 ![π #3](doc/pi%20nonic%20convergence.png)
 
-* calculate π to **1 000 000 decimal places** with only 7 iterations
+* calculate π to **1 000 000 decimal places** in only 7 iterations in 0.0784 μs !
+
+![π #3](doc/pi%20one%20million%20decimal%20places%20unit%20test.png)
+
 ```
 +3.141592653589793238462...696552087542450598956787961303311646283996346460422090106105779458151
 ```
@@ -583,3 +596,12 @@ c = +5.01400039888311
 * https://docs.travis-ci.com/user/environment-variables/
 
 &nbsp;
+
+# to do
+
+* versioning 
+* packaging
+
+
+
+

@@ -16,20 +16,23 @@ jobs:
           sudo apt-get update
           sudo apt-get install build-essential libgmp-dev libgmp10 libmpfr-dev libmpfr6 googletest -y
 
-      - name: build info 
+      - name: env 
         run: |
           uname -a
+          cat /etc/lsb-release
           g++ --version
-          echo ${{ github.run_id }}
-          echo ${{ github.run_number }}
-          echo ${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
           echo $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          echo $GITHUB_RUN_ID
+
+      - name: version 
+        run: |
+          make buildversion 
 
       - name: build 
         run: |
           make rebuild 
 
-      - name: version 
+      - name: dump version 
         run: |
           make version
 
